@@ -1,26 +1,29 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="../images/img1-removebg-preview.png">
+    <link rel="shortcut icon" href="{% static 'fontend/images/img1-removebg-preview.png' %}">
     <title>CamerSchoolMap</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
-    <!-- <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/all.min.css"> -->
+    <link rel="stylesheet" href="{% static 'fontend/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'fontend/css/style1.css' %}">
+    <link rel="stylesheet" href="{% static 'fontend/css/tiny-slider.css' %}">
+    <!-- <link rel="stylesheet" href="{% static "fontend/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static 'fontend/css/all.min.css' %}"> -->
 </head>
 
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <a class="navbar-brand mx-2 h1 d-flex align-items-center" href="../index.html">
+        <a class="navbar-brand mx-2 h1 d-flex align-items-center" href="{% url 'index' %}">
             <!-- Image Logo -->
-            <img src="../images/logo.jpg" alt="Logo" class="rounded-circle"
+            <img src="{% static 'fontend/images/logo.jpg' %}" alt="Logo" class="rounded-circle"
                 style="width: 40px; height: 40px; margin-right: 8px;">
             <!-- Text Logo -->
             <span><span class="text-success">Camer</span><span class="text-danger">School</span><span
@@ -45,10 +48,10 @@
             <!-- Navbar Links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="../index.html"> <i class="fas fa-home mx-1"></i>Accueil </a>
+                    <a class="nav-link" href="{% url 'index' %}"> <i class="fas fa-home mx-1"></i>Accueil </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../blog_educatif.html">Blog Éducatif</a>
+                    <a class="nav-link" href="{% url 'blog' %}">Blog Éducatif</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"
@@ -58,7 +61,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
                         <a class="dropdown-item" href="#">Yaoundé</a>
                         <a class="dropdown-item" href="#">Douala</a>
-                        <a class="dropdown-item" href="baf.html">Bafoussam</a>
+                        <a class="dropdown-item" href="#">Bafoussam</a>
                         <a class="dropdown-item" href="#">Ngaroundére</a>
                         <a class="dropdown-item" href="#">Ebolowa</a>
                         <a class="dropdown-item" href="#">Bamenda</a>
@@ -69,10 +72,10 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../avis.html">Avis</a>
+                    <a class="nav-link" href="{% url 'avis' %}">Avis</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../contact.html"> Contact Us <i class="fas fa-phone-alt"></i></a>
+                    <a class="nav-link" href="{% url 'contact' %}"> Contact Us <i class="fas fa-phone-alt"></i></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
@@ -85,7 +88,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../connexion.html">Connexion</a>
+                    <a class="nav-link" href="{% url 'connexion' %}">Connexion</a>
                 </li>
             </ul>
         </div>
@@ -157,7 +160,8 @@
                                 <ul>
                                     <li class="nav-link"><a class="nav-link1" href="#Danse">danse tradictionnelle</a>
                                     </li>
-                                    <li class="nav-link"><a class="nav-link1" href="#infrastruture">infrastruture et assesoire de
+                                    <li class="nav-link"><a class="nav-link1" href="#infrastruture">infrastruture et
+                                            assesoire de
                                             music</a></li>
                                     <li class="nav-link"><a class="nav-link1" href="#Tourisme">tourisme</a></li>
                                 </ul>
@@ -191,9 +195,11 @@
                             <div class="card card-body cad1">
                                 <ul>
                                     <li class="nav-link"><a class="nav-link1" href="#Départements">Départements</a></li>
-                                    <li class="nav-link"><a class="nav-link1" href="#Arrondissements">Arrondissements et communes</a>
+                                    <li class="nav-link"><a class="nav-link1" href="#Arrondissements">Arrondissements et
+                                            communes</a>
                                     </li>
-                                    <li class="nav-link"><a class="nav-link1" href="#Chefferies">Chefferies traditionnelles</a>
+                                    <li class="nav-link"><a class="nav-link1" href="#Chefferies">Chefferies
+                                            traditionnelles</a>
                                     </li>
                                 </ul>
                             </div>
@@ -281,7 +287,7 @@
                             </div>
                             <!-- Colonne pour l'image -->
                             <div class="col-md-6 text-end">
-                                <img src="../images/baff.PNG" alt="Région de l'Ouest" class="img-fluid">
+                                <img src="{% static 'fontend/images/baff.PNG' %}" alt="Région de l'Ouest" class="img-fluid">
                             </div>
                         </div>
                     </section2>
@@ -319,7 +325,7 @@
                             <!-- Colonne pour l'image -->
                             <div class="col-md-6 text-end">
                                 <div class="card " style="width: 30em ;">
-                                    <img src="../images/conseil.jpg" alt="">
+                                    <img src="{% static 'fontend/images/conseil.jpg' %}" alt="">
                                     <div class="card-body">
                                         <p>Groupes ethniques de la région de l'Ouest</p>
                                     </div>
@@ -430,7 +436,7 @@
                                     quasiment à
                                     égalité avec la région Littoral8. </p>
                                 <div class="card " style="width: 15em ;">
-                                    <img src="../images/deprt.jpg" alt="">
+                                    <img src="{% static 'fontend//images/deprt.jpg' %}" alt="">
                                     <div class="card-body">
                                         <p>Groupes ethniques de la région de l'Ouest</p>
                                     </div>
@@ -622,7 +628,7 @@
                                 <!-- Carte 1 -->
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card my-2">
-                                        <img src="../images/Medjeng.jpg" class="card-img-top" alt="Danse Medjeng">
+                                        <img src="{% static 'fontend/images/Medjeng.jpg' %}" class="card-img-top" alt="Danse Medjeng">
                                         <div class="card-body">
                                             <h5 class="card-title">Danse Medjeng</h5>
                                             <p class="card-text">Pratiquée dans le département du Noun, cette danse
@@ -634,7 +640,7 @@
                                 <!-- Carte 2 -->
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card my-2">
-                                        <img src="../images/Benskin.jpg" class="card-img-top" alt="Danse Benskin">
+                                        <img src="{% static 'fontend/images/Benskin.jpg' %}" class="card-img-top" alt="Danse Benskin">
                                         <div class="card-body">
                                             <h5 class="card-title">Danse Benskin</h5>
                                             <p class="card-text">Originaire de la Mifi, le Benskin est rythmé et
@@ -646,7 +652,7 @@
                                 <!-- Carte 3 -->
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card my-2">
-                                        <img src="../images/Nkoh.jpg" class="card-img-top" alt="Danse Nkoh">
+                                        <img src="{% static 'fontend/images/Nkoh.jpg' %}" class="card-img-top" alt="Danse Nkoh">
                                         <div class="card-body">
                                             <h5 class="card-title">Danse Nkoh</h5>
                                             <p class="card-text">Danse rituelle des Bamboutos, symbolisant la fertilité
@@ -658,7 +664,7 @@
                                 <!-- Carte 4 -->
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="../images/Tso.jpg" class="card-img-top" alt="Danse Tso">
+                                        <img src="{% static 'fontend/images/Tso.jpg' %}" class="card-img-top" alt="Danse Tso">
                                         <div class="card-body">
                                             <h5 class="card-title">Danse Tso</h5>
                                             <p class="card-text">Pratiquée à Dschang, elle est liée aux cérémonies
@@ -670,7 +676,7 @@
                                 <!-- Carte 5 -->
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="../images/Kamou.jpg" class="card-img-top" alt="Danse Kamou">
+                                        <img src="{% static 'fontend/images/Kamou.jpg' %}" class="card-img-top" alt="Danse Kamou">
                                         <div class="card-body">
                                             <h5 class="card-title">Danse Kamou</h5>
                                             <p class="card-text">Danse guerrière de Bandjoun, elle célèbre la bravoure
@@ -682,7 +688,7 @@
                                 <!-- Carte 6 -->
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="../images/balafon.jpg" class="card-img-top" alt="Danse Balafon">
+                                        <img src="{% static 'fontend//images/balafon.jpg' %}" class="card-img-top" alt="Danse Balafon">
                                         <div class="card-body">
                                             <h5 class="card-title">Danse Balafon</h5>
                                             <p class="card-text">Typique du Haut-Nkam, elle intègre le balafon comme
@@ -694,7 +700,7 @@
                                 <!-- Carte 7 -->
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="../images/Nka.jpg" class="card-img-top" alt="Danse Nka">
+                                        <img src="{% static 'fontend/images/Nka.jpg' %}" class="card-img-top" alt="Danse Nka">
                                         <div class="card-body">
                                             <h5 class="card-title">Danse Nka</h5>
                                             <p class="card-text">Originaire du Ndé, elle est pratiquée lors des mariages
@@ -706,7 +712,7 @@
                                 <!-- Carte 8 -->
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="../images/Lékié.jpg" class="card-img-top" alt="Danse Lékié">
+                                        <img src="{% static 'fontend/images/Lékié.jpg' %}" class="card-img-top" alt="Danse Lékié">
                                         <div class="card-body">
                                             <h5 class="card-title">Danse Lékié</h5>
                                             <p class="card-text">Cette danse colorée des Menoua célèbre les récoltes
@@ -731,7 +737,7 @@
                             <div class="row g-4">
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="../images/Métché.jpg" class="card-img-top" alt="Danse Lékié">
+                                        <img src="{% static 'fontend/images/Métché.jpg' %}" class="card-img-top" alt="Danse Lékié">
                                         <div class="card-body">
                                             <h5 class="card-title">Les Chutes de la Métché (Bafoussam)</h5>
                                             <p class="card-text">Situées à proximité de Bafoussam, ces magnifiques
@@ -744,7 +750,7 @@
                                 </div>
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="../images/Palais.jpg" class="card-img-top" alt="Danse Lékié">
+                                        <img src="{% static 'fontend/images/Palais.jpg' %}" class="card-img-top" alt="Danse Lékié">
                                         <div class="card-body">
                                             <h5 class="card-title">Le Palais Royal de Foumban (Foumban)</h5>
                                             <p class="card-text"> Ce palais historique, résidence des sultans Bamoun,
@@ -756,7 +762,7 @@
                                 </div>
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="../images/Baleng.jpg" class="card-img-top" alt="Danse Lékié">
+                                        <img src="{% static 'fontend/images/Baleng.jpg' %}" class="card-img-top" alt="Danse Lékié">
                                         <div class="card-body">
                                             <h5 class="card-title"> Le Lac Baleng (Bafoussam)</h5>
                                             <p class="card-text">Ce lac de cratère d'origine volcanique est un havre de
@@ -768,7 +774,7 @@
                                 </div>
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="../images/Grottes.jpg" class="card-img-top" alt="Danse Lékié">
+                                        <img src="{% static 'fontend/images/Grottes.jpg' %}" class="card-img-top" alt="Danse Lékié">
                                         <div class="card-body">
                                             <h5 class="card-title">Les Grottes de Fovu (Bandjoun)</h5>
                                             <p class="card-text">
@@ -788,7 +794,7 @@
                                 <div class="row g-4">
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="card">
-                                            <img src="../images/Mortier.webp" class="card-img-top" alt="Danse Lékié">
+                                            <img src="{% static 'fontend/images/Mortier.webp' %}" class="card-img-top" alt="Danse Lékié">
                                             <div class="card-body">
                                                 <h5 class="card-title">Le Mortier et Pilon ("Nkoul et Ndang")</h5>
                                                 <p class="card-text">Le mortier en bois est utilisé pour écraser ou
@@ -802,7 +808,7 @@
                                     </div>
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="card">
-                                            <img src="../images/Calebasse.jpg" class="card-img-top" alt="Danse Lékié">
+                                            <img src="{% static 'fontend/images/Calebasse.jpg' %}" class="card-img-top" alt="Danse Lékié">
                                             <div class="card-body">
                                                 <h5 class="card-title">La Calebasse ("Mbouh")</h5>
                                                 <p class="card-text">Fabriquée à partir du fruit séché d'une plante, la
@@ -815,7 +821,7 @@
                                     </div>
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="card">
-                                            <img src="../images/Tam-tam.jpg" class="card-img-top" alt="Danse Lékié">
+                                            <img src="{% static 'fontend/images/Tam-tam.jpg' %}" class="card-img-top" alt="Danse Lékié">
                                             <div class="card-body">
                                                 <h5 class="card-title">Le Tam-tam Royal ("Ngam")</h5>
                                                 <p class="card-text">C'est un instrument en bois recouvert de peau
@@ -831,7 +837,7 @@
                                     </div>
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="card">
-                                            <img src="../images/balafon1.jpg" class="card-img-top" alt="Danse Lékié">
+                                            <img src="{% static 'fontend/images/balafon1.jpg' %}" class="card-img-top" alt="Danse Lékié">
                                             <div class="card-body">
                                                 <h5 class="card-title">le balafon</h5>
                                                 <p class="card-text">
@@ -857,9 +863,11 @@
     </div>
 
     <footer>
-        <p class="text-center"><i class="fa fa-copyright" aria-hidden="true"></i>copyright-2025 tout droit reserver make by <strong>
-            TABETSING LUCAS <br> <a href="https://fr.wikipedia.org/wiki/Région_de_l'Ouest_(Cameroun)" target="_blank">Cameroun region de l'Ouest</a>
-        </strong> </p>
+        <p class="text-center"><i class="fa fa-copyright" aria-hidden="true"></i>copyright-2025 tout droit reserver make
+            by <strong>
+                TABETSING LUCAS <br> <a href="https://fr.wikipedia.org/wiki/Région_de_l'Ouest_(Cameroun)"
+                    target="_blank">Cameroun region de l'Ouest</a>
+            </strong> </p>
     </footer>
 
 

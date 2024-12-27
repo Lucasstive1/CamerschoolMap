@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="images/img1-removebg-preview.png">
+    <link rel="shortcut icon" href="{% static 'fontend/images/img1-removebg-preview.png' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fontend/css/style.css' %}">
     <title>conexion</title>
 </head>
 
@@ -112,8 +113,7 @@
 
 
 
-    <script src="js/js.js"></script>
-    <script src="js/all.min.js"></script>
+    <script src="{% static 'fontend/js/js.js' %}"></script>
 </body>
 
 </html>
