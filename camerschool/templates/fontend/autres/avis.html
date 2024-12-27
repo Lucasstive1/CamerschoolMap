@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/img1-removebg-preview.png">
+    <title>Avis_ CamerSchoolMap</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.min.css"> -->
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <a class="navbar-brand mx-2 h1 d-flex align-items-center" href="index.html">
+            <!-- Image Logo -->
+            <img src="images/logo.jpg" alt="Logo" class="rounded-circle"
+                style="width: 40px; height: 40px; margin-right: 8px;">
+            <!-- Text Logo -->
+            <span><span class="text-success">Camer</span><span class="text-danger">School</span><span
+                    class="text-warning">Map</span></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Search Bar -->
+            <div class="input-group mx-auto my-3 my-lg-0" style="max-width: 300px;">
+                <input type="text" class="form-control" placeholder="Entrer votre ville de résidence ici..."
+                    aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-success" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navbar Links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"> <i class="fas fa-home mx-1"></i>Accueil </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Blog Éducatif</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Visiter une ville
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                        <a class="dropdown-item" href="#">Yaoundé</a>
+                        <a class="dropdown-item" href="#">Douala</a>
+                        <a class="dropdown-item" href="#">Bafoussam</a>
+                        <a class="dropdown-item" href="#">Ngaroundére</a>
+                        <a class="dropdown-item" href="#">Ebolowa</a>
+                        <a class="dropdown-item" href="#">Bamenda</a>
+                        <a class="dropdown-item" href="#">Bertoua</a>
+                        <a class="dropdown-item" href="#">Garoua</a>
+                        <a class="dropdown-item" href="#">Maroua</a>
+                        <a class="dropdown-item" href="#">Edéa</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="avis.html"> <i class="fas fa-"></i> Avis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html"> Contact Us <i class="fas fa-phone-alt"></i></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-language"></i>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <a class="dropdown-item" href="#">Français</a>
+                        <a class="dropdown-item" href="#">Anglais</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="connexion.html">Connexion</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- end navbar -->
+
+
+    <!-- Start of Avis Page -->
+
+    <div class="container my-5">
+
+        <!-- Title and Introduction -->
+        <h1 class="display-3 text-center text-black   ">Vos Avis Comptent Pour Nous !</h1>
+        <p class="lead text-center text-black">
+            Nous apprécions votre opinion et vos suggestions. Laissez-nous un avis ou partagez votre expérience avec
+            CamerSchoolMap. Vos retours nous aident à nous améliorer et à offrir un service de meilleure qualité.
+        </p>
+
+        <!-- Search Bar for Reviews -->
+        <div class="search-bar mb-4">
+            <div class="input-group">
+                <input type="text" class="form-control" id="search-bar"
+                    placeholder="Entrez le nom d'un établissement ici pour chercher un avis à propos de ce dernier"
+                    aria-label="Rechercher un avis">
+                <div class="input-group-append">
+                    <button class="btn btn-success" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="container_avis">
+                <!-- Form to Submit Review -->
+                <h3 class="mb-3 text-center my-5 h2"> <i class="fas fa-star fa-2x text-warning"></i> Laissez un Avis
+                </h3>
+
+
+                <!-- Formulaire d'avis -->
+                <form>
+                    <div class="mb-3">
+                        <label for="typeAvis" class="form-label h4">Type d'avis</label>
+                        <select id="typeAvis" class="form-select bg-secondary p-2 px-5 mx-5 rounded border-0">
+                            <option value="site">Site en général</option>
+                            <option value="etablissement">Établissement</option>
+                        </select>
+                    </div>
+
+                    <!-- Nom complet -->
+                    <div class="mb-3">
+                        <label for="nom" class="form-label"><i class="fas fa-user mx-3 text-warning"></i>Nom complet
+                            (optionnel)</label>
+                        <input type="text" class="form-control" id="nom" placeholder="Entrez votre nom">
+                    </div>
+
+                    <!-- Adresse e-mail -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label"> <i class="fas fa-envelope mx-3 text-warning"></i>Adresse
+                            e-mail</label>
+                        <input type="email" class="form-control" id="email" placeholder="Entrez votre adresse e-mail">
+                    </div>
+
+                    <!-- Sujet -->
+                    <div class="mb-3">
+                        <label for="sujet" class="form-label"> <i
+                                class="fas fa-pencil-alt mx-3 text-warning"></i>Sujet</label>
+                        <input type="text" class="form-control" id="sujet" placeholder="Entrez le sujet de votre avis">
+                    </div>
+
+                    <!-- Avis -->
+                    <div class="mb-3">
+                        <label for="avis" class="form-label"> <i class="fas fa-comment mx-3 text-warning"></i>Votre avis
+                            ou
+                            commentaire</label>
+                        <textarea id="avis" class="form-control" rows="5"
+                            placeholder="Rédigez votre avis ici"></textarea>
+                    </div>
+
+                    <!-- Bouton d'envoi -->
+                    <button type="submit" class="btn btn-success w-20"> <i
+                            class="fas fa-paper-plane mx-3 text-warning"></i>Envoyer mon avis</button>
+                </form>
+            </div>
+
+
+            <!-- Modal pour le nom de l'établissement -->
+            <div class="modal fade" id="etablissementModal" tabindex="-1" aria-labelledby="etablissementModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="etablissementModalLabel">Nom de l'établissement</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="nomEtablissement" class="form-label">Veuillez entrer le nom de l'établissement
+                                :</label>
+                            <input type="text" class="form-control" id="nomEtablissement"
+                                placeholder="Nom de l'établissement">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Valider</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================== avis recent=============== -->
+        <div id="carouselExampleIndicators" class="carousel slide my-5" data-ride="carousel">
+            <h1 class="text-center ">Avis Récents</h1>
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <i class="fa fa-user review-icon"></i>
+                    <p class="review-text">"Excellent service, le site est très intuitif et facile à utiliser !"</p>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="review-author">Jean Dupont</div>
+                    <div class="review-date">Publié le 21 Décembre 2024</div>
+                </div>
+                <div class="carousel-item">
+                    <i class="fa fa-user review-icon"></i>
+                    <p class="review-text">"Excellent service, le site est très intuitif et facile à utiliser !"</p>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="review-author">Jean pierre</div>
+                    <div class="review-date">Publié le 21 Décembre 2024</div>
+                </div>
+                <div class="carousel-item">
+                    <i class="fa fa-user review-icon"></i>
+                    <p class="review-text">"Excellent service, le site est très intuitif et facile à utiliser !"</p>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="review-author">Jean luc</div>
+                    <div class="review-date">Publié le 21 Décembre 2024</div>
+                </div>
+                <div class="carousel-item">
+                    <i class="fa fa-user review-icon"></i>
+                    <p class="review-text">"Excellent service, le site est très intuitif et facile à utiliser !"</p>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="review-author">Jean lucien</div>
+                    <div class="review-date">Publié le 21 Décembre 2024</div>
+                </div>
+                <div class="carousel-item">
+                    <i class="fa fa-user review-icon"></i>
+                    <p class="review-text">"Excellent service, le site est très intuitif et facile à utiliser !"</p>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="review-author">Jean jacques</div>
+                    <div class="review-date">Publié le 21 Décembre 2024</div>
+                </div>
+                <div class="carousel-item">
+                    <i class="fa fa-user review-icon"></i>
+                    <p class="review-text">"Excellent service, le site est très intuitif et facile à utiliser !"</p>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="review-author">Jean lucas</div>
+                    <div class="review-date">Publié le 21 Décembre 2024</div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+
+
+        <div class="container mt-5">
+            <div class="row">
+                <!-- Première critique -->
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <!-- Icône de personne -->
+                                <div class="me-3">
+                                    <i class="fa fa-user review-icon mx-2"></i>
+                                </div>
+                                <!-- Informations de la critique -->
+                                <div>
+                                    <h5 class="card-title mb-1">Nom de la Personne</h5>
+                                    <p class="card-text text-muted mb-2">20 Décembre 2024</p>
+                                    <!-- Etoiles jaunes -->
+                                    <div class="mb-2">
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-muted">&#9734;</span>
+                                    </div>
+                                    <!-- Commentaire -->
+                                    <p class="card-text">Voici le commentaire de la personne à propos de
+                                        l'établissement. Elle parle de son expérience, des services et de l'accueil reçu
+                                        lors de sa visite.</p>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="" class=" btn btn-outline-danger"><i class="fas fa-trash text-warning"></i>
+                                    cliquer ici pour supprimer l'avis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <!-- Icône de personne -->
+                                <div class="me-3">
+                                    <i class="fa fa-user review-icon mx-2"></i>
+                                </div>
+                                <!-- Informations de la critique -->
+                                <div>
+                                    <h5 class="card-title mb-1">Nom de la Personne</h5>
+                                    <p class="card-text text-muted mb-2">20 Décembre 2024</p>
+                                    <!-- Etoiles jaunes -->
+                                    <div class="mb-2">
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-muted">&#9734;</span>
+                                    </div>
+                                    <!-- Commentaire -->
+                                    <p class="card-text">Voici le commentaire de la personne à propos de
+                                        l'établissement. Elle parle de son expérience, des services et de l'accueil reçu
+                                        lors de sa visite.</p>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="" class=" btn btn-outline-danger"><i class="fas fa-trash text-warning"></i>
+                                    cliquer ici pour supprimer l'avis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <!-- Icône de personne -->
+                                <div class="me-3">
+                                    <i class="fa fa-user review-icon mx-2"></i>
+                                </div>
+                                <!-- Informations de la critique -->
+                                <div>
+                                    <h5 class="card-title mb-1">Nom de la Personne</h5>
+                                    <p class="card-text text-muted mb-2">20 Décembre 2024</p>
+                                    <!-- Etoiles jaunes -->
+                                    <div class="mb-2">
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-warning">&#9733;</span>
+                                        <span class="text-muted">&#9734;</span>
+                                    </div>
+                                    <!-- Commentaire -->
+                                    <p class="card-text">Voici le commentaire de la personne à propos de
+                                        l'établissement. Elle parle de son expérience, des services et de l'accueil reçu
+                                        lors de sa visite.</p>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="" class=" btn btn-outline-danger"><i class="fas fa-trash text-warning"></i>
+                                    cliquer ici pour supprimer l'avis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="col-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item"><a class="page-link" href="#">&#8592; Précédent</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Suivant &#8594;</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="container mt-5 my-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title mb-3">Pourquoi vos avis sont importants ?</h3>
+                        <p class="card-text mb-4">
+                            Vos avis sont essentiels pour nous aider à améliorer constamment nos services. En partageant
+                            vos expériences, vous contribuez à guider d'autres personnes dans leur choix et à nous
+                            fournir des informations précieuses sur ce que nous faisons bien et les
+                            domaines dans lesquels nous pouvons nous améliorer. Chaque commentaire compte et nous aide à
+                            offrir une meilleure expérience à nos clients.
+                        </p>
+                        <h5 class="card-title">Confidentialité et respect de vos données</h5>
+                        <p class="card-text">
+                            Soyez assuré que la confidentialité de vos informations est une priorité pour nous. Nous
+                            respectons la protection de vos données personnelles et nous nous engageons à ne jamais
+                            partager vos informations sans votre consentement explicite. Vos avis seront
+                            utilisés uniquement à des fins d'amélioration de notre service, dans le strict respect de la
+                            législation en vigueur sur la protection des données.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!-- Start Footer Section -->
+    <footer class="footer-section">
+        <div class="container relative">
+
+            <div class="sofa-img border-4">
+                <img src="images/camer6.png" alt="Image" class="img-fluid" height="50%">
+            </div>
+
+            <div class="row">
+                <div class="row g-5 mb-5">
+                    <div class="col-lg-4">
+                        <h1 class="display-4 font-weight-bold mb-4 text-dark">
+                            <span class="text-success">Camer</span><span class="text-danger">School</span> <br><span
+                                class="text-warning">Map</span>
+                        </h1>
+
+                        <ul class="list-unstyled custom-social">
+                            <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="row links-wrap">
+                            <div class="col-6 col-sm-6 col-md-3">
+                                <ul class="list-unstyled">
+                                    <li><a href="index.html" class="text-dark">Accueil</a></li>
+                                    <li><a href="#" class="text-dark">Connexion</a></li>
+                                    <li><a href="#" class="text-dark">Blog Educatif</a></li>
+                                    <li><a href="contact.html" class="text-dark">Contactez-nous</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="col-6 col-sm-6 col-md-3">
+                                <ul class="list-unstyled">
+                                    <li><a href="#" class="text-dark">Ministère de l'Éducation</a></li>
+                                    <li><a href="#" class="text-dark">Ministère de l'Enseignement Primaire</a></li>
+                                    <li><a href="#" class="text-dark">Ministère de l'Enseignement Secondaire</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-6 col-sm-6 col-md-3">
+                                <ul class="list-unstyled">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-dark" href="#" id="dropdownCity"
+                                            role="button" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Visiter une ville
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownCity">
+                                            <a class="dropdown-item" href="#">Yaoundé</a>
+                                            <a class="dropdown-item" href="#">Douala</a>
+                                            <a class="dropdown-item" href="#">Bafoussam</a>
+                                            <a class="dropdown-item" href="#">Ngaroundére</a>
+                                            <a class="dropdown-item" href="#">Ebolowa</a>
+                                            <a class="dropdown-item" href="#">Bamenda</a>
+                                            <a class="dropdown-item" href="#">Bertoua</a>
+                                            <a class="dropdown-item" href="#">Garoua</a>
+                                            <a class="dropdown-item" href="#">Maroua</a>
+                                            <a class="dropdown-item" href="#">Edéa</a>
+                                        </div>
+                                    </li>
+                                    <li><a href="#" class="text-dark">Commentaires</a></li>
+                                    <li><a href="#" class="text-dark">Déconnexion</a></li>
+                                    <li><a href="conf.html" class="text-dark">Politique de confidentialité</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="col-6 col-sm-6 col-md-3">
+                                <img src="images/logo.jpg" alt="Logo" class="rounded-circle"
+                                    style="width: 20vw; height: 20vh; margin-right: 8px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <p class="text-dark">
+                    <i class="fa fa-copyright" aria-hidden="true"></i> 2025
+                    <strong>CamerSchoolMap</strong>. Tous droits réservés.
+                    <br> Made by <strong>TABETSING LUCAS</strong>
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer Section -->
+
+
+    <!-- <script src="js/all.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.js"></script> -->
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // Gestion de la barre de recherche
+            $("#search-bar").on("keyup", function () {
+                const query = $(this).val().toLowerCase();
+                console.log("Recherche: ", query); // Vérifie la valeur de la recherche
+                $(".school-card").filter(function () {
+                    const text = $(this).text().toLowerCase();
+                    console.log("Texte de l'élément: ", text); // Vérifie le texte de l'élément
+                    $(this).toggle(text.includes(query));
+                });
+            });
+        });
+        // Afficher ou cacher le modal en fonction de l'option sélectionnée
+        $('#typeAvis').on('change', function () {
+            var selectedValue = $(this).val();
+            if (selectedValue === 'etablissement') {
+                $('#etablissementModal').modal('show');
+            }
+        });
+    </script>
+</body>
+
+
+
+
+</html>
