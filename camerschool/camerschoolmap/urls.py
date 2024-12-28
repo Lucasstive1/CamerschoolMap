@@ -18,5 +18,6 @@ urlpatterns = [
     path('historique', views.historique, name='historique'),
     path('error', views.error, name='error-404'),
     path('setting', views.setting, name='setting'),
+    path('confirmation', views.confirmation, name='confirmation'),
     
 ]

@@ -67,20 +67,21 @@
                             </div>
                         </div>
 
-                        <form>
+                        <form method="POST" action="{% url 'contact' %}">
+                            {% csrf_token %}
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="text-black" for="fname"> <i
                                                 class="fas fa-user mx-2 text-success"></i>Nom</label>
-                                        <input type="text" class="form-control" id="fname" required>
+                                        <input type="text" name="nom" class="form-control" id="fname" required>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="text-black" for="lname"><i
                                                 class="fas fa-user mx-2 text-success"></i>Prenom</label>
-                                        <input type="text" class="form-control" id="lname"
+                                        <input type="text" class="form-control" id="lname" name="prenom"
                                             placeholder="champs non obligatoire">
                                     </div>
                                 </div>
@@ -90,7 +91,7 @@
                                     <div class="form-group">
                                         <label class="text-black" for="fname"><i
                                                 class="fas fa-mail-bulk mx-2 text-success"></i>Email</label>
-                                        <input type="email" class="form-control" id="fname" required
+                                        <input type="email" class="form-control" id="fname" required name="email"
                                             placeholder="exemple@gmail.com">
                                     </div>
                                 </div>
@@ -99,13 +100,13 @@
                                         <label class="text-black" for="lname"> <i
                                                 class="fas fa-phone-alt mx-2 text-success"></i>numero de
                                             telephone</label>
-                                        <input type="number" class="form-control" id="lname">
+                                        <input type="number" class="form-control" name="phone" id="lname">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="text-black" for="email">object du message</label>
-                                <input type="email" class="form-control" id="email" required
+                                <input type="text" class="form-control" id="email" required name="subject"
                                     placeholder="entrer l'object de votre message ici ( exple: inserer un etablissement scolaire)">
                             </div>
 
