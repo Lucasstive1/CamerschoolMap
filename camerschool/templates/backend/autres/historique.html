@@ -1,0 +1,248 @@
+
+
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<!-- partial -->
+<div class="main-panel">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Historique des utlisateurs enregistrer sur le site</h1>
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-contextual">
+                        <thead>
+                            <tr>
+                                <th> id </th>
+                                <th> Nom </th>
+                                <th> Prenom </th>
+                                <th> Adresse email </th>
+                                <th> numero de telephone </th>
+                                <th>action </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tbody id="user-table-body">
+                            <!-- Exemple de ligne utilisateur -->
+                            <tr class="table-success">
+                                <td>2</td>
+                                <td>Messsy Adam</td>
+                                <td>Flash</td>
+                                <td>adam@example.com</td>
+                                <td>+123456789</td>
+                                <td style="display:flex;">
+                                    <a href="#" class="mx-4 h4" data-toggle="modal" data-target="#deleteModal"
+                                        data-id="2">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-delete text-white"></i>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="h4" data-toggle="modal" data-target="#editModal" data-id="2"
+                                        data-name="Messsy Adam" data-prenom="Flash" data-email="adam@example.com"
+                                        data-phone="+123456789">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-pencil text-warning"></i>
+                                        </div>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="table-danger">
+                                <td>2</td>
+                                <td>Messsy Adam</td>
+                                <td>Flash</td>
+                                <td>adam@example.com</td>
+                                <td>+123456789</td>
+                                <td style="display:flex;">
+                                    <a href="#" class="mx-4 h4" data-toggle="modal" data-target="#deleteModal"
+                                        data-id="2">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-delete text-white"></i>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="h4" data-toggle="modal" data-target="#editModal" data-id="2"
+                                        data-name="Messsy Adam" data-prenom="Flash" data-email="adam@example.com"
+                                        data-phone="+123456789">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-pencil text-warning"></i>
+                                        </div>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>2</td>
+                                <td>Messsy Adam</td>
+                                <td>Flash</td>
+                                <td>adam@example.com</td>
+                                <td>+123456789</td>
+                                <td style="display:flex;">
+                                    <a href="#" class="mx-4 h4" data-toggle="modal" data-target="#deleteModal"
+                                        data-id="2">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-delete text-white"></i>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="h4" data-toggle="modal" data-target="#editModal" data-id="2"
+                                        data-name="Messsy Adam" data-prenom="Flash" data-email="adam@example.com"
+                                        data-phone="+123456789">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-pencil text-warning"></i>
+                                        </div>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="table-success">
+                                <td>2</td>
+                                <td>Messsy Adam</td>
+                                <td>Flash</td>
+                                <td>adam@example.com</td>
+                                <td>+123456789</td>
+                                <td style="display:flex;">
+                                    <a href="#" class="mx-4 h4" data-toggle="modal" data-target="#deleteModal"
+                                        data-id="2">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-delete text-white"></i>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="h4" data-toggle="modal" data-target="#editModal" data-id="2"
+                                        data-name="Messsy Adam" data-prenom="Flash" data-email="adam@example.com"
+                                        data-phone="+123456789">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-pencil text-warning"></i>
+                                        </div>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="table-danger">
+                                <td>2</td>
+                                <td>Messsy Adam</td>
+                                <td>Flash</td>
+                                <td>adam@example.com</td>
+                                <td>+123456789</td>
+                                <td style="display:flex;">
+                                    <a href="#" class="mx-4 h4" data-toggle="modal" data-target="#deleteModal"
+                                        data-id="2">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-delete text-white"></i>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="h4" data-toggle="modal" data-target="#editModal" data-id="2"
+                                        data-name="Messsy Adam" data-prenom="Flash" data-email="adam@example.com"
+                                        data-phone="+123456789">
+                                        <div class="preview-icon">
+                                            <i class="mdi mdi-pencil text-warning"></i>
+                                        </div>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal de modification -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Modifier l'utilisateur</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="edit-name">Nom</label>
+                        <input type="text" class="form-control" id="edit-name" placeholder="Nom">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-prenom">Prenom</label>
+                        <input type="text" class="form-control" id="edit-prenom" placeholder="Prenom">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Adresse email</label>
+                        <input type="email" class="form-control" id="edit-email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-phone">Numéro de téléphone</label>
+                        <input type="text" class="form-control" id="edit-phone" placeholder="Numéro de téléphone">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" id="confirmEdit">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+
+<!-- Scripts pour gérer les actions -->
+<script>
+    $(document).ready(function () {
+        // Récupérer les données pour le modal de suppression
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var userId = button.data('id'); // Récupérer l'ID de l'utilisateur
+            $('#confirmDelete').off('click').on('click', function () {
+                // Effectuer la suppression ici
+                console.log("Utilisateur avec ID " + userId + " supprimé.");
+                $('#deleteModal').modal('hide');
+            });
+        });
+
+        // Récupérer les données pour le modal de modification
+        $('#editModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var userId = button.data('id');
+            var name = button.data('name');
+            var prenom = button.data('prenom');
+            var email = button.data('email');
+            var phone = button.data('phone');
+
+            // Remplir les champs du formulaire avec les données de l'utilisateur
+            $('#edit-name').val(name);
+            $('#edit-prenom').val(prenom);
+            $('#edit-email').val(email);
+            $('#edit-phone').val(phone);
+
+            $('#confirmEdit').off('click').on('click', function () {
+                // Effectuer la modification ici
+                console.log("Utilisateur avec ID " + userId + " modifié.");
+                $('#editModal').modal('hide');
+            });
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-center">Formulaire d'ajout d'un établissement scolaire</h2>
+            <p class="card-description text-center">viellez remplir entierement ces champs pour pouvons ajouter un
+              etablissement scolaire </p>
+            <form class="forms-sample">
+              <div class="form-group">
+                <label for="exampleInputName1">Nom de l'établissement</label>
+                <input type="text" class="form-control" id="exampleInputName1" placeholder="Nom de l'établissement">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail3">Adresse</label>
+                <input type="text" class="form-control" id="exampleInputEmail3"
+                  placeholder="Insérer l'adresse de l'établissement">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword4">Ville</label>
+                <input type="text" class="form-control" id="exampleInputPassword4" placeholder="Ville ou région">
+              </div>
+              <div class="form-group">
+                <label for="exampleSelectGender">Catégories</label>
+                <select class="form-control" id="exampleSelectGender">
+                  <option>Privé</option>
+                  <option>Public</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleSelectGender">Type</label>
+                <select class="form-control" id="exampleSelectGender">
+                  <option>Primaire</option>
+                  <option>Secondaire</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Charger une image de l'établissement</label>
+                <input type="file" name="img[]" class="file-upload-default">
+                <div class="input-group col-xs-12">
+                  <input type="text" class="form-control file-upload-info" disabled placeholder="Changer l'image ici">
+                  <span class="input-group-append">
+                    <button class="file-upload-browse btn btn-success" type="button">Charger</button>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="websiteLink">Site Web</label>
+                <input type="url" class="form-control" id="websiteLink"
+                  placeholder="https://www.site-etablissement.com">
+              </div>
+              <div class="form-group">
+                <label for="facebookLink">Lien Facebook</label>
+                <input type="url" class="form-control" id="facebookLink"
+                  placeholder="https://facebook.com/etablissement">
+              </div>
+
+              <div class="form-group">
+                <label for="whatsappLink">Lien WhatsApp</label>
+                <input type="url" class="form-control" id="whatsappLink" placeholder="https://wa.me/numéro">
+              </div>
+              <div class="form-group">
+                <label for="exampleTextarea1">Description de l'établissement</label>
+                <textarea class="form-control" id="exampleTextarea1" rows="4"
+                  placeholder="Laisser une description détaillée"></textarea>
+              </div>
+              <button type="submit" class="btn btn-success mr-2">ajouter</button>
+              <button class="btn btn-dark">Abandonner</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
+    </div>
+  </div>
+</div>
+
+{% endblock %}

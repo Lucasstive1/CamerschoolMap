@@ -5,6 +5,9 @@ def index(request):
     return render(request, 'fontend/index.html')
 
 
+def dashbord(request):
+    return render(request, 'backend/dashbord.html')
+
 def avis(request):
     return render(request, 'fontend/autres/avis.html')
 
@@ -31,5 +34,21 @@ def mifi(request):
 
 def baf(request):
     return render(request, 'fontend/villes/baf.html')
+
+def register(request):
+    return render(request, 'backend/autres/register.html')
+
+def school(request):
+    return render(request, 'backend/autres/school.html')
+
+def historique(request):
+    return render(request, 'backend/autres/historique.html')
+
+def error(request):
+    return render(request, 'backend/autres/error-404.html')
+
+def setting(request):
+    return render(request, 'backend/autres/setting.html')
+    
 
 

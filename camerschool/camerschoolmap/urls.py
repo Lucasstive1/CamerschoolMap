@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('index', views.index, name='index'),
+    path('dashbord', views.dashbord, name='dashbord'),
     path('avis', views.avis, name='avis'),
     path('blog', views.blog, name='blog'),
     path('connexion', views.connexion, name='connexion'),
@@ -12,4 +13,10 @@ urlpatterns = [
     path('conf', views.conf, name='conf'),
     path('mifi', views.mifi, name='mifi'),
     path('baf', views.baf, name='baf'),
+    path('school', views.school, name='school'),
+    path('register', views.register, name='register'),
+    path('historique', views.historique, name='historique'),
+    path('error', views.error, name='error-404'),
+    path('setting', views.setting, name='setting'),
+    
 ]
