@@ -1,4 +1,3 @@
-
 {% extends 'backend/base.html' %}
 {% load static %}
 
@@ -9,6 +8,34 @@
 <!-- partial -->
 <div class="main-panel">
     <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card corona-gradient-card">
+                    <div class="card-body py-0 px-0 px-sm-3">
+                        <div class="row align-items-center">
+                            <div class="col-4 col-sm-3 col-xl-2">
+                                <img src="{% static 'backend/assets/images/Group126@2x.png' %}"
+                                    class="gradient-corona-img img-fluid" alt="">
+                            </div>
+                            <div class="col-5 col-sm-7 col-xl-8 p-0">
+                                <h4 class="mb-1 mb-sm-0">Salut chers administrateur du site et bienvenue sur
+                                    <strong>CamerSchoolMap</strong>
+                                </h4>
+                                <p class="mb-0 font-weight-normal d-none d-sm-block"> Ici vous avez un control total sur
+                                    le site
+                                </p>
+                            </div>
+                            <div class="col-3 col-sm-2 col-xl-2 pl-0 text-center">
+                                <span>
+                                    <a href="{% url 'dashbord' %}" target="_blank"
+                                        class="btn btn-outline-light btn-rounded get-started-btn">Less Go</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-4 grid-margin">
                 <div class="card">
@@ -65,131 +92,116 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 stretch-card my-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Historique des utlisateur</h4>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-contextual">
-                            <thead>
-                                <tr>
-                                    <th> id </th>
-                                    <th>Nom </th>
-                                    <th> Prenom </th>
-                                    <th> Adresse email </th>
-                                    <th> numero de telephone </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="table-info">
-                                    <td> 1 </td>
-                                    <td> Herman Beck </td>
-                                    <td> Photoshop </td>
-                                    <td> $ 77.99 </td>
-                                    <td> May 15, 2015 </td>
-                                </tr>
-                                <tr class="table-warning">
-                                    <td> 2 </td>
-                                    <td> Messsy Adam </td>
-                                    <td> Flash </td>
-                                    <td> $245.30 </td>
-                                    <td> July 1, 2015 </td>
-                                </tr>
-                                <tr class="table-danger">
-                                    <td> 3 </td>
-                                    <td> John Richards </td>
-                                    <td> Premeire </td>
-                                    <td> $138.00 </td>
-                                    <td> Apr 12, 2015 </td>
-                                </tr>
-                                <tr class="table-success">
-                                    <td> 4 </td>
-                                    <td> Peter Meggik </td>
-                                    <td> After effects </td>
-                                    <td> $ 77.99 </td>
-                                    <td> May 15, 2015 </td>
-                                </tr>
-                                <tr class="table-primary">
-                                    <td> 5 </td>
-                                    <td> Edward </td>
-                                    <td> Illustrator </td>
-                                    <td> $ 160.25 </td>
-                                    <td> May 03, 2015 </td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <div class="row">
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Statistique des visites sur le site</h4>
+                        <canvas id="lineChart" style="height:250px"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Statistique sur le nombre de clients satisfaits</h4>
+                        <canvas id="barChart" style="height:230px"></canvas>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row ">
             <div class="col-12 grid-margin">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">historiques des chefs d'etablissements</h4>
-                            <div class="table-responsive">
-                                <table class="table table-dark">
-                                    <thead>
-                                        <tr>
-                                            <th> ID </th>
-                                            <th> nom </th>
-                                            <th> Email </th>
-                                            <th> numero de telephone </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td> 1 </td>
-                                            <td> Herman Beck </td>
-                                            <td> $ 77.99 </td>
-                                            <td> May 15, 2015 </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 2 </td>
-                                            <td> Messsy Adam </td>
-                                            <td> $245.30 </td>
-                                            <td> July 1, 2015 </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 3 </td>
-                                            <td> John Richards </td>
-                                            <td> $138.00 </td>
-                                            <td> Apr 12, 2015 </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 4 </td>
-                                            <td> Peter Meggik </td>
-                                            <td> $ 77.99 </td>
-                                            <td> May 15, 2015 </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 5 </td>
-                                            <td> Edward </td>
-                                            <td> $ 160.25 </td>
-                                            <td> May 03, 2015 </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 6 </td>
-                                            <td> John Doe </td>
-                                            <td> $ 123.21 </td>
-                                            <td> April 05, 2015 </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 7 </td>
-                                            <td> Henry Tom </td>
-                                            <td> $ 150.00 </td>
-                                            <td> June 16, 2015 </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Historique des utlisateur sur le site</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th> id </th>
+                                        <th> Nom </th>
+                                        <th> Email </th>
+                                        <th> numero de telephone </th>
+                                        <th> Status </th>
+                                        <th>action requise</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td> #1 </td>
+                                        <td>
+                                            <span class="pl-2">Henry Klein</span>
+                                        </td>
+                                        <td> junior@gail.com </td>
+                                        <td> 655969010 </td>
+                                        <td>
+                                            <div class="badge badge-outline-success">Admin</div>
+                                        </td>
+                                        <td style="display: flex;">
+                                            <button class="btn  btn-outline-danger text-white mx-3"> <i
+                                                    class="mdi mdi-delete text-white"></i></button>
+                                            <button class="btn  text-white btn-outline-primary"> Modifier</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td> #1 </td>
+                                        <td>
+                                            <span class="pl-2"> junior talla marie</span>
+                                        </td>
+                                        <td> junior@gail.com </td>
+                                        <td> 655969010 </td>
+                                        <td>
+                                            <div class="badge badge-outline-success">Chefs d'etablissement</div>
+                                        </td>
+                                        <td style="display: flex;">
+                                            <button class="btn  btn-outline-danger text-white mx-3"> <i
+                                                    class="mdi mdi-delete text-white"></i></button>
+                                            <button class="btn  text-white btn-outline-primary"> Modifier</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td> #2 </td>
+                                        <td>
+                                            <span class="pl-2">junior talla marie</span>
+                                        </td>
+                                        <td> junior@gail.com </td>
+                                        <td> 655969010 </td>
+                                        <td>
+                                            <div class="badge badge-outline-warning">Utilisateur</div>
+                                        </td>
+                                        <td style="display: flex;">
+                                            <button class="btn btn-outline-danger text-white mx-3"> <i
+                                                    class="mdi mdi-delete text-white"></i></button>
+                                            <button class="btn text-white btn-outline-primary"> Modifier</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- Pagination -->
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 {% endblock %}

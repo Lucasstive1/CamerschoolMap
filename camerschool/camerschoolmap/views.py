@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.core.mail import send_mail
+from django.core.paginator import Paginator
+from .models import Avis_views
+from django.contrib import messages
+
 
 # Create your views here.
 def index(request):
@@ -11,8 +15,52 @@ def index(request):
 def dashbord(request):
     return render(request, 'backend/dashbord.html')
 
+
+
+
+#====================== fonction pour la gestion des avis =======================
 def avis(request):
-    return render(request, 'fontend/autres/avis.html')
+    # Récupération des avis
+    avis_list = Avis_views.objects.all().order_by('-date')
+
+    # Gestion de la barre de recherche
+    avis_search = request.GET.get('avis-search')
+    if avis_search and avis_search.strip():  # Vérifie si la recherche n'est pas vide
+        avis_list = avis_list.filter(suject__icontains=avis_search)
+
+    # Pagination
+    paginator = Paginator(avis_list, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    if request.method == 'POST':
+        # Récupération des données du formulaire
+        type_avis = request.POST.get('typeAvis')
+        nom = request.POST.get('nom')
+        email = request.POST.get('email')
+        suject = request.POST.get('suject')
+        contenu = request.POST.get('contenu')
+
+        try:
+            # Création d'un nouvel avis
+            Avis_views.objects.create(
+                type_avis=type_avis,
+                nom=nom,
+                email=email,
+                suject=suject,
+                contenu=contenu
+            )
+            messages.success(request, "Avis enregistré avec succès.")  # Message de succès
+        except Exception as e:
+            messages.error(request, f"Erreur lors de l'enregistrement de l'avis : {str(e)}")  # Message d'erreur
+
+    return render(request, 'fontend/autres/avis.html', {'page_obj': page_obj})
+
+
+
+
+
+
 
 
 def blog(request):
@@ -22,7 +70,15 @@ def conf(request):
     return render(request, 'fontend/autres/conf.html')
 
 
+
+# ======================== partie connexion pour les utlisateur ===============================
 def connexion(request):
+    if request.method == 'POST':
+        name = request.POST.get('nom', None)
+        email = request.POST.get('email', None)
+        password = request.POST.get('password', None)
+        phone_number = request.POST.get('phone', None)
+        print("=="*5, "nouvelle connexion pour", name, "ayant pour adresse:", email, "et pour numero :", phone_number, "=="*5)
     return render(request, 'fontend/autres/connexion.html')
 
 
@@ -32,11 +88,7 @@ def connexion(request):
 
 
 
-# ======================= PARTIE LOGIQUE DU CONTACT US POUR L'ENVOIE D'UN MESSAGE============================
-from django.core.mail import send_mail
-from django.urls import reverse
-from django.shortcuts import render, redirect
-
+# ======================= PARTIE LOGIQUE DU CONTACT US POUR L'ENVOIE D'UN MESSAGE============================  
 def contact(request):
     if request.method == 'POST':
         nom = request.POST.get("nom")

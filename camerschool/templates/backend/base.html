@@ -45,7 +45,8 @@
                     <div class="profile-desc">
                         <div class="profile-pic">
                             <div class="count-indicator">
-                                <img class="img-xs rounded-circle " src="{% static 'backend/assets/images/logo.jpg' %}" alt="">
+                                <img class="img-xs rounded-circle " src="{% static 'backend/assets/images/logo.jpg' %}"
+                                    alt="">
                                 <span class="count bg-success"></span>
                             </div>
                             <div class="profile-name">
@@ -156,8 +157,8 @@
             <!-- partial:partials/_navbar.html -->
             <nav class="navbar p-0 fixed-top d-flex flex-row">
                 <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-                    <a class="navbar-brand " href="{% url 'dashbord' %}"><img src="{% static 'backend/assets/images/logo.Jpg' %}" alt="logo"
-                            class="rounded-circle" /></a>
+                    <a class="navbar-brand " href="{% url 'dashbord' %}"><img
+                            src="{% static 'backend/assets/images/logo.Jpg' %}" alt="logo" class="rounded-circle" /></a>
                 </div>
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <button class="navbar-toggler navbar-toggler align-self-center" type="button"
@@ -274,6 +275,8 @@
 
 
 
+
+
             {% block content %}
 
 
@@ -282,17 +285,21 @@
 
 
 
-            <!-- partial:partials/_footer.html -->
-            <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
-                        CamerschoolMap.com 2025span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Make <a href="#"> in
-                                AMEROUN</a> BY TABETSING LUCAS</span>
-                </div>
-            </footer>
-            <!-- partial -->
+
+
+
+
         </div>
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer " style="margin-left: 35%;">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
+                    CamerschoolMap.com 2025span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Make <a href="#"> in
+                            CAMEROUN</a> BY TABETSING LUCAS</span>
+            </div>
+        </footer>
+        <!-- partial -->
         <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
@@ -318,6 +325,7 @@
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="{% static 'backend/assets/js/dashboard.js' %}"></script>
+    <script src="{%  static 'backend/assets/js/chart.js' %}"></script>
     <!-- End custom js for this page -->
 </body>
 
