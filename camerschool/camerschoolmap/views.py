@@ -82,7 +82,8 @@ def connexion(request):
     return render(request, 'fontend/autres/connexion.html')
 
 
-
+def inscription(request):
+    return render(request, 'fontend/autres/inscription.html')
 
 
 
@@ -186,8 +187,6 @@ def register(request):
 def school(request):
     return render(request, 'backend/autres/school.html')
 
-def historique(request):
-    return render(request, 'backend/autres/historique.html')
 
 def error(request):
     return render(request, 'backend/autres/error-404.html')

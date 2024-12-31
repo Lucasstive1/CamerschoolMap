@@ -4,21 +4,38 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="{% static 'fontend/images/img1-removebg-preview.png' %}">
+    <link rel="shortcut icon" href="images/img1-removebg-preview.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fontend/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'fontend/css/style.css' %}">
     <title>conexion</title>
 </head>
+<style>
+    .modal{
+        background: white;
+        border-radius: 1em;
+        box-shadow: 0 0 10px black;
+        margin: 2%;
+        justify-content: center;
+        text-align: center;
+    }
+    .modal-header{
+        background: rgb(0, 108, 25);
+        padding: 1%;
+        border-radius: 1em;
+        color: white;
+        font-size: 25px;
+    }
+</style>
 
 <body class="body_connexion">
 
     <div class="container1">
         <div class="form_box login">
             <form action="" class="form1">
-                <h1 class="titre">Login</h1>
+                <h1 class="titre">Se connecter</h1>
                 <div class="input_box">
-                    <input type="text" placeholder="Username" required>
+                    <input type="text" placeholder="Nom" required>
                     <i class="fas fa-user users"></i>
                 </div>
 
@@ -29,11 +46,11 @@
                 </div>
 
                 <div class="forgot_link">
-                    <a href="#"> Forgot password</a>
+                    <a href="#">Mots de passe oubliée?</a>
                 </div>
 
-                <button type="submit" class="btn_submit">Login</button>
-                <p>or login with social platforms</p>
+                <button type="submit" class="btn_submit">Se connecter</button>
+                <p>ou se connecter via vos comptes :</p>
 
                 <div class="social_icon">
                     <a href="#"><i class="fab fa-facebook"></i></a>
@@ -45,65 +62,41 @@
 
 
         </div>
-        <div class="form_box register">
-            <form action="{% url 'connexion' %}" method="POST" class="form1">
-                {% csrf_token %}
-                <h1 class="titre">Registration</h1>
-                <div class="input_box">
-                    <input type="text" placeholder="Username" required name="nom">
-                    <i class="fas fa-user users"></i>
-                </div>
-
-                <div class="input_box">
-                    <input type="email" placeholder="Email" required name="email">
-                    <i class="fas fa-envelope users"></i>
-                </div>
-
-                <div class="input_box">
-                    <input type="password" placeholder="password" required name="password">
-                    <i class="fas fa-lock users"></i>
-                </div>
-
-
-                <div class="input_box">
-                    <input type="number" placeholder="phone number" required name="phone">
-                    <i class="fas fa-phone users"></i>
-                </div>
-
-                <button type="submit" class="btn_submit">Register</button>
-                <p>or register with social platforms</p>
-
-                <div class="social_icon">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-google-plus"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </form>
-
-
-        </div>
-
 
 
 
         <div class="toggle_box">
             <div class="toggle_pane1 toggle_left">
-                <h1>Hello, welcome</h1>
-                <p>Don't have an account</p>
-                <button class="btn_submit register_btn"> Register</button>
-            </div>
+                <h1>Salut!, Bienvenue a vous</h1>
+                <p>Vous n'avez pas de compte? Cliquez pour vous inscrire</p>
+                <a href="{% url 'inscription' %}">
+                    <button class="btn_submit register_btn"> S'inscrire</button>
+                </a>
 
-            <div class="toggle_pane1 toggle_rigth">
-                <h1> welcome Back!</h1>
-                <p>Already have an account</p>
-                <button class="btn_submit login_btn"> Login</button>
             </div>
         </div>
     </div>
 
 
 
+    {% if messages %}
+    <div class="alert alert-success">
+        <div class="modal fade show" tabindex="-1" style="display: block;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">Bravo!!!</h5>
+                    </div>
+                    <div class="modal-body">
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
 
 
@@ -113,8 +106,8 @@
 
 
 
-
-    <script src="{% static 'fontend/js/js.js' %}"></script>
+    <script src="js/js.js"></script>
+    <script src="{% static 'fontend/js/all.min.js' %}"></script>
 </body>
 
 </html>
