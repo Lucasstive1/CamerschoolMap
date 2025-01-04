@@ -5,6 +5,6 @@ from .models import User_View
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ("id", "nom", "email", "password", "phone")
-    list_filter = ("id", "nom", "email")
+    list_filter = ("id", "nom",)
     
 admin.site.register(User_View  , UserAdmin)

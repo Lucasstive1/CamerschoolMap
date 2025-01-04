@@ -204,10 +204,10 @@
                     <p class="card-text mb-3">{{ avis.contenu }}</p>
 
                     <!-- Bouton de suppression de l'avis -->
-                        <div class=" d-flex justify-content-between">
-                            <a href="#" class="btn btn-outline-danger btn-sm">
-                                <i class="fas fa-trash text-warning"></i> Supprimer l'avis
-                            </a>
+                    <div class=" d-flex justify-content-between">
+                        <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-avis-id="{{ avis.id }}">
+                            <i class="fas fa-trash text-warning"></i> Supprimer l'avis
+                        </button>
                     </div>
                 </div>
             </div>
@@ -288,5 +288,47 @@
         </div>
     </div>
 </section>
+
+
+
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer cet avis ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <a href="#" id="confirmDeleteButton" class="btn btn-danger">Supprimer</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Script JavaScript pour initialiser le modal -->
+<script>
+    const deleteButtons = document.querySelectorAll('[data-bs-target="#deleteModal"]');
+    const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const avisId = this.getAttribute('data-avis-id');
+            confirmDeleteButton.setAttribute('href', `/supprimer-avis/${avisId}/`);
+        });
+    });
+</script>
 
 {% endblock %}

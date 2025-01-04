@@ -6,8 +6,28 @@
 
 
 <!-- partial -->
-<div class="main-panel">
+<div class="content-wrapper" style="margin-top: 5%;">
     <div class="col-lg-12 stretch-card">
+        {% if messages %}
+        <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="messageModalLabel">Notification</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% for message in messages %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         <div class="card">
             <div class="card-body">
                 <h1 class="card-title">Historique des utlisateurs enregistrer sur le site</h1>
@@ -31,15 +51,11 @@
                                 <td>{{user.email}} </td>
                                 <td> {{user.phone}} </td>
                                 <td style="display:flex;">
-                                    <a href="#" class="mx-4 h4 btn btn-outline-danger" data-toggle="modal"
-                                        data-target="#deleteModal" data-id="{{ user.id }}">
-                                        <div class="preview-icon">
-                                            <i class="mdi mdi-delete text-white"></i>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="h4 btn btn-outline-primary" data-toggle="modal"
-                                        data-target="#editModal" data-id="{{ user.id }}" data-name="{{ user.nom }}"
-                                        data-email="{{ user.email }}" data-phone="{{ user.phone }}">
+                                    <form action="{% url 'suppression_user' user.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    </form>
+                                    <a href="{% url 'modifieruser' user.id %}" class="h4 btn btn-outline-primary">
                                         <div class="preview-icon">
                                             Modifier
                                         </div>
@@ -55,7 +71,8 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     <div class="text-center">
-                        <span class="badge bg-primary">{{ users.paginator.count }} UTLISATEURS</span>
+                        <p>{{ users.paginator.count }} utilisateurs trouvés. Page {{ users.number }} sur {{
+                            users.paginator.num_pages }}</p>
                     </div>
                     {% if users.has_previous %}
                     <li class="page-item">
@@ -96,43 +113,6 @@
 </div>
 
 
-<!-- Modal de modification -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Modifier l'utilisateur</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm">
-                    <div class="form-group">
-                        <label for="edit-name">Nom</label>
-                        <input type="text" class="form-control" id="edit-name" placeholder="Nom">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-prenom">Prenom</label>
-                        <input type="text" class="form-control" id="edit-prenom" placeholder="Prenom">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-email">Adresse email</label>
-                        <input type="email" class="form-control" id="edit-email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-phone">Numéro de téléphone</label>
-                        <input type="text" class="form-control" id="edit-phone" placeholder="Numéro de téléphone">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" id="confirmEdit">Enregistrer</button>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- main-panel ends -->
 </div>
 <!-- page-body-wrapper ends -->
@@ -140,40 +120,28 @@
 
 <!-- Scripts pour gérer les actions -->
 <script>
-    $(document).ready(function () {
-        // Récupérer les données pour le modal de suppression
-        $('#deleteModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var userId = button.data('id'); // Récupérer l'ID de l'utilisateur
-            $('#confirmDelete').off('click').on('click', function () {
-                // Effectuer la suppression ici
-                console.log("Utilisateur avec ID " + userId + " supprimé.");
-                $('#deleteModal').modal('hide');
-            });
-        });
-
-        // Récupérer les données pour le modal de modification
-        $('#editModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var userId = button.data('id');
-            var name = button.data('name');
-            var prenom = button.data('prenom');
-            var email = button.data('email');
-            var phone = button.data('phone');
-
-            // Remplir les champs du formulaire avec les données de l'utilisateur
-            $('#edit-name').val(name);
-            $('#edit-prenom').val(prenom);
-            $('#edit-email').val(email);
-            $('#edit-phone').val(phone);
-
-            $('#confirmEdit').off('click').on('click', function () {
-                // Effectuer la modification ici
-                console.log("Utilisateur avec ID " + userId + " modifié.");
-                $('#editModal').modal('hide');
-            });
+    var messageModal = new bootstrap.Modal(document.getElementById('#messageModal'));
+    messageModal.show();
+</script>
+<script>
+    document.querySelectorAll('.btn-delete').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
+                fetch(btn.dataset.url, { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    });
+            }
         });
     });
+
 </script>
 
 {% endblock %}

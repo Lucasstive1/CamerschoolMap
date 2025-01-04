@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpRequest, JsonResponse
 from django.core.mail import send_mail
@@ -7,9 +7,16 @@ from .models import Avis_views
 from django.contrib import messages
 
 
-# Create your views here.
+
+# Create your views here
 def index(request):
-    return render(request, 'fontend/index.html')
+    if 'utilisateur_id' not in request.session:
+        return redirect('connexion')  # Rediriger vers la page de connexion si non connecté
+
+    # Informations de l'utilisateur connecté
+    utilisateur_nom = request.session['utilisateur_nom']
+    return render(request, 'fontend/index.html', {'nom': utilisateur_nom})
+
 
 
 def dashbord(request):
@@ -29,7 +36,7 @@ def avis(request):
         avis_list = avis_list.filter(suject__icontains=avis_search)
 
     # Pagination
-    paginator = Paginator(avis_list, 3)
+    paginator = Paginator(avis_list, 100)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -59,6 +66,24 @@ def avis(request):
 
 
 
+# ============== fonction de suppression d'un avis ==========
+def supprimer_avis(request, avis_id):
+    avis = get_object_or_404(Avis_views, id= avis_id)
+    
+    
+    if request.method == 'POST':
+        try:
+            avis.delete()
+            messages.success(request, "L'avis a été supprimé avec succès.")
+        except Exception as e:
+            messages.error(request, f"Erreur lors de la suppression de l'avis : {str(e)}")
+        return redirect('avis') 
+    return redirect('avis')
+    
+
+
+
+
 
 
 
@@ -70,16 +95,6 @@ def conf(request):
     return render(request, 'fontend/autres/conf.html')
 
 
-
-# ======================== partie connexion pour les utlisateur ===============================
-def connexion(request):
-    if request.method == 'POST':
-        name = request.POST.get('nom', None)
-        email = request.POST.get('email', None)
-        password = request.POST.get('password', None)
-        phone_number = request.POST.get('phone', None)
-        print("=="*5, "nouvelle connexion pour", name, "ayant pour adresse:", email, "et pour numero :", phone_number, "=="*5)
-    return render(request, 'fontend/autres/connexion.html')
 
 
 def inscription(request):

@@ -7,7 +7,6 @@ urlpatterns = [
     path('dashbord', views.dashbord, name='dashbord'),
     path('avis', views.avis, name='avis'),
     path('blog', views.blog, name='blog'),
-    path('connexion', views.connexion, name='connexion'),
     path('inscription', views.inscription, name='inscription'),
     path('contact', views.contact, name='contact'),
     path('detail', views.detail, name='detail'),
@@ -19,5 +18,6 @@ urlpatterns = [
     path('error', views.error, name='error-404'),
     path('setting', views.setting, name='setting'),
     path('confirmation', views.confirmation, name='confirmation'),
+    path('supprimer-avis/<int:avis_id>/', views.supprimer_avis, name='supprimer_avis'),
     
 ]
