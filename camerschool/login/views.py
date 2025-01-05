@@ -6,6 +6,9 @@ import re
 from django.core.paginator import Paginator
 from django.contrib.auth import logout
 from django.http import JsonResponse
+from django.core.mail import send_mail
+import os
+
 
 
 
@@ -18,6 +21,7 @@ def connexion(request):
         
         print(f"Nom entré : {nom}")  # Debugging
         print(f"Mot de passe entré : {password}")  # Debugging
+        print(os.getenv('EMAIL_HOST_USER')) # Debugging
         
         try:
             utilisateur = User_View.objects.get(nom=nom)
@@ -27,6 +31,14 @@ def connexion(request):
                 request.session['utilisateur_id'] = utilisateur.id
                 request.session['utilisateur_nom'] = utilisateur.nom
                 request.session['utilisateur_email'] = utilisateur.email
+
+                send_mail(
+                    'Confirmation Mail',
+                    'Vous vennez de vous connecter a votre profil CamerSchoolMap',
+                    None,
+                    [utilisateur.email],   # Destinataire
+                    fail_silently=False,
+                )
                 
                 
                 return redirect("index")
@@ -79,6 +91,14 @@ def inscription(request):
         user = User_View.objects.create(nom=nom, email=email, password=make_password(password), phone=phone)  
         user.save()
         messages.success(request, "Inscription reussir, connecter vous maintenant!")
+        
+        send_mail(
+            'Confirmation Mail',
+            "Vous vennez de faire une inscription sur CamerSchoolMap confirmer qu'il s'agit bien de vous ",
+            None, # THIS IS THE MAIL OF THE SENDER, NONE IS PLACE HERE TO US THE CONFIGURATION EMAIL IN THE SETTING.PY
+            [email],   # Destinataire
+            fail_silently=False,
+        )
         
           # Rediriger vers la page de connexion après l'inscription réussie
         return redirect('connexion')  #
@@ -169,12 +189,10 @@ def modifieruser(request, id):
 def suppression_user(request, id):
     if request.method == 'POST':
         try:
-            utilisateur = User_View.objects.get(id = id)
+            utilisateur = User_View.objects.get(id=id)
             utilisateur.delete()
             return JsonResponse({'success': True, 'message': 'Utilisateur supprimé avec succès.'})
-        
         except User_View.DoesNotExist:
-            return JsonResponse({'success': False, 'message':"L'utilisateur n'existe pas."})
-        
-    return JsonResponse({'success': False, 'message':'Requête invalide.'})
+            return JsonResponse({'success': False, 'message': "L'utilisateur n'existe pas."})
+    return JsonResponse({'success': False, 'message': 'Requête invalide.'})
 

@@ -163,12 +163,11 @@ def contact(request):
 
         # Envoi de l'email
         send_mail(
-            subject_mail,
-            body,
-            email,
-            ['stivelucas037@gmail.com'],
+            'Contact',
+            'Merci de nous avoir contacter nous traitons votre demande et nous vous reviendrons bientot',
+            None,
+            [email],   # Destinataire
             fail_silently=False,
-            html_message=body  # Utilisation du format HTML
         )
 
         # Redirection vers la page de confirmation
