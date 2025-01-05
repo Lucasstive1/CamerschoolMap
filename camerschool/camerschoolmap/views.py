@@ -68,18 +68,14 @@ def avis(request):
 
 # ============== fonction de suppression d'un avis ==========
 def supprimer_avis(request, avis_id):
-    avis = get_object_or_404(Avis_views, id= avis_id)
-    
-    
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
+            avis = Avis_views.objects.get(id=avis_id)
             avis.delete()
-            messages.success(request, "L'avis a été supprimé avec succès.")
-        except Exception as e:
-            messages.error(request, f"Erreur lors de la suppression de l'avis : {str(e)}")
-        return redirect('avis') 
-    return redirect('avis')
-    
+            return JsonResponse({'success': True, 'message': 'Avis supprimé avec succès!'})
+        except Avis_views.DoesNotExist:
+            return JsonResponse({'success': False, 'message': "L'avis n'existe pas."})
+    return JsonResponse({'success': False, 'message': 'Requête invalide.'})
 
 
 
