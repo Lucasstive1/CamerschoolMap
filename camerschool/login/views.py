@@ -18,38 +18,32 @@ def connexion(request):
     if request.method == 'POST':
         nom = request.POST.get('nom')
         password = request.POST.get('password')
-        
-        print(f"Nom entré : {nom}")  # Debugging
-        print(f"Mot de passe entré : {password}")  # Debugging
-        print(os.getenv('EMAIL_HOST_USER')) # Debugging
-        
+
         try:
             utilisateur = User_View.objects.get(nom=nom)
-            print(f"Utilisateur trouvé : {utilisateur}")  # Debugging
-            
+
             if check_password(password, utilisateur.password):
                 request.session['utilisateur_id'] = utilisateur.id
                 request.session['utilisateur_nom'] = utilisateur.nom
                 request.session['utilisateur_email'] = utilisateur.email
 
+                # Envoyer un email
                 send_mail(
                     'Confirmation Mail',
-                    'Vous vennez de vous connecter a votre profil CamerSchoolMap',
+                    'Vous venez de vous connecter à votre profil CamerSchoolMap',
                     None,
-                    [utilisateur.email],   # Destinataire
+                    [utilisateur.email],
                     fail_silently=False,
                 )
-                
-                
+
+                messages.success(request, "Connexion réussie ! Bienvenue, {}.".format(utilisateur.nom))
                 return redirect("index")
             else:
-                messages.error(request, "Nom ou Mot de passe incorrect")
+                messages.error(request, "Nom ou mot de passe incorrect")
         except User_View.DoesNotExist:
-            messages.error(request, "Utilisateur non trouvé")
-            print("Utilisateur non trouvé dans la base de données")  # Debugging
-    
-    return render(request, 'fontend/autres/connexion.html')
+            messages.error(request, "Utilisateur non trouvé dans la base de données")
 
+    return render(request, 'fontend/autres/connexion.html')
 
 
 
@@ -62,50 +56,49 @@ def inscription(request):
         
         errors = []
         
-        # verification du format de l'email
-        # validation de l'email
+        # Validation email
         if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
-            errors.append( "L'adresse email n'est pas valide.")
+            errors.append("L'adresse email n'est pas valide.")
         
-        
-         # Vérification du mot de passe
+        # Vérification du mot de passe
         if not re.match(r'^(?=.*[A-Z])(?=.*\d)', password):
             errors.append("Le mot de passe doit contenir au moins une majuscule et un chiffre.")
             
-        # verification du numero de telephone 
+        # Vérification du téléphone
         if not re.match(r'^\+237\s\d{3}\s\d{3}\s\d{3}$', phone):
-           errors.append("Numéro de téléphone invalide. Format attendu : +237 XXX XXX XXX")
-           
-         
+            errors.append("Numéro de téléphone invalide. Format attendu : +237 XXX XXX XXX")
         
         # Vérification de l'unicité de l'email
         if User_View.objects.filter(email=email).exists():  
             errors.append("Cet email est déjà utilisé.")
-          
-            
-            
+        
+        # Vérification de l'unicité du nom
+        if User_View.objects.filter(nom=nom).exists():
+            errors.append("Un utilisateur avec ce nom existe déjà.")
+        
         if errors:
             return render(request, 'fontend/autres/inscription.html', {'errors': errors})
-
         
-        user = User_View.objects.create(nom=nom, email=email, password=make_password(password), phone=phone)  
+        # Création de l'utilisateur
+        user = User_View.objects.create(
+            nom=nom, email=email, 
+            password=make_password(password), phone=phone
+        )  
         user.save()
-        messages.success(request, "Inscription reussir, connecter vous maintenant!")
+        messages.success(request, "Inscription réussie, connectez-vous maintenant!")
         
+        # Envoi d'email
         send_mail(
             'Confirmation Mail',
-            "Vous vennez de faire une inscription sur CamerSchoolMap confirmer qu'il s'agit bien de vous ",
-            None, # THIS IS THE MAIL OF THE SENDER, NONE IS PLACE HERE TO US THE CONFIGURATION EMAIL IN THE SETTING.PY
-            [email],   # Destinataire
+            "Vous venez de vous inscrire sur CamerSchoolMap, confirmez qu'il s'agit bien de vous.",
+            None,  # Utilise la configuration EMAIL dans settings.py
+            [email], 
             fail_silently=False,
         )
         
-          # Rediriger vers la page de connexion après l'inscription réussie
-        return redirect('connexion')  #
-            
+        return redirect('connexion')
+    
     return render(request, 'fontend/autres/inscription.html')
-
-
 
 def historique(request):
     
