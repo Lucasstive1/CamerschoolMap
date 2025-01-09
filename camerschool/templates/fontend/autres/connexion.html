@@ -8,10 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'fontend/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'fontend/css/style.css' %}">
-    <title>connexion</title>
+    <title>conexion</title>
+    <!-- Ajouter le script SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
-    .modal{
+    .modal {
         background: white;
         border-radius: 1em;
         box-shadow: 0 0 10px black;
@@ -19,7 +21,8 @@
         justify-content: center;
         text-align: center;
     }
-    .modal-header{
+
+    .modal-header {
         background: rgb(0, 108, 25);
         padding: 1%;
         border-radius: 1em;
@@ -33,28 +36,29 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Pour que la vidéo remplisse tout l'écran sans déformation */
-        z-index: -1; /* Place la vidéo derrière le contenu */
+        object-fit: cover;
+        /* Pour que la vidéo remplisse tout l'écran sans déformation */
+        z-index: -1;
+        /* Place la vidéo derrière le contenu */
     }
 </style>
 
 <body class="body_connexion">
     <!-- Vidéo de fond -->
-    <video autoplay muted  id="backgroundVideo">
+    <video autoplay muted id="backgroundVideo">
         <source src="{% static 'fontend/images/videoback1.mp4' %}" type="video/mp4">
         Votre navigateur ne supporte pas la lecture vidéo.
     </video>
 
     <div class="container1">
         <div class="form_box login">
-            <form action="{% url 'connexion' %}" class="form1" method="POST" >
+            <form action="{% url 'connexion' %}" class="form1" method="POST">
                 {% csrf_token %}
                 <h1 class="titre">Se connecter</h1>
                 <div class="input_box">
                     <input type="text" placeholder="Nom" name="nom" required>
                     <i class="fas fa-user users"></i>
                 </div>
-
 
                 <div class="input_box">
                     <input type="password" placeholder="password" name="password" required>
@@ -75,11 +79,7 @@
                     <a href="#"><i class="fab fa-linkedin"></i></a>
                 </div>
             </form>
-
-
         </div>
-
-
 
         <div class="toggle_box">
             <div class="toggle_pane1 toggle_left">
@@ -88,41 +88,25 @@
                 <a href="{% url 'inscription' %}">
                     <button class="btn_submit register_btn"> S'inscrire</button>
                 </a>
-
             </div>
         </div>
     </div>
-
-
 
     {% if messages %}
-    <div class="alert alert-success">
-        <div class="modal fade show" tabindex="-1" style="display: block;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title">Bravo!!!</h5>
-                    </div>
-                    <div class="modal-body">
-                        {% for message in messages %}
-                        {{ message }}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            {% for message in messages %}
+            Swal.fire({
+                title: 'Notification',
+                text: "{{ message }}",
+                icon: "{{ message.tags|default:'info' }}",
+                confirmButtonText: 'OK'
+            });
+            {% endfor %}
+        });
+    </script>
     {% endif %}
 
-
-
-
-
-
-
-
-
-    <script src="{% static 'fontend/js/js.js' %}"></script>
     <script src="{% static 'fontend/js/all.min.js' %}"></script>
 </body>
 
