@@ -10,6 +10,8 @@ from django.contrib import messages
 
 # Create your views here
 def index(request):
+     # Récupération des avis
+    avis_list = Avis_views.objects.all().order_by('-date')
     if 'utilisateur_id' not in request.session:
         return redirect('connexion')  # Rediriger vers la page de connexion si non connecté
 
@@ -19,8 +21,7 @@ def index(request):
 
 
 
-def dashbord(request):
-    return render(request, 'backend/dashbord.html')
+
 
 
 
@@ -28,7 +29,11 @@ def dashbord(request):
 #====================== fonction pour la gestion des avis =======================
 def avis(request):
     # Récupération des avis
-    avis_list = Avis_views.objects.all().order_by('-date')
+    avis_list = Avis.objects.all().order_by('-date')  # Obtenez les avis récents
+    paginator = Paginator(avis_list, 5)  # Paginer par 5 avis
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     # Gestion de la barre de recherche
     avis_search = request.GET.get('avis-search')
@@ -36,7 +41,7 @@ def avis(request):
         avis_list = avis_list.filter(suject__icontains=avis_search)
 
     # Pagination
-    paginator = Paginator(avis_list, 100)
+    paginator = Paginator(avis_list, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -66,20 +71,16 @@ def avis(request):
 
 
 
-# ============== fonction de suppression d'un avis ==========
+    
 def supprimer_avis(request, avis_id):
-    avis = get_object_or_404(Avis_views, id= avis_id)
-    
-    
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
+            avis = Avis_views.objects.get(id=avis_id)
             avis.delete()
-            messages.success(request, "L'avis a été supprimé avec succès.")
-        except Exception as e:
-            messages.error(request, f"Erreur lors de la suppression de l'avis : {str(e)}")
-        return redirect('avis') 
-    return redirect('avis')
-    
+            return JsonResponse({'success': True, 'message': 'Avis supprimé avec succès!'})
+        except Avis_views.DoesNotExist:
+            return JsonResponse({'success': False, 'message': "L'avis n'existe pas."})
+    return JsonResponse({'success': False, 'message': 'Requête invalide.'})
 
 
 
@@ -187,7 +188,7 @@ def confirmation(request : HttpRequest):
 
 
 def detail(request):
-    return render(request, 'fontend/autres/detail.')
+    return render(request, 'fontend/autres/detail.html')
 
 def mifi(request):
     return render(request, 'fontend/departement/mifi.html')
@@ -195,8 +196,7 @@ def mifi(request):
 def baf(request):
     return render(request, 'fontend/villes/baf.html')
 
-def register(request):
-    return render(request, 'backend/autres/register.html')
+
 
 def school(request):
     return render(request, 'backend/autres/school.html')

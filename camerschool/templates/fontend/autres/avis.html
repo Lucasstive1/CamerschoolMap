@@ -205,9 +205,7 @@
 
                     <!-- Bouton de suppression de l'avis -->
                     <div class=" d-flex justify-content-between">
-                        <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-avis-id="{{ avis.id }}">
-                            <i class="fas fa-trash text-warning"></i> Supprimer l'avis
-                        </button>
+                        <button type="button" class="btn btn-danger btn-delete1" data-user-id="{{ avis.id }}">Supprimer l'avis</button>
                     </div>
                 </div>
             </div>
@@ -292,41 +290,50 @@
 
 
 
-<!-- Modal de confirmation de suppression -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Êtes-vous sûr de vouloir supprimer cet avis ?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <form action="#" method="post">
-                    {% csrf_token %}
-                    <a href="#" id="confirmDeleteButton" class="btn btn-danger">Supprimer</a>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
+<!-- SweetAlert2 Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-
-<!-- Script JavaScript pour initialiser le modal -->
+<!-- Script for Deleting User with SweetAlert and AJAX -->
 <script>
-    const deleteButtons = document.querySelectorAll('[data-bs-target="#deleteModal"]');
-    const confirmDeleteButton = document.getElementById('confirmDeleteButton');
-    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const avisId = this.getAttribute('data-avis-id');
-            confirmDeleteButton.setAttribute('href', `/supprimer-avis/${avisId}/`);
+    document.querySelectorAll('.btn-delete1').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const userId = btn.dataset.userId;
+            
+            // Display SweetAlert2 confirmation
+            Swal.fire({
+                title: 'Êtes-vous sûr?',
+                text: "Cette action est irréversible.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Oui, supprimer!',
+                cancelButtonText: 'Annuler',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Make the AJAX request to delete the user
+                    fetch("{% url 'supprimer_avis' 0 %}".replace('0', userId), {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                        
+                            // Show SweetAlert success message
+                            Swal.fire('Supprimé!', data.message, 'success')
+                            .then(() => {
+                                location.reload();  // Reload the page after deletion
+                            });
+                        } else {
+                            // Show SweetAlert error message
+                            Swal.fire('Erreur!', data.message, 'error');
+                        }
+                    });
+                }
+            });
         });
     });
 </script>

@@ -2,12 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User_View
+from .models import CustomUser 
 import re
 from django.core.paginator import Paginator
 from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.core.mail import send_mail
 import os
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 
 
 
@@ -32,13 +35,13 @@ def connexion(request):
                 request.session['utilisateur_nom'] = utilisateur.nom
                 request.session['utilisateur_email'] = utilisateur.email
 
-                send_mail(
-                    'Confirmation Mail',
-                    'Vous vennez de vous connecter a votre profil CamerSchoolMap',
-                    None,
-                    [utilisateur.email],   # Destinataire
-                    fail_silently=False,
-                )
+                # send_mail(
+                #     'Confirmation Mail',
+                #     'Vous vennez de vous connecter a votre profil CamerSchoolMap',
+                #     None,
+                #     [utilisateur.email],   # Destinataire
+                #     fail_silently=False,
+                # )
                 
                 
                 return redirect("index")
@@ -92,15 +95,15 @@ def inscription(request):
         user.save()
         messages.success(request, "Inscription reussir, connecter vous maintenant!")
         
-        send_mail(
-            'Confirmation Mail',
-            "Vous vennez de faire une inscription sur CamerSchoolMap confirmer qu'il s'agit bien de vous ",
-            None, # THIS IS THE MAIL OF THE SENDER, NONE IS PLACE HERE TO US THE CONFIGURATION EMAIL IN THE SETTING.PY
-            [email],   # Destinataire
-            fail_silently=False,
-        )
+        # send_mail(
+        #     'Confirmation Mail',
+        #     "Vous vennez de faire une inscription sur CamerSchoolMap , nous sommes ravis de vous avoir a nos cote  ",
+        #     None, # THIS IS THE MAIL OF THE SENDER, NONE IS PLACE HERE TO US THE CONFIGURATION EMAIL IN THE SETTING.PY
+        #     [email],   # Destinataire
+        #     fail_silently=False,
+        # )
         
-          # Rediriger vers la page de connexion après l'inscription réussie
+        #   Rediriger vers la page de connexion après l'inscription réussie
         return redirect('connexion')  #
             
     return render(request, 'fontend/autres/inscription.html')
@@ -135,6 +138,10 @@ def deconnexion(request):
 def confirmation_deconnexion(request):
     if request.method == 'POST':
         # Si l'utilisateur confirme, déconnectez-le
+        if 'utilisateur_id' in request.session:
+            del request.session['utilisateur_id']
+            del request.session['utilisateur_nom']
+            del request.session['utilisateur_email']
         logout(request)
         return redirect('connexion')  # Redirige vers la page de connexion
 
@@ -142,6 +149,7 @@ def confirmation_deconnexion(request):
     return render(request, 'fontend/autres/confirmation_deconnexion.html', {
         'utilisateur_nom': request.session.get('utilisateur_nom', 'Utilisateur')
     })
+
     
     
     
@@ -195,4 +203,50 @@ def suppression_user(request, id):
         except User_View.DoesNotExist:
             return JsonResponse({'success': False, 'message': "L'utilisateur n'existe pas."})
     return JsonResponse({'success': False, 'message': 'Requête invalide.'})
+
+
+
+User = get_user_model()
+
+
+def register(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        # phone_number = request.POST.get('phone_number')
+        password = request.POST.get('password')
+        role = request.POST.get('role')
+        
+        
+        
+        # verification de l'existence de l'utlisateur
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Ce nom d\'utilisateur existe déjà.')
+            return redirect('dashbord')
+        
+        
+         # Créer l'utilisateur
+        user = User.objects.create_user(username=username, email=email, password=password)
+         
+          # Ajouter l'utilisateur au groupe en fonction du rôle
+        if role == 'Chef d\'etablissement':
+            group = Group.objects.get(name='Head of Institution')
+            user.is_head_of_institution = True
+        elif role == 'Administrateur':
+            group = Group.objects.get(name='Admin')
+            user.is_admin = True
+        else:
+            group = Group.objects.get(name='User')
+
+        user.groups.add(group)
+        user.save()
+                
+        messages.success(request, 'Utilisateur ajouté avec succès!')
+        return redirect('register')
+    return render(request, 'backend/autres/register.html')
+
+
+def dashbord(request):
+    return render(request, 'backend/dashbord.html')
+
 
