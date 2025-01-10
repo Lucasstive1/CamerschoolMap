@@ -127,7 +127,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-STATIC_URL = 'static/'
+STATIC_URL = 'static/'  
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Fichiers statiques partagés
 ]
@@ -157,3 +157,6 @@ MESSAGE_TAGS = {
     message_constants.WARNING: 'warning',
     message_constants.ERROR: 'danger',
 }
+
+
+AUTH_USER_MODEL = 'login.CustomUser'  # Remplacez "login" par le nom de votre application

@@ -5,14 +5,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Corona Admin</title>
+  <link rel="shortcut icon" href="{% static 'backend/assets/images/logo.jpg' %}" class="rounded-circle">
+  <title>CamerSchoolMap</title>
   <link rel="stylesheet" href="{% static 'backend/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
   <link rel="stylesheet" href="{% static 'backend/assets/vendors/css/vendor.bundle.base.css' %}">
   <link rel="stylesheet" href="{% static 'backend/assets/css/style.css' %}">
-  <link rel="shortcut icon" href="{% static 'backend/assets/images/favicon.png' %}" />
 </head>
+<style>
+  .background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+  }
 
-<body>
+  .background-video video {
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+  }
+</style>
+
+<body class="background-video">
+  <div class="background-video">
+    <video autoplay loop muted>
+      <source src="{% static 'backend/assets/images/videoback.mp4' %}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
   <div class="container-scroller">
     <div class="container-fluid page-body-wrapper full-page-wrapper">
       <div class="row w-100 m-0">
@@ -48,7 +71,8 @@
                 </div>
                 <div class="text-center">
                   <button type="submit" class="btn btn-success btn-block enter-btn"> <i
-                      class="mdi mdi-account-plus text-warning h4"></i> Add the member</button>
+                      class="mdi mdi-account-plus text-warning h4"></i> Ajouter
+                  </button>
                 </div>
               </form>
             </div>
@@ -95,14 +119,24 @@
   <script src="{% static 'backend/assets/js/misc.js' %}"></script>
   <script src="{% static 'backend/assets/js/settings.js' %}"></script>
   <script src="{% static 'backend/assets/js/todolist.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
+  {% if messages %}
   <script>
-    $(document).ready(function () {
-      {% if messages %}
-      $('#messageModal').modal('show');
-      {% endif %}
+    document.addEventListener('DOMContentLoaded', function () {
+      {% for message in messages %}
+      Swal.fire({
+        title: "{% if message.tags == 'success' %}Succès{% else %}Erreur{% endif %}",
+        text: "{{ message }}",
+        icon: "{{ message.tags|default:'info' }}",  // 'success', 'error', etc.
+        confirmButtonText: 'OK'
+      });
+      {% endfor %}
     });
   </script>
+  {% endif %}
+
 </body>
 
 </html>
