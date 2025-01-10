@@ -199,47 +199,88 @@ def suppression_user(request, id):
 
 
 
-User = get_user_model()
 
+
+
+
+
+# fonctions de creation d'un utlisateur par l'admin
+
+from django.contrib import messages  # Assurez-vous que cette importation est présente
 
 def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
-        # phone_number = request.POST.get('phone_number')
-        password = request.POST.get('password')
+        phone_number = request.POST.get('phone_number')
         role = request.POST.get('role')
+        password = request.POST.get('password')
         
+        errors = []
         
+        # Validation des champs
+        if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
+            errors.append("Format d'email invalide.")
+        if not re.match(r'^(?=.*[A-Z])(?=.*\d).{8,}$', password):
+            errors.append("Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.")
+        if not re.match(r'^\+237\d{9}$', phone_number):
+            errors.append("Le numéro de téléphone doit être au format +237XXXXXXXXX.")
+        if CustomUser.objects.filter(email=email).exists():
+            errors.append("L'email existe déjà.")
+        if CustomUser.objects.filter(phone_number=phone_number).exists():
+            errors.append("Le numéro de téléphone que vous avez entré existe déjà. Veuillez réessayer.")
         
-        # verification de l'existence de l'utlisateur
-        if User.objects.filter(username=username).exists():
-            messages.error(request, 'Ce nom d\'utilisateur existe déjà.')
-            return redirect('dashbord')
+        # Gestion des erreurs
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return render(request, 'backend/autres/register.html')
         
+        # Création de l'utilisateur
+        user = CustomUser.objects.create(
+            username=username,
+            email=email,
+            role=role,
+            phone_number=phone_number,
+            password=make_password(password),
+        )
         
-         # Créer l'utilisateur
-        user = User.objects.create_user(username=username, email=email, password=password)
-         
-          # Ajouter l'utilisateur au groupe en fonction du rôle
-        if role == 'Chef d\'etablissement':
-            group = Group.objects.get(name='Head of Institution')
-            user.is_head_of_institution = True
-        elif role == 'Administrateur':
-            group = Group.objects.get(name='Admin')
-            user.is_admin = True
-        else:
-            group = Group.objects.get(name='User')
-
-        user.groups.add(group)
-        user.save()
-                
-        messages.success(request, 'Utilisateur ajouté avec succès!')
-        return redirect('register')
+        # Envoi de l'email
+        send_mail(
+            subject='Inscription réussie sur le site',
+            message=(
+                f"Bonjour {username},\n\n"
+                f"Votre compte a été créé avec succès !\n\n"
+                f"Identifiants :\nNom d'utilisateur : {username}\nMot de passe : {password}\n\n"
+                f"Merci de nous avoir rejoints !"
+            ),
+            from_email=None,
+            recipient_list=[email],
+            fail_silently=False,
+        )
+        
+        messages.success(request, "Utilisateur ajouté avec succès !")
+        return redirect('register')  # Redirection pour recharger la page et vider le formulaire
+    
     return render(request, 'backend/autres/register.html')
 
 
+
+
 def dashbord(request):
-    return render(request, 'backend/dashbord.html')
+    utilisateurs = CustomUser.objects.all().order_by('-id')  # Tri par ID décroissant
+    paginator = Paginator(utilisateurs, 10)  # 10 utilisateurs par page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'backend/dashbord.html', {'page_obj': page_obj})
 
 
+
+# def historique_utilisateurs(request):
+#     utilisateurs = CustomUser.objects.all().order_by('-id')  # Tri par ID décroissant
+#     paginator = Paginator(utilisateurs, 10)  # 10 utilisateurs par page
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+    
+#     return render(request, 'backend/autres/historique.html', {'page_obj': page_obj})
