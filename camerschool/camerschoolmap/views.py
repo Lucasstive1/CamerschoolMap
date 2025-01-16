@@ -29,7 +29,7 @@ def index(request):
 #====================== fonction pour la gestion des avis =======================
 def avis(request):
     # Récupération des avis
-    avis_list = Avis.objects.all().order_by('-date')  # Obtenez les avis récents
+    avis_list = Avis_views.objects.all().order_by('-date')  # Obtenez les avis récents
     paginator = Paginator(avis_list, 5)  # Paginer par 5 avis
 
     page_number = request.GET.get('page')

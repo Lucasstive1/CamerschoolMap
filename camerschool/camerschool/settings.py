@@ -83,14 +83,29 @@ WSGI_APPLICATION = 'camerschool.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'CamerschoolMap',  # Remplacez par le nom de votre base de données PostgreSQL
+        'NAME': 'school',  # Remplacez par le nom de votre base de données PostgreSQL
         'USER': 'postgres',      # Remplacez par votre nom d'utilisateur PostgreSQL
-        'PASSWORD': 'stive2004@',  # Remplacez par votre mot de passe PostgreSQL
+        'PASSWORD': '12345678',  # Remplacez par votre mot de passe PostgreSQL
         'HOST': 'localhost',          # Remplacez par l'adresse de votre serveur PostgreSQL (par exemple, localhost ou une IP)
         'PORT': '5432',               # Port par défaut pour PostgreSQL
     }
     
 }
+
+
+# Lucas database credentials
+#------------------------------
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'CamerschoolMap',  # Remplacez par le nom de votre base de données PostgreSQL
+#         'USER': 'postgres',      # Remplacez par votre nom d'utilisateur PostgreSQL
+#         'PASSWORD': 'stive2004@',  # Remplacez par votre mot de passe PostgreSQL
+#         'HOST': 'localhost',          # Remplacez par l'adresse de votre serveur PostgreSQL (par exemple, localhost ou une IP)
+#         'PORT': '5432',               # Port par défaut pour PostgreSQL
+#     }
+    
+# }
 
 
 
