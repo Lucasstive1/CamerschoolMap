@@ -2,12 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User_View
+from .models import CustomUser 
 import re
 from django.core.paginator import Paginator
 from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.core.mail import send_mail
 import os
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 
 
 
@@ -128,6 +131,10 @@ def deconnexion(request):
 def confirmation_deconnexion(request):
     if request.method == 'POST':
         # Si l'utilisateur confirme, déconnectez-le
+        if 'utilisateur_id' in request.session:
+            del request.session['utilisateur_id']
+            del request.session['utilisateur_nom']
+            del request.session['utilisateur_email']
         logout(request)
         return redirect('connexion')  # Redirige vers la page de connexion
 
@@ -135,6 +142,7 @@ def confirmation_deconnexion(request):
     return render(request, 'fontend/autres/confirmation_deconnexion.html', {
         'utilisateur_nom': request.session.get('utilisateur_nom', 'Utilisateur')
     })
+
     
     
     
@@ -189,3 +197,90 @@ def suppression_user(request, id):
             return JsonResponse({'success': False, 'message': "L'utilisateur n'existe pas."})
     return JsonResponse({'success': False, 'message': 'Requête invalide.'})
 
+
+
+
+
+
+
+
+# fonctions de creation d'un utlisateur par l'admin
+
+from django.contrib import messages  # Assurez-vous que cette importation est présente
+
+def register(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        role = request.POST.get('role')
+        password = request.POST.get('password')
+        
+        errors = []
+        
+        # Validation des champs
+        if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
+            errors.append("Format d'email invalide.")
+        if not re.match(r'^(?=.*[A-Z])(?=.*\d).{8,}$', password):
+            errors.append("Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.")
+        if not re.match(r'^\+237\d{9}$', phone_number):
+            errors.append("Le numéro de téléphone doit être au format +237XXXXXXXXX.")
+        if CustomUser.objects.filter(email=email).exists():
+            errors.append("L'email existe déjà.")
+        if CustomUser.objects.filter(phone_number=phone_number).exists():
+            errors.append("Le numéro de téléphone que vous avez entré existe déjà. Veuillez réessayer.")
+        
+        # Gestion des erreurs
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return render(request, 'backend/autres/register.html')
+        
+        # Création de l'utilisateur
+        user = CustomUser.objects.create(
+            username=username,
+            email=email,
+            role=role,
+            phone_number=phone_number,
+            password=make_password(password),
+        )
+        
+        # Envoi de l'email
+        send_mail(
+            subject='Inscription réussie sur le site',
+            message=(
+                f"Bonjour {username},\n\n"
+                f"Votre compte a été créé avec succès !\n\n"
+                f"Identifiants :\nNom d'utilisateur : {username}\nMot de passe : {password}\n\n"
+                f"Merci de nous avoir rejoints !"
+            ),
+            from_email=None,
+            recipient_list=[email],
+            fail_silently=False,
+        )
+        
+        messages.success(request, "Utilisateur ajouté avec succès !")
+        return redirect('register')  # Redirection pour recharger la page et vider le formulaire
+    
+    return render(request, 'backend/autres/register.html')
+
+
+
+
+def dashbord(request):
+    utilisateurs = CustomUser.objects.all().order_by('-id')  # Tri par ID décroissant
+    paginator = Paginator(utilisateurs, 10)  # 10 utilisateurs par page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'backend/dashbord.html', {'page_obj': page_obj})
+
+
+
+# def historique_utilisateurs(request):
+#     utilisateurs = CustomUser.objects.all().order_by('-id')  # Tri par ID décroissant
+#     paginator = Paginator(utilisateurs, 10)  # 10 utilisateurs par page
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+    
+#     return render(request, 'backend/autres/historique.html', {'page_obj': page_obj})

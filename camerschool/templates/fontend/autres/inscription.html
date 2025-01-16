@@ -29,6 +29,15 @@
         color: white;
         font-size: 25px;
     }
+    #backgroundVideo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Pour que la vidéo remplisse tout l'écran sans déformation */
+        z-index: -1; /* Place la vidéo derrière le contenu */
+    }
 </style>
 
 <body class="body_connexion">
@@ -102,6 +111,8 @@
     </script>
 
     <script src="{% static 'fontend/js/all.min.js' %}"></script>
+
+
 </body>
 
 </html>

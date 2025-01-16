@@ -114,85 +114,65 @@
             <div class="col-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Historique des utlisateur sur le site</h4>
+                        <h4 class="card-title">Historique des utilisateurs sur le site</h4>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th> id </th>
-                                        <th> Nom </th>
-                                        <th> Email </th>
-                                        <th> numero de telephone </th>
-                                        <th> Status </th>
-                                        <th>action requise</th>
+                                        <th>ID</th>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Numéro de téléphone</th>
+                                        <th>Statut</th>
+                                        <th>Action requise</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for utilisateur in page_obj %}
                                     <tr>
-                                        <td> #1 </td>
+                                        <td>{{ utilisateur.id }}</td>
+                                        <td>{{ utilisateur.username }}</td>
+                                        <td>{{ utilisateur.email }}</td>
+                                        <td>{{ utilisateur.phone_number }}</td>
                                         <td>
-                                            <span class="pl-2">Henry Klein</span>
-                                        </td>
-                                        <td> junior@gail.com </td>
-                                        <td> 655969010 </td>
-                                        <td>
-                                            <div class="badge badge-outline-success">Admin</div>
+                                            <div class="badge badge-outline-{{ utilisateur.get_role_color }}">
+                                                {{ utilisateur.role }}
+                                            </div>
                                         </td>
                                         <td style="display: flex;">
-                                            <button class="btn  btn-outline-danger text-white mx-3"> <i
-                                                    class="mdi mdi-delete text-white"></i></button>
-                                            <button class="btn  text-white btn-outline-primary"> Modifier</button>
+                                            <button class="btn btn-outline-danger text-white mx-3">
+                                                <i class="mdi mdi-delete text-white"></i>
+                                            </button>
+                                            <button class="btn text-white btn-outline-primary">Modifier</button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td> #1 </td>
-                                        <td>
-                                            <span class="pl-2"> junior talla marie</span>
-                                        </td>
-                                        <td> junior@gail.com </td>
-                                        <td> 655969010 </td>
-                                        <td>
-                                            <div class="badge badge-outline-success">Chefs d'etablissement</div>
-                                        </td>
-                                        <td style="display: flex;">
-                                            <button class="btn  btn-outline-danger text-white mx-3"> <i
-                                                    class="mdi mdi-delete text-white"></i></button>
-                                            <button class="btn  text-white btn-outline-primary"> Modifier</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> #2 </td>
-                                        <td>
-                                            <span class="pl-2">junior talla marie</span>
-                                        </td>
-                                        <td> junior@gail.com </td>
-                                        <td> 655969010 </td>
-                                        <td>
-                                            <div class="badge badge-outline-warning">Utilisateur</div>
-                                        </td>
-                                        <td style="display: flex;">
-                                            <button class="btn btn-outline-danger text-white mx-3"> <i
-                                                    class="mdi mdi-delete text-white"></i></button>
-                                            <button class="btn text-white btn-outline-primary"> Modifier</button>
-                                        </td>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                             <!-- Pagination -->
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
+                                    {% if page_obj.has_previous %}
                                     <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                            aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    {% endif %}
+                                    {% for page_num in page_obj.paginator.page_range %}
+                                    <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
+                                        <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                    </li>
+                                    {% endfor %}
+                                    {% if page_obj.has_next %}
                                     <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}"
+                                            aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
+                                    {% endif %}
                                 </ul>
                             </nav>
                         </div>
