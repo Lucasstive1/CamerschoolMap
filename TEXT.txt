@@ -1,0 +1,40 @@
+DONNE MOI MAINTENANT LES CODES POUR IMPLEMENTER CETTE FONCTIONNALITE EN DJANGO SANS UTLISER LES FORMS.PY ON DEVRA VERIFIER SI LES CHAMPS SONT TOUS REMPLIR ET TU DEVRA ME MONTRER COMMENT GERER LES URLS BASE TOI DE CE MODEL QUE J'AI FAIT SI POSSIBLE PERSONNALISE TA PART MAIS REND CELLA TRES PROFESSIONNEL from django.db import models
+
+# Create your models here.
+class Add_School(models.Model):
+    nom = models.CharField(max_length=255)
+    ville = models.CharField(max_length=100)
+    departement = models.CharField(max_length=100)
+    type = models.CharField(max_length=50, choices=[('public', 'Public'), ('privé', 'Privé')])
+    categorie = models.CharField(max_length=50, choices=[('primaire', 'Primaire'), ('secondaire', 'Secondaire')])
+    adresse = models.TextField()
+    contact = models.CharField(max_length=20, blank=True, null=True)
+    adresse_facebook = models.URLField(blank=True, null=True)
+    adresse_whatsapp = models.URLField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    description = models.TextField()
+    image_profil = models.ImageField(upload_to='Add_School/profils/', blank=True, null=True)
+    
+    def __str__(self):
+        return self.nom 
+    
+class EtablissementImage(models.Model):
+    etablissement = models.ForeignKey(Add_School, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='Add_School/images/')
+
+    def __str__(self):
+        return f"Image for {self.etablissement.nom}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+

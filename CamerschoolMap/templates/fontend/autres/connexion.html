@@ -1,0 +1,77 @@
+{% extends 'fontend/base_connexion.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<section class="body_connexion">
+    <video autoplay muted loop class="video-background">
+        <source src="{% static 'fontend/images/video.mp4' %}" type="video/mp4">
+        Votre navigateur ne supporte pas la vidéo.
+    </video>
+    <div class="wrapper">
+        <div class="form_wrapper sign_in">
+            <form action="{% url 'connexion' %}"  method="POST">
+                {% csrf_token %}
+                <h2>Connexion</h2>
+                <div class="input_group">
+                    <input type="email" required name="email">
+                    <label for="">email</label>
+                    <i class="fas fa-user users"></i>
+                </div>
+                <div class="input_group">
+                    <input type="password" required name="password" id="password">
+                    <label for="">Mots de passe</label>
+                    <i class="fas fa-eye users toggle-password" style="cursor: pointer;"></i>
+                </div>
+                <div class="remenber">
+                    <label><input type="checkbox" required> Se rappeller de moi.</label>
+                </div>
+                <button type="submit" class="button_connexion">Se Connecter</button>
+                <div class="sign_link">
+                    <p>Vous n'avez pas de compte? cliquez pour vous <a href="{% url 'inscription' %}">S'inscrire</a></p>
+                </div>
+                <div class="social_platform">
+                    <p>Ou vous connectez via l'une de vos plateformes sociales!</p>
+                    <div class="social_icons">
+                        <a href="#"><i class="fab fa-facebook" id="fas"></i></a>
+                        <a href="#"><i class="fab fa-google-plus" id="fas"></i></a>
+                        <a href="#"><i class="fab fa-github" id="fas"></i></a>
+                        <a href="#"><i class="fab fa-linkedin" id="fas"></i></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.toggle-password').on('click', function() {
+            let passwordField = $('#password');
+            let type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+            passwordField.attr('type', type);
+            $(this).toggleClass('fa-eye fa-eye-slash');
+        });
+    });
+</script>
+{% if messages %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for message in messages %}
+        Swal.fire({
+            title: 'Notification',
+            text: "{{ message }}",
+            icon: "{{ message.tags|default:'info' }}",
+            confirmButtonText: 'OK'
+        });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+{% endblock %}

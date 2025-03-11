@@ -1,0 +1,334 @@
+{% extends 'fontend/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<style>
+    .review-icon {
+    color: #007bff; /* Couleur pour l'icône d'utilisateur */
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.card-body {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.pagination .page-link {
+    color: #007bff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.card-footer {
+    background-color: #f1f1f1;
+    padding: 10px;
+}
+
+</style>
+
+<!-- Start of Avis Page -->
+
+<div class="container my-5">
+
+    <!-- Title and Introduction -->
+    <h1 class="display-3 text-center text-black   ">Vos Avis Comptent Pour Nous !</h1>
+    <p class="lead text-center text-black">
+        Nous apprécions votre opinion et vos suggestions. Laissez-nous un avis ou partagez votre expérience avec
+        CamerSchoolMap. Vos retours nous aident à nous améliorer et à offrir un service de meilleure qualité.
+    </p>
+
+    <!-- Search Bar for Reviews -->
+    <div class="search-bar mb-4">
+        <form method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" id="search-bar" name="avis-search"
+                    placeholder="Entrez le nom d'un établissement ici pour chercher un avis à propos de ce dernier"
+                    aria-label="Rechercher un avis">
+                <div class="input-group-append">
+                    <button class="btn btn-success" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div class="container_avis">
+        <!-- Form to Submit Review -->
+        <h3 class="mb-3 text-center my-5 h2"> <i class="fas fa-star fa-2x text-warning"></i> Laissez un Avis
+        </h3>
+
+
+        <!-- Formulaire d'avis -->
+        <form method="POST" action="{% url 'avis' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="typeAvis" class="form-label h4">Type d'avis</label>
+                <select id="typeAvis" name="typeAvis" class="form-select bg-secondary p-2 px-5 mx-5 rounded border-0">
+                    <option value="site">Site en général</option>
+                    <option value="etablissement">Établissement</option>
+                </select>
+            </div>
+
+            <!-- Nom complet -->
+            <div class="mb-3">
+                <label for="nom" class="form-label"><i class="fas fa-user mx-3 text-warning"></i>Nom complet
+                    (optionnel)</label>
+                <input type="text" class="form-control" id="nom" placeholder="Entrez votre nom" name="nom">
+            </div>
+
+            <!-- Adresse e-mail -->
+            <div class="mb-3">
+                <label for="email" class="form-label"> <i class="fas fa-envelope mx-3 text-warning"></i>Adresse
+                    e-mail</label>
+                <input type="email" class="form-control" name="email" id="email"
+                    placeholder="Entrez votre adresse e-mail">
+            </div>
+
+            <!-- Sujet -->
+            <div class="mb-3">
+                <label for="sujet" class="form-label"> <i class="fas fa-pencil-alt mx-3 text-warning"></i>Sujet</label>
+                <input type="text" class="form-control" name="suject" id="sujet"
+                    placeholder="Entrez le nom d'un etablissement scolaire donc vous voullez donner un avis">
+            </div>
+
+            <!-- Avis -->
+            <div class="mb-3">
+                <label for="avis" class="form-label"> <i class="fas fa-comment mx-3 text-warning"></i>Votre avis
+                    ou
+                    commentaire</label>
+                <textarea id="avis" class="form-control" name="contenu" rows="5"
+                    placeholder="Rédigez votre avis ici"></textarea>
+            </div>
+
+            <!-- Bouton d'envoi -->
+            <button type="submit" class="btn btn-success w-20"> <i
+                    class="fas fa-paper-plane mx-3 text-warning"></i>Envoyer mon avis</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================== avis recent=============== -->
+<div id="carouselExampleIndicators" class="carousel slide my-5" data-ride="carousel">
+    <h1 class="text-center">Avis Récents</h1>
+
+    <ol class="carousel-indicators">
+        {% for avis in page_obj %}
+        <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}"
+            class="{% if forloop.first %}active{% endif %}"></li>
+        {% endfor %}
+    </ol>
+
+    <div class="carousel-inner">
+        {% for avis in page_obj %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <i class="fa fa-user review-icon"></i>
+            <p class="review-text">{{ avis.contenu }}</p>
+            <div class="review-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <div class="review-author">{{ avis.nom }}</div>
+            <div class="review-date">Publié le {{ avis.date }} à propos du {{ avis.get_type_avis_display }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+
+
+
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Affichage des avis avec pagination -->
+        {% for avis in page_obj %}
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-lg border-light">
+                <div class="card-body">
+                    <!-- Header de l'avis avec icône et infos -->
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <i class="fa fa-user review-icon fs-3 text-primary mx-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1" style="color: black;">{{ avis.nom }}</h5>
+                            <p class="card-text text-muted mb-2">{{ avis.date }}</p>
+                            <p class="card-text text-muted mb-2">À propos de {{ avis.suject }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Étoiles de la note -->
+                    <div class="mb-3">
+                        <span class="text-warning">&#9733;</span>
+                        <span class="text-warning">&#9733;</span>
+                        <span class="text-warning">&#9733;</span>
+                        <span class="text-muted">&#9734;</span>
+                        <span class="text-muted">&#9734;</span>
+                    </div>
+
+                    <!-- Contenu de l'avis -->
+                    <p class="card-text mb-3">{{ avis.contenu }}</p>
+
+                    <!-- Bouton de suppression de l'avis -->
+                    <div class=" d-flex justify-content-between">
+                        <!-- <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-avis-id="{{ avis.id }}">
+                            <i class="fas fa-trash text-warning"></i> 
+                        </button> -->
+                        <button type="button" class="btn btn-danger btn-delete1" data-user-id="{{ avis.id }}">Supprimer l'avis</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Pagination -->
+        <div class="col-12 mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <div class="text-center">
+                        <span class="badge bg-primary">{{ page_obj.paginator.count }} avis</span>
+                    </div>
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="Première page">&#8592; Précédent</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&#8592; Précédent</span>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"
+                            aria-label="Dernière page">Suivant &#8594;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Suivant &#8594;</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+
+<section class="container mt-5 my-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-3 text-black " style="color: black;">Pourquoi vos avis sont importants ?
+                    </h3>
+                    <p class="card-text mb-4 ">
+                        Vos avis sont essentiels pour nous aider à améliorer constamment nos services. En partageant
+                        vos expériences, vous contribuez à guider d'autres personnes dans leur choix et à nous
+                        fournir des informations précieuses sur ce que nous faisons bien et les
+                        domaines dans lesquels nous pouvons nous améliorer. Chaque commentaire compte et nous aide à
+                        offrir une meilleure expérience à nos clients.
+                    </p>
+                    <h5 class="card-title" style="color: black;">Confidentialité et respect de vos données</h5>
+                    <p class="card-text">
+                        Soyez assuré que la confidentialité de vos informations est une priorité pour nous. Nous
+                        respectons la protection de vos données personnelles et nous nous engageons à ne jamais
+                        partager vos informations sans votre consentement explicite. Vos avis seront
+                        utilisés uniquement à des fins d'amélioration de notre service, dans le strict respect de la
+                        législation en vigueur sur la protection des données.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll('.btn-delete1').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const avisId = btn.dataset.userId;  // Récupérer l'ID de l'avis
+
+            // Afficher la confirmation SweetAlert2
+            Swal.fire({
+                title: 'Êtes-vous sûr?',
+                text: "Cette action est irréversible.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Oui, supprimer!',
+                cancelButtonText: 'Annuler',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Envoyer la requête AJAX pour supprimer l'avis
+                    fetch("{% url 'supprimer_avis' 0 %}".replace('0', avisId), {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  // Jeton CSRF
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Afficher un message de succès
+                            Swal.fire('Supprimé!', data.message, 'success')
+                            .then(() => {
+                                location.reload();  // Recharger la page après la suppression
+                            });
+                        } else {
+                            // Afficher un message d'erreur
+                            Swal.fire('Erreur!', data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire('Erreur!', 'Une erreur s\'est produite lors de la suppression.', 'error');
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}
