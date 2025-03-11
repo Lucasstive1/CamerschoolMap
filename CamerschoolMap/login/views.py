@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 import re
 import json
 from django.contrib.auth import authenticate, login, logout
@@ -11,6 +13,7 @@ from django.contrib.auth import get_user_model
 from .models import CustomUser
 from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 
 
 def is_admin(user):
@@ -55,6 +58,19 @@ def inscription(request):
 
         # Création de l'utilisateur (NE PAS HACHER LE MOT DE PASSE MANUELLEMENT)
         user = User.objects.create_user(username=nom, email=email, password=password)
+        
+        # Génération de l'URL de connexion
+        login_url = request.build_absolute_uri(reverse('connexion'))
+        
+        # Envoi de l'email de confirmation
+        subject = "Inscription réussie sur CamerschoolMap"
+        message = (
+            f"Bonjour {user.username},\n\n"
+            "Votre inscription sur CamerschoolMap a été réalisée avec succès.\n\n"
+            f"Vous pouvez vous connecter en utilisant vos identifiants en cliquant sur le lien suivant : {login_url}\n\n"
+            "Merci et bienvenue sur CamerschoolMap !"
+        )
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
         messages.success(request, "Inscription reussite! Vous pouvez maintenant vous connecter a votre compte😊")
         return redirect('connexion')
     
@@ -275,6 +291,22 @@ def register(request):
             password=make_password(password)
         )
 
+        # Génération de l'URL de connexion
+        login_url = request.build_absolute_uri(reverse('connexion'))
+        
+        # Envoi de l'email de confirmation avec identifiants
+        subject = "Vous avez été inscrit sur CamerschoolMap"
+        message = (
+            f"Bonjour {username},\n\n"
+            "Vous avez été ajouté avec succès à CamerschoolMap.\n\n"
+            f"Voici vos identifiants :\n"
+            f"Nom d'utilisateur : {username}\n"
+            f"Email : {email}\n"
+            f"Mot de passe : {password}\n\n"
+            f"Pour vous connecter, veuillez cliquer sur le lien suivant : {login_url}\n\n"
+            "Merci et bienvenue sur CamerschoolMap !"
+        )
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [email], fail_silently=False)
         messages.success(request, "Utilisateur ajouté avec succès !")
         return redirect('historique')
 
