@@ -123,62 +123,63 @@
             </p>
         </div>
 
-        <!-- Filtres -->
-        <!-- Filtres -->
+        <!-- Filtres et Barre de recherche -->
         <div class="container filter-section text-center">
             <button class="btn btn-filter" data-bs-toggle="collapse" data-bs-target="#filters">
                 <i class="fas fa-filter"></i> Afficher les filtres
             </button>
+
+            <!-- Barre de recherche -->
+            <div class="search-bar mt-3">
+                <input type="text" class="form-control" id="searchBar"
+                    placeholder="Rechercher un établissement par nom..." onkeyup="searchEtablissements()">
+            </div>
+
+            <!-- Filtres -->
             <div id="filters" class="collapse mt-3">
-                <div class="rows">
-                    <form method="GET" action="{% url 'historique_ecole' %}">
+                <form method="GET" action="{% url 'detail' %}">
+                    <div class="row">
+                        <!-- Ville et Département -->
                         <div class="col-md-3">
-                            <select id="filter-departement" name="departement" class="form-select">
-                                <option value="all" {% if request.GET.departement == "all" %}selected{% endif %}>Tous les
-                                    départements</option>
-                                <option value="Mifi" {% if request.GET.departement == "Mifi" %}selected{% endif %}>Mifi
+                            <input type="text" id="filter-ville" name="ville" class="form-control"
+                                placeholder="Entrez une ville">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="filter-departement" name="departement" class="form-control"
+                                placeholder="Entrez un département">
+                        </div>
+                        <!-- Type et Catégorie -->
+                        <div class="col-md-3">
+                            <select id="filter-type" name="type" class="form-select">
+                                <option value="all" {% if request.GET.type == 'all' %}selected{% endif %}>Tous les types
                                 </option>
-                                <option value="Menoua" {% if request.GET.departement == "Menoua" %}selected{% endif %}>
-                                    Menoua</option>
+                                <option value="primaire" {% if request.GET.type == 'primaire' %}selected{% endif %}>
+                                    Primaire</option>
+                                <option value="secondaire" {% if request.GET.type == 'secondaire' %}selected{% endif %}>
+                                    Secondaire</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <select id="filter-category" name="category" class="form-select">
                                 <option value="all" {% if request.GET.category == 'all' %}selected{% endif %}>Toutes les
                                     catégories</option>
-                                <option value="Public" {% if request.GET.category == 'Public' %}selected{% endif %}>Public
+                                <option value="public" {% if request.GET.category == 'public' %}selected{% endif %}>Public
                                 </option>
-                                <option value="Privé" {% if request.GET.category == 'Privé' %}selected{% endif %}>Privé
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select id="filter-type" name="type" class="form-select">
-                                <option value="all" {% if request.GET.type == 'all' %}selected{% endif %}>Tous les types
-                                </option>
-                                <option value="Primaire" {% if request.GET.type == 'Primaire' %}selected{% endif %}>
-                                    Primaire</option>
-                                <option value="Secondaire" {% if request.GET.type == 'Secondaire' %}selected{% endif %}>
-                                    Secondaire</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select id="filter-ville" name="ville" class="form-select">
-                                <option value="all" {% if request.GET.ville == 'all' %}selected{% endif %}>Toutes les
-                                    villes</option>
-                                <option value="Bafoussam" {% if request.GET.ville == 'Bafoussam' %}selected{% endif %}>
-                                    Bafoussam</option>
-                                <option value="Foumban" {% if request.GET.ville == 'Foumban' %}selected{% endif %}>Foumban
+                                <option value="prive" {% if request.GET.category == 'prive' %}selected{% endif %}>Privé
                                 </option>
                             </select>
                         </div>
+                        <!-- Bouton pour appliquer les filtres -->
                         <div class="col-md-12 mt-3">
                             <button type="submit" class="btn btn-primary">Appliquer les filtres</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
+
+
+
 
         <!-- Établissements -->
         <div class="container my-4">
@@ -191,7 +192,7 @@
                         <div class="card-header">
                             <h5>{{ etablissement.nom }}</h5>
                         </div>
-                        <img src="{% if etablissement.image_profil %}{{ MEDIA_URL }}{{ etablissement.image_profil }}{% else %}{% static 'fontend/images/default_image.png' %}{% endif %}"
+                        <img src="{{ etablissement.image_profil.url }}"
                             class="card-img-top" alt="Image de l'établissement">
 
                         <div class="card-body card-body1">
@@ -202,22 +203,24 @@
                                 <strong>Contact :</strong> {{ etablissement.contact }}<br>
                                 <strong>Email :</strong> {{ etablissement.email }}<br>
                             </p>
-                            <a href="{% url 'detail_etablissement' etablissement.id %}" class="btn btn-primary">Voir les
-                                détails
-                            </a>
-                            <button type="button" class="btn btn-danger btn-delete mx-3"
-                                data-id="{{ etablissement.id }}">
-                                Supprimer
-                            </button>
-                            <button type="button" class="btn btn-outline-primary btn-edit mx-3"
-                                data-id="{{ etablissement.id }}" data-nom="{{ etablissement.nom }}"
-                                data-ville="{{ etablissement.ville }}" data-type="{{ etablissement.type }}"
-                                data-categorie="{{ etablissement.categorie }}"
-                                data-adresse="{{ etablissement.adresse }}" data-contact="{{ etablissement.contact }}"
-                                data-email="{{ etablissement.email }}" data-bs-toggle="modal"
-                                data-bs-target="#editModal">
-                                Modifier
-                            </button>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{% url 'detail_etablissement' etablissement.id %}" class="btn btn-success">
+                                    Voir les détails
+                                </a>
+                                <button type="button" class="btn btn-danger btn-delete"
+                                    data-id="{{ etablissement.id }}">
+                                    Supprimer
+                                </button>
+                                <button type="button" class="btn btn-primary btn-edit" data-id="{{ etablissement.id }}"
+                                    data-nom="{{ etablissement.nom }}" data-ville="{{ etablissement.ville }}"
+                                    data-type="{{ etablissement.type }}" data-categorie="{{ etablissement.categorie }}"
+                                    data-adresse="{{ etablissement.adresse }}"
+                                    data-contact="{{ etablissement.contact }}" data-email="{{ etablissement.email }}"
+                                    data-bs-toggle="modal" data-bs-target="#editModal">
+                                    Modifier
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -231,10 +234,12 @@
                 <ul class="pagination justify-content-center">
                     {% if etablissements.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page=1">« Première</a>
+                        <a class="page-link" href="?page=1&{{ request.GET.urlencode }}">« Première</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ etablissements.previous_page_number }}">‹ Précédent</a>
+                        <a class="page-link"
+                            href="?page={{ etablissements.previous_page_number }}&{{ request.GET.urlencode }}">‹
+                            Précédent</a>
                     </li>
                     {% endif %}
 
@@ -245,14 +250,18 @@
 
                     {% if etablissements.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ etablissements.next_page_number }}">Suivant ›</a>
+                        <a class="page-link"
+                            href="?page={{ etablissements.next_page_number }}&{{ request.GET.urlencode }}">Suivant ›</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ etablissements.paginator.num_pages }}">Dernière »</a>
+                        <a class="page-link"
+                            href="?page={{ etablissements.paginator.num_pages }}&{{ request.GET.urlencode }}">Dernière
+                            »</a>
                     </li>
                     {% endif %}
                 </ul>
             </nav>
+
         </div>
     </div>
 </div>
@@ -262,7 +271,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">Modifier l'établissement</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-danger" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="editForm">
@@ -308,26 +317,62 @@
     </div>
 </div>
 
+<!-- Script pour la recherche dynamique -->
+<script>
+    function searchEtablissements() {
+        const searchQuery = document.getElementById('searchBar').value.toLowerCase();
+        const etablissementNames = document.querySelectorAll('.etablissement-name');
+
+        etablissementNames.forEach(function (etablissement) {
+            const name = etablissement.textContent.toLowerCase();
+            if (name.indexOf(searchQuery) > -1) {
+                etablissement.closest('.etablissement-item').style.display = '';
+            } else {
+                etablissement.closest('.etablissement-item').style.display = 'none';
+            }
+        });
+    }
+</script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // Remplir les champs de la modale quand on clique sur Modifier
         document.querySelectorAll(".btn-edit").forEach(button => {
             button.addEventListener("click", function () {
-                document.getElementById("editId").value = this.getAttribute("data-id");
-                document.getElementById("editNom").value = this.getAttribute("data-nom");
-                document.getElementById("editVille").value = this.getAttribute("data-ville");
-                document.getElementById("editType").value = this.getAttribute("data-type");
-                document.getElementById("editCategorie").value = this.getAttribute("data-categorie");
-                document.getElementById("editAdresse").value = this.getAttribute("data-adresse");
-                document.getElementById("editContact").value = this.getAttribute("data-contact");
-                document.getElementById("editEmail").value = this.getAttribute("data-email");
+                document.getElementById("editId").value = this.dataset.id;
+                document.getElementById("editNom").value = this.dataset.nom;
+                document.getElementById("editVille").value = this.dataset.ville;
+                document.getElementById("editType").value = this.dataset.type;
+                document.getElementById("editCategorie").value = this.dataset.categorie;
+                document.getElementById("editAdresse").value = this.dataset.adresse;
+                document.getElementById("editContact").value = this.dataset.contact;
+                document.getElementById("editEmail").value = this.dataset.email;
             });
         });
 
+        // Gérer la soumission du formulaire
         document.getElementById("editForm").addEventListener("submit", function (event) {
             event.preventDefault();
             let id = document.getElementById("editId").value;
-            let formData = new FormData(this);
-            fetch(`/modifier-etablissement/${id}/`, { method: "POST", body: formData })
+
+            let formData = {
+                nom: document.getElementById("editNom").value,
+                ville: document.getElementById("editVille").value,
+                type: document.getElementById("editType").value,
+                categorie: document.getElementById("editCategorie").value,
+                adresse: document.getElementById("editAdresse").value,
+                contact: document.getElementById("editContact").value,
+                email: document.getElementById("editEmail").value
+            };
+
+            fetch(`/modifier-etablissement/${id}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -336,6 +381,9 @@
                     } else {
                         Swal.fire("Erreur", data.error, "error");
                     }
+                })
+                .catch(error => {
+                    Swal.fire("Erreur", "Une erreur est survenue lors de la modification.", "error");
                 });
         });
     });
@@ -346,7 +394,9 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".btn-delete").forEach(button => {
-            button.addEventListener("click", function () {
+            button.addEventListener("click", function (event) {
+                event.preventDefault(); // Empêche le comportement par défaut
+
                 let etablissementId = this.getAttribute("data-id");
 
                 Swal.fire({
@@ -362,8 +412,10 @@
                         fetch(`/supprimer-etablissement/${etablissementId}/`, {
                             method: "POST",
                             headers: {
-                                "X-CSRFToken": "{{ csrf_token }}"
-                            }
+                                "X-CSRFToken": "{{ csrf_token }}",
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({})
                         })
                             .then(response => response.json())
                             .then(data => {

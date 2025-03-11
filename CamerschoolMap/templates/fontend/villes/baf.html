@@ -1,13 +1,13 @@
-
 {% extends 'fontend/base_connexion.html' %}
 
 {% load static %}
 
 {% block content %}
 <style>
-    h2{
+    h2 {
         color: black;
     }
+
     .navbar-nav {
         flex-wrap: wrap;
         justify-content: center;
@@ -29,6 +29,38 @@
 
         .input-group {
             width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        label,
+        .card-title,
+        .card-text {
+            font-size: 16px !important;
+            /* Taille uniforme */
+        }
+
+        .btn {
+            font-size: 14px !important;
+        }
+
+        .review-text,
+        .review-author,
+        .review-date {
+            font-size: 14px !important;
+        }
+
+        .container,
+        .container_avis {
+            padding: 10px;
         }
     }
 </style>
@@ -472,8 +504,8 @@
                                 <li class="list-group-item">Dschang</li>
                                 <li class="list-group-item">Mbouda</li>
                                 <li class="list-group-item">
-                                    <a href="https://fr.wikipedia.org/wiki/Arrondissement_(Cameroun)"
-                                        target="_blank" data-bs-toggle="tooltip"
+                                    <a href="https://fr.wikipedia.org/wiki/Arrondissement_(Cameroun)" target="_blank"
+                                        data-bs-toggle="tooltip"
                                         title="Cliquez pour en savoir plus sur les arrondissements au Cameroun">
                                         En savoir plus sur les arrondissements
                                     </a>
@@ -561,7 +593,8 @@
                             <!-- Carte 1 -->
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card my-2">
-                                    <img src="{% static 'fontend/images/Medjeng.jpg' %}" class="card-img-top" alt="Danse Medjeng">
+                                    <img src="{% static 'fontend/images/Medjeng.jpg' %}" class="card-img-top"
+                                        alt="Danse Medjeng">
                                     <div class="card-body">
                                         <h5 class="card-title">Danse Medjeng</h5>
                                         <p class="card-text">Pratiquée dans le département du Noun, cette danse
@@ -573,7 +606,8 @@
                             <!-- Carte 2 -->
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card my-2">
-                                    <img src="{% static 'fontend/images/Benskin.jpg' %}" class="card-img-top" alt="Danse Benskin">
+                                    <img src="{% static 'fontend/images/Benskin.jpg' %}" class="card-img-top"
+                                        alt="Danse Benskin">
                                     <div class="card-body">
                                         <h5 class="card-title">Danse Benskin</h5>
                                         <p class="card-text">Originaire de la Mifi, le Benskin est rythmé et
@@ -585,7 +619,8 @@
                             <!-- Carte 3 -->
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card my-2">
-                                    <img src="{% static 'fontend/images/Nkoh.jpg' %}" class="card-img-top" alt="Danse Nkoh">
+                                    <img src="{% static 'fontend/images/Nkoh.jpg' %}" class="card-img-top"
+                                        alt="Danse Nkoh">
                                     <div class="card-body">
                                         <h5 class="card-title">Danse Nkoh</h5>
                                         <p class="card-text">Danse rituelle des Bamboutos, symbolisant la fertilité
@@ -597,7 +632,8 @@
                             <!-- Carte 4 -->
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
-                                    <img src="{% static 'fontend/images/Tso.jpg' %}" class="card-img-top" alt="Danse Tso">
+                                    <img src="{% static 'fontend/images/Tso.jpg' %}" class="card-img-top"
+                                        alt="Danse Tso">
                                     <div class="card-body">
                                         <h5 class="card-title">Danse Tso</h5>
                                         <p class="card-text">Pratiquée à Dschang, elle est liée aux cérémonies
@@ -609,7 +645,8 @@
                             <!-- Carte 5 -->
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
-                                    <img src="{% static 'fontend/images/Kamou.jpg' %}" class="card-img-top" alt="Danse Kamou">
+                                    <img src="{% static 'fontend/images/Kamou.jpg' %}" class="card-img-top"
+                                        alt="Danse Kamou">
                                     <div class="card-body">
                                         <h5 class="card-title">Danse Kamou</h5>
                                         <p class="card-text">Danse guerrière de Bandjoun, elle célèbre la bravoure
@@ -621,7 +658,8 @@
                             <!-- Carte 6 -->
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
-                                    <img src="{% static 'fontend//images/balafon.jpg' %}" class="card-img-top" alt="Danse Balafon">
+                                    <img src="{% static 'fontend//images/balafon.jpg' %}" class="card-img-top"
+                                        alt="Danse Balafon">
                                     <div class="card-body">
                                         <h5 class="card-title">Danse Balafon</h5>
                                         <p class="card-text">Typique du Haut-Nkam, elle intègre le balafon comme
@@ -633,7 +671,8 @@
                             <!-- Carte 7 -->
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
-                                    <img src="{% static 'fontend/images/Nka.jpg' %}" class="card-img-top" alt="Danse Nka">
+                                    <img src="{% static 'fontend/images/Nka.jpg' %}" class="card-img-top"
+                                        alt="Danse Nka">
                                     <div class="card-body">
                                         <h5 class="card-title">Danse Nka</h5>
                                         <p class="card-text">Originaire du Ndé, elle est pratiquée lors des mariages
@@ -645,7 +684,8 @@
                             <!-- Carte 8 -->
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
-                                    <img src="{% static 'fontend/images/Lékié.jpg' %}" class="card-img-top" alt="Danse Lékié">
+                                    <img src="{% static 'fontend/images/Lékié.jpg' %}" class="card-img-top"
+                                        alt="Danse Lékié">
                                     <div class="card-body">
                                         <h5 class="card-title">Danse Lékié</h5>
                                         <p class="card-text">Cette danse colorée des Menoua célèbre les récoltes
@@ -670,7 +710,8 @@
                         <div class="row g-4">
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
-                                    <img src="{% static 'fontend/images/Métché.jpg' %}" class="card-img-top" alt="Danse Lékié">
+                                    <img src="{% static 'fontend/images/Métché.jpg' %}" class="card-img-top"
+                                        alt="Danse Lékié">
                                     <div class="card-body">
                                         <h5 class="card-title">Les Chutes de la Métché (Bafoussam)</h5>
                                         <p class="card-text">Situées à proximité de Bafoussam, ces magnifiques
@@ -683,7 +724,8 @@
                             </div>
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
-                                    <img src="{% static 'fontend/images/Palais.jpg' %}" class="card-img-top" alt="Danse Lékié">
+                                    <img src="{% static 'fontend/images/Palais.jpg' %}" class="card-img-top"
+                                        alt="Danse Lékié">
                                     <div class="card-body">
                                         <h5 class="card-title">Le Palais Royal de Foumban (Foumban)</h5>
                                         <p class="card-text"> Ce palais historique, résidence des sultans Bamoun,
@@ -695,7 +737,8 @@
                             </div>
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
-                                    <img src="{% static 'fontend/images/Baleng.jpg' %}" class="card-img-top" alt="Danse Lékié">
+                                    <img src="{% static 'fontend/images/Baleng.jpg' %}" class="card-img-top"
+                                        alt="Danse Lékié">
                                     <div class="card-body">
                                         <h5 class="card-title"> Le Lac Baleng (Bafoussam)</h5>
                                         <p class="card-text">Ce lac de cratère d'origine volcanique est un havre de
@@ -707,7 +750,8 @@
                             </div>
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
-                                    <img src="{% static 'fontend/images/Grottes.jpg' %}" class="card-img-top" alt="Danse Lékié">
+                                    <img src="{% static 'fontend/images/Grottes.jpg' %}" class="card-img-top"
+                                        alt="Danse Lékié">
                                     <div class="card-body">
                                         <h5 class="card-title">Les Grottes de Fovu (Bandjoun)</h5>
                                         <p class="card-text">
@@ -727,7 +771,8 @@
                             <div class="row g-4">
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="{% static 'fontend/images/Mortier.webp' %}" class="card-img-top" alt="Danse Lékié">
+                                        <img src="{% static 'fontend/images/Mortier.webp' %}" class="card-img-top"
+                                            alt="Danse Lékié">
                                         <div class="card-body">
                                             <h5 class="card-title">Le Mortier et Pilon ("Nkoul et Ndang")</h5>
                                             <p class="card-text">Le mortier en bois est utilisé pour écraser ou
@@ -741,7 +786,8 @@
                                 </div>
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="{% static 'fontend/images/Calebasse.jpg' %}" class="card-img-top" alt="Danse Lékié">
+                                        <img src="{% static 'fontend/images/Calebasse.jpg' %}" class="card-img-top"
+                                            alt="Danse Lékié">
                                         <div class="card-body">
                                             <h5 class="card-title">La Calebasse ("Mbouh")</h5>
                                             <p class="card-text">Fabriquée à partir du fruit séché d'une plante, la
@@ -754,7 +800,8 @@
                                 </div>
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="{% static 'fontend/images/Tam-tam.jpg' %}" class="card-img-top" alt="Danse Lékié">
+                                        <img src="{% static 'fontend/images/Tam-tam.jpg' %}" class="card-img-top"
+                                            alt="Danse Lékié">
                                         <div class="card-body">
                                             <h5 class="card-title">Le Tam-tam Royal ("Ngam")</h5>
                                             <p class="card-text">C'est un instrument en bois recouvert de peau
@@ -770,7 +817,8 @@
                                 </div>
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="card">
-                                        <img src="{% static 'fontend/images/balafon1.jpg' %}" class="card-img-top" alt="Danse Lékié">
+                                        <img src="{% static 'fontend/images/balafon1.jpg' %}" class="card-img-top"
+                                            alt="Danse Lékié">
                                         <div class="card-body">
                                             <h5 class="card-title">le balafon</h5>
                                             <p class="card-text">

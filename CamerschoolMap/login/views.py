@@ -305,7 +305,26 @@ def dashboard(request):
 
 @login_required(login_url='connexion')
 def setting(request):
-    return render(request, 'backend/autres/settings.html')
+    user = request.user
+
+    if request.method == 'POST':
+        # Mise à jour des informations de l'utilisateur
+        user.first_name = request.POST.get('fullName', user.first_name)
+        user.phone = request.POST.get('phoneNumber', user.phone)
+        user.email = request.POST.get('email', user.email)
+        user.bio = request.POST.get('bio', user.bio)
+
+        # Vérifier si un nouveau mot de passe est entré et mettre à jour
+        password = request.POST.get('password')
+        if password:
+            user.set_password(password)
+
+        # Sauvegarde de l'utilisateur
+        user.save()
+        messages.success(request, "Vos paramètres ont été mis à jour avec succès!")
+
+        return redirect('settings')  # Rediriger vers la même page après mise à jour
+    return render(request, 'backend/autres/settings.html', {'user': user})
 
 
 

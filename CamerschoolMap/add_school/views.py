@@ -101,15 +101,18 @@ def modifier_etablissement(request, etablissement_id):
     if request.method == "POST":
         try:
             etablissement = Etablissement.objects.get(id=etablissement_id)
-            
-            # Récupération des données envoyées en AJAX
-            nom = request.POST.get('nom', '').strip()
-            ville = request.POST.get('ville', '').strip()
-            type_etablissement = request.POST.get('type', '').strip()
-            categorie = request.POST.get('categorie', '').strip()
-            adresse = request.POST.get('adresse', '').strip()
-            contact = request.POST.get('contact', '').strip()
-            email = request.POST.get('email', '').strip()
+
+            # Lire les données envoyées en JSON
+            data = json.loads(request.body)
+
+            # Récupération des valeurs
+            nom = data.get('nom', '').strip()
+            ville = data.get('ville', '').strip()
+            type_etablissement = data.get('type', '').strip()
+            categorie = data.get('categorie', '').strip()
+            adresse = data.get('adresse', '').strip()
+            contact = data.get('contact', '').strip()
+            email = data.get('email', '').strip()
 
             # Vérification des champs obligatoires
             if not nom or not ville or not type_etablissement or not categorie or not adresse:
@@ -125,13 +128,13 @@ def modifier_etablissement(request, etablissement_id):
             etablissement.email = email
             etablissement.save()
 
-            messages.success(request, "Établissement modifié avec succès !")
             return JsonResponse({"success": True})
 
         except Etablissement.DoesNotExist:
             return JsonResponse({"success": False, "error": "Établissement introuvable."})
 
     return JsonResponse({"success": False, "error": "Requête invalide."})
+
 
 
 
@@ -146,34 +149,32 @@ def erreur_403(request):
     return render(request, 'backend/autres/error-404.html', status=403)
 
 
-def historique_ecole(request):
-    # Récupérer les paramètres des filtres
-    departement_filter = request.GET.get('departement', 'all')
-    category_filter = request.GET.get('category', 'all')
-    type_filter = request.GET.get('type', 'all')
-    ville_filter = request.GET.get('ville', 'all')
+def detail(request):
+    etablissements = Etablissement.objects.all()
 
-    # Filtrer les établissements selon les critères
-    etablissements_list = Etablissement.objects.all()
+    nom = request.GET.get('nom', '').strip()
+    ville = request.GET.get('ville', '').strip()
+    departement = request.GET.get('departement', '').strip()
+    type_etablissement = request.GET.get('type', '').strip()
+    categorie = request.GET.get('categorie', '').strip()
 
-    if departement_filter != 'all':
-        etablissements_list = etablissements_list.filter(departement=departement_filter)
-    
-    if category_filter != 'all':
-        etablissements_list = etablissements_list.filter(categorie=category_filter)
-    
-    if type_filter != 'all':
-        etablissements_list = etablissements_list.filter(type=type_filter)
-    
-    if ville_filter != 'all':
-        etablissements_list = etablissements_list.filter(ville=ville_filter)
+    if nom:
+        etablissements = etablissements.filter(nom__icontains=nom)
+    if ville:
+        etablissements = etablissements.filter(ville__icontains=ville)
+    if departement:
+        etablissements = etablissements.filter(departement__icontains=departement)
+    if type_etablissement:
+        etablissements = etablissements.filter(type__icontains=type_etablissement)
+    if categorie:
+        etablissements = etablissements.filter(categorie__icontains=categorie)
 
     # Pagination : 10 établissements par page
-    paginator = Paginator(etablissements_list, 10)
+    paginator = Paginator(etablissements, 6)
     page_number = request.GET.get('page')
     etablissements = paginator.get_page(page_number)
 
-    return render(request, 'backend/autres/historique_ecole.html', {'etablissements': etablissements})
+    return render(request, 'backend/autres/detail.html', {'etablissements': etablissements})
 
 
 def detail_etablissement(request, etablissement_id):
@@ -182,12 +183,12 @@ def detail_etablissement(request, etablissement_id):
 
 
 @login_required(login_url='connexion')
-def detail(request):
+def historique_ecole(request):
     etablissements_list = Etablissement.objects.all()
 
     # Définir le nombre d'éléments par page
-    paginator = Paginator(etablissements_list, 6)  # 6 établissements par page
+    paginator = Paginator(etablissements_list, 20)  # 6 établissements par page
     page_number = request.GET.get('page')
     etablissements = paginator.get_page(page_number)
 
-    return render(request, 'backend/autres/detail.html', {'etablissements': etablissements})
+    return render(request, 'backend/autres/historique_ecole.html', {'etablissements': etablissements})

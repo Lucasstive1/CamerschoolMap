@@ -3,8 +3,25 @@
 
 {% block content %}
 
-
-
+<style>
+    @media (max-width: 768px) {
+        h1, h2, h3, h4, h5, h6, p, label, .card-title, .card-text {
+            font-size: 16px !important; /* Taille uniforme */
+        }
+    
+        .btn {
+            font-size: 14px !important;
+        }
+    
+        .review-text, .review-author, .review-date {
+            font-size: 14px !important;
+        }
+    
+        .container, .container_avis {
+            padding: 10px;
+        }
+    }
+</style>
 <section class="body_connexion">
     <video autoplay muted loop class="video-background">
         <source src="{% static 'fontend/images/video.mp4' %}" type="video/mp4">

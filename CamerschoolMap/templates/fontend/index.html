@@ -8,6 +8,24 @@
 
 
 <style>
+@media (max-width: 768px) {
+    h1, h2, h3, h4, h5, h6, p, label, .card-title, .card-text {
+        font-size: 16px !important; /* Taille uniforme */
+    }
+
+    .btn {
+        font-size: 14px !important;
+    }
+
+    .review-text, .review-author, .review-date {
+        font-size: 14px !important;
+    }
+
+    .container, .container_avis {
+        padding: 10px;
+    }
+}
+
 
 </style>
 <!-- First Section with Background Image -->
@@ -392,18 +410,6 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // Animation des éléments
-        $('.welcome-section h1, .welcome-section p, .welcome-section .btn').css({
-            opacity: 0,
-            transform: 'translateX(-50px)'
-        }).animate({
-            opacity: 1,
-            transform: 'translateX(0)'
-        }, 1000);
-    });
-</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {

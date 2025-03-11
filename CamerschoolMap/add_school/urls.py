@@ -13,6 +13,8 @@ urlpatterns = [
     path('sucess_page/', views.succes_page, name='succes_page'),
     path('echecs/', views.echecs, name='echecs'),
     path('etablissement/<int:etablissement_id>/', views.detail_etablissement, name='detail_etablissement'),
+    path("supprimer-etablissement/<int:etablissement_id>/", views.supprimer_etablissement, name="supprimer_etablissement"),
+    path("modifier-etablissement/<int:etablissement_id>/", views.modifier_etablissement, name="modifier_etablissement"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

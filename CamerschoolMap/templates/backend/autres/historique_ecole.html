@@ -68,7 +68,8 @@
                                         Modifier
                                     </button>
 
-                                    <a href="{% url 'detail_etablissement' etablissement.id %}" class="btn btn-primary">Voir les détails</a>
+                                    <a href="{% url 'detail_etablissement' etablissement.id %}"
+                                        class="btn btn-success">Voir les détails</a>
 
                                 </td>
                             </tr>
@@ -202,7 +203,9 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".btn-delete").forEach(button => {
-            button.addEventListener("click", function () {
+            button.addEventListener("click", function (event) {
+                event.preventDefault(); // Empêche le comportement par défaut
+
                 let etablissementId = this.getAttribute("data-id");
 
                 Swal.fire({
@@ -218,8 +221,10 @@
                         fetch(`/supprimer-etablissement/${etablissementId}/`, {
                             method: "POST",
                             headers: {
-                                "X-CSRFToken": "{{ csrf_token }}"
-                            }
+                                "X-CSRFToken": "{{ csrf_token }}",
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({})
                         })
                             .then(response => response.json())
                             .then(data => {

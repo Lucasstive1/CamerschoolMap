@@ -15,9 +15,14 @@
     <link rel="stylesheet" href="{% static 'fontend/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'fontend/css/style1.css' %}">
     <link rel="stylesheet" href="{% static 'fontend/css/tiny-slider.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+    }
     .navbar {
         background-color: #191616;
 
@@ -44,7 +49,7 @@
             <a class="navbar-brand" href="{% url 'index' %}">
                 <img src="{% static 'fontend/images/logo.jpg' %}" alt="Logo" class="img-fluid imgs-fluid">
             </a>
-            <button class="navbar-toggler fieldBox" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler fieldBox bg-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
