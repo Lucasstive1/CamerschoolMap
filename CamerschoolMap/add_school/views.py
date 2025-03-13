@@ -148,7 +148,7 @@ def echecs(request):
 def erreur_403(request):
     return render(request, 'backend/autres/error-404.html', status=403)
 
-
+@login_required(login_url='connexion')
 def detail(request):
     etablissements = Etablissement.objects.all()
 

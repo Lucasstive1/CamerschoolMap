@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Avis_views
@@ -116,15 +116,15 @@ def contact(request):
 
 @login_required(login_url='connexion')
 def avis(request):
-    # Récupération des avis
+    # Récupération et tri des avis par date décroissante
     avis_list = Avis_views.objects.all().order_by('-date')
 
-    # Gestion de la barre de recherche
+    # Gestion de la barre de recherche (le champ input devra avoir name="avis-search")
     avis_search = request.GET.get('avis-search')
-    if avis_search and avis_search.strip():  # Vérifie si la recherche n'est pas vide
-        avis_list = avis_list.filter(suject__icontains=avis_search)
+    if avis_search and avis_search.strip():
+        avis_list = avis_list.filter(nom__icontains=avis_search) | avis_list.filter(contenu__icontains=avis_search)
 
-    # Pagination
+    # Pagination (30 avis par page)
     paginator = Paginator(avis_list, 30)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -134,21 +134,23 @@ def avis(request):
         type_avis = request.POST.get('typeAvis')
         nom = request.POST.get('nom')
         email = request.POST.get('email')
-        suject = request.POST.get('suject')
+        rating = request.POST.get('rating')
         contenu = request.POST.get('contenu')
 
         try:
             # Création d'un nouvel avis
             Avis_views.objects.create(
                 type_avis=type_avis,
+                rating=rating,
                 nom=nom,
                 email=email,
-                suject=suject,
                 contenu=contenu
             )
-            messages.success(request, "Avis enregistré avec succès.")  # Message de succès
+            messages.success(request, "Avis enregistré avec succès.")
         except Exception as e:
-            messages.error(request, f"Erreur lors de l'enregistrement de l'avis : {str(e)}")  # Message d'erreur
+            messages.error(request, f"Erreur lors de l'enregistrement de l'avis : {str(e)}")
+
+        return redirect('avis')  # redirige pour éviter le re-post du formulaire
 
     return render(request, 'fontend/autres/avis.html', {'page_obj': page_obj})
 

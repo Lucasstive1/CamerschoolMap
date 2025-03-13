@@ -23,7 +23,7 @@
 
     /* Navbar */
     .navbar-custom {
-      background-color: #1e3c72;
+      background-color: #191616;
     }
 
     .navbar-custom .navbar-brand,
@@ -113,7 +113,8 @@
   <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
     <div class="container">
       <a class="navbar-brand" href="{% url 'dashbord' %}">
-        <img src="{% static 'fontend/images/logo.jpg' %}" alt="CamerschoolMap Logo" style="height:40px;">
+        <img src="{% static 'fontend/images/logo.jpg' %}" alt="CamerschoolMap Logo" style="height:40px;"
+          class="rounded-circle">
         CamerschoolMap
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -125,18 +126,56 @@
             <a class="nav-link" href="{% url 'detail' %}">Établissements</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'avis' %}">commentaire</a>
+            <a class="nav-link" href="{% url 'avis' %}"><i class="fas fa-comments"></i>
+              Commentaires</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+            <a class="nav-link" href="{% url 'contact' %}"><i class="fas fa-envelope"></i>
+              Contactez-nous</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="langueDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="fas fa-globe"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Français</a></li>
+              <li><a class="dropdown-item" href="#">English</a></li>
+            </ul>
+          </li>
+          <li class="nav-item nav-link" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <i class="fas fa-search search-icon"></i> Recherche
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
+  <!-- Modal de recherche -->
+  <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-black">
+          <h5 class="modal-title" id="searchModalLabel">Rechercher</h5>
+          <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="searchInput" class="form-control" placeholder="Entrez votre recherche...">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-success" id="searchButton">Rechercher</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Hero Section -->
-  <section class="hero-section text-white text-center animate__animated animate__fadeIn">
+  <section class="hero-section text-white text-center animate__animated animate__fadeIn"
+    {% if etablissement.image_profil %}
+    style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ etablissement.image_profil.url }}'); background-size: cover; background-position: center;"
+    {% endif %}>
+
     <div class="container">
       <h1 class="display-4 mb-3">{{ etablissement.nom }}</h1>
       <div class="d-flex justify-content-center gap-3 mb-3">
@@ -210,11 +249,12 @@
                   <i class="fas fa-align-left text-primary me-2"></i>
                   Description
                 </h3>
-                <p class="lead">{{ etablissement.description }}</p>
+                <p class="lead">{{ etablissement.description|safe }}</p>
               </div>
             </div>
           </div>
           {% endif %}
+
 
           <!-- Galerie photos en bas -->
           <div class="col-12 mt-4">
@@ -242,22 +282,22 @@
             </div>
           </div>
         </div>
-     
 
 
 
-      <!-- Map Section -->
-      <div class="card shadow-sm mt-5 animate__animated animate__fadeInUp">
-        <div class="card-header bg-transparent border-0">
-          <h3 class="mb-0">
-            <i class="fas fa-map-marker-alt text-primary me-2"></i>
-            Localisation
-          </h3>
+
+        <!-- Map Section -->
+        <div class="card shadow-sm mt-5 animate__animated animate__fadeInUp">
+          <div class="card-header bg-transparent border-0">
+            <h3 class="mb-0">
+              <i class="fas fa-map-marker-alt text-primary me-2"></i>
+              Localisation
+            </h3>
+          </div>
+          <div class="card-body">
+            <div id="map" class="map-container"></div>
+          </div>
         </div>
-        <div class="card-body">
-          <div id="map" class="map-container"></div>
-        </div>
-      </div>
       </div>
     </main>
 
