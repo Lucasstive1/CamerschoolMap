@@ -103,6 +103,16 @@
                 <li class="nav-item nav-category">
                     <span class="nav-link">Navigation</span>
                 </li>
+                {% if request.user.role == "Utilisateur" %}
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{% url 'avis' %}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-speedometer"></i>
+                        </span>
+                        <span class="menu-title">Commentaire</span>
+                    </a>
+                </li>
+                {% else %}
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{% url 'dashbord' %}">
                         <span class="menu-icon">
@@ -111,6 +121,7 @@
                         <span class="menu-title">Dashboard</span>
                     </a>
                 </li>
+                {% endif %}
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{% url 'index' %}">
                         <span class="menu-icon">
@@ -119,6 +130,7 @@
                         <span class="menu-title">Accueil</span>
                     </a>
                 </li>
+                {% if request.user.role == "Administrateur" %}
                 <li class="nav-item menu-items">
                     <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
                         aria-controls="ui-basic">
@@ -160,20 +172,13 @@
                         <span class="menu-title">gestions des ecoles</span>
                     </a>
                 </li>
+
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{% url 'avis' %}">
                         <span class="menu-icon">
                             <i class="mdi mdi-chart-bar"></i>
                         </span>
                         <span class="menu-title">gestion des avis</span>
-                    </a>
-                </li>
-                <li class="nav-item menu-items">
-                    <a class="nav-link" href="{% url 'setting' %}">
-                        <span class="menu-icon">
-                            <i class="mdi mdi-settings"></i>
-                        </span>
-                        <span class="menu-title">Parametres</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">
@@ -184,6 +189,41 @@
                         <span class="menu-title">Documentation</span>
                     </a>
                 </li>
+                {% endif %}
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{% url 'setting' %}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-settings"></i>
+                        </span>
+                        <span class="menu-title">Parametres</span>
+                    </a>
+                </li>
+                {% if request.user.role != "Administrateur" %}
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{% url 'detail' %}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-book-lock"></i>
+                        </span>
+                        <span class="menu-title">Etablissement</span>
+                    </a>
+                </li>
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{% url 'contact' %}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-phone-alert"></i>
+                        </span>
+                        <span class="menu-title">contactez-nous</span>
+                    </a>
+                </li>
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{% url 'blog' %}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-book-lock-open"></i>
+                        </span>
+                        <span class="menu-title">blog educatif</span>
+                    </a>
+                </li>
+                {% endif %}
             </ul>
         </nav>
         <!-- partial -->
@@ -207,6 +247,7 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
+                        {% if request.user.role == "Administrateur" %}
                         <li class="nav-item dropdown d-none d-lg-block">
                             <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown"
                                 data-toggle="dropdown" aria-expanded="false" href="#">+ Create New users</a>
@@ -238,6 +279,7 @@
                                 <div class="dropdown-divider"></div>
                             </div>
                         </li>
+                        {% endif %}
                         <li class="nav-item dropdown border-left">
                             <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#"
                                 data-toggle="dropdown" aria-expanded="false">

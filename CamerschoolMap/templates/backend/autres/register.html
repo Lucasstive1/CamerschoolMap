@@ -42,39 +42,45 @@
         <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
           <div class="card col-lg-4 mx-auto">
             <div class="card-body px-5 py-5">
-              <h3 class="card-title text-left mb-3">Register the users</h3>
+              <h3 class="card-title text-left mb-3">Enregistrement d'un utilisateur</h3>
               <form method="POST" action="{% url 'register' %}">
                 {% csrf_token %}
                 <div class="form-group">
-                  <label> <i class="mdi mdi-account text-success h4"></i> Nom</label>
-                  <input type="text" name="username" class="form-control p_input" required>
+                  <label><i class="mdi mdi-account text-success h4"></i> Nom</label>
+                  <input type="text" name="username" class="form-control p_input" value="{{ request.POST.username }}" required>
                 </div>
+              
                 <div class="form-group">
-                  <label> <i class="mdi mdi-email-variant text-success h4"></i> Email</label>
-                  <input type="email" name="email" class="form-control p_input" required>
+                  <label><i class="mdi mdi-email-variant text-success h4"></i> Email</label>
+                  <input type="email" name="email" class="form-control p_input" value="{{ request.POST.email }}" required>
                 </div>
+              
                 <div class="form-group">
-                  <label for="role"> <i class="mdi mdi-ticket text-success h4"></i> Status</label>
+                  <label><i class="mdi mdi-ticket text-success h4"></i> Status</label>
                   <select name="role" class="form-control text-white" id="role">
-                    <option value="Utilisateur">Utilisateur</option>
-                    <option value="Chef d'etablissement">Chef d'etablisement</option>
-                    <option value="Administrateur">Administrateur</option>
+                    <option value="Utilisateur" {% if request.POST.role == "Utilisateur" %}selected{% endif %}>Utilisateur</option>
+                    <option value="Chef d'etablissement" {% if request.POST.role == "Chef d'etablissement" %}selected{% endif %}>Chef d'établissement</option>
+                    <option value="Administrateur" {% if request.POST.role == "Administrateur" %}selected{% endif %}>Administrateur</option>
                   </select>
                 </div>
+              
                 <div class="form-group">
-                  <label> <i class="mdi mdi-phone text-success h4"></i> Numero de telephone</label>
-                  <input type="text" name="phone" class="form-control p_input" required>
+                  <label><i class="mdi mdi-phone text-success h4"></i> Numero de telephone</label>
+                  <input type="text" name="phone" class="form-control p_input" value="{{ request.POST.phone }}" required>
                 </div>
+              
                 <div class="form-group">
-                  <label> <i class="mdi mdi-lock text-success h4"></i> Password</label>
+                  <label><i class="mdi mdi-lock text-success h4"></i> Password</label>
                   <input type="password" name="password" class="form-control p_input" required>
                 </div>
+              
                 <div class="text-center">
-                  <button type="submit" class="btn btn-success btn-block enter-btn"> <i
-                      class="mdi mdi-account-plus text-warning h4"></i> Ajouter
+                  <button type="submit" class="btn btn-success btn-block enter-btn">
+                    <i class="mdi mdi-account-plus text-warning h4"></i> Ajouter
                   </button>
                 </div>
               </form>
+              
             </div>
           </div>
         </div>

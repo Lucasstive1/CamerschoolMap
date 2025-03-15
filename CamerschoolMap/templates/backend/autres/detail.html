@@ -207,6 +207,7 @@
                                 <a href="{% url 'detail_etablissement' etablissement.id %}" class="btn btn-success">
                                     Voir les détails
                                 </a>
+                                {% if request.user.role == "Administrateur" %}
                                 <button type="button" class="btn btn-danger btn-delete"
                                     data-id="{{ etablissement.id }}">
                                     Supprimer
@@ -219,6 +220,7 @@
                                     data-bs-toggle="modal" data-bs-target="#editModal">
                                     Modifier
                                 </button>
+                                {% endif %}
                             </div>
 
                         </div>

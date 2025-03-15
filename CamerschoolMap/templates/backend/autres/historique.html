@@ -36,6 +36,8 @@
                                 <th>id</th>
                                 <th>Nom et prénom</th>
                                 <th>Adresse email</th>
+                                <th>Status</th>
+                                <th>Telephone</th>
                                 <th>date d'inscription</th>
                                 <th>Dernier connexion</th>
                                 <th>Action requise</th>
@@ -47,6 +49,8 @@
                                 <td>{{ user.id }}</td>
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.email }}</td>
+                                <td>{{ user.role }}</td>
+                                <td>{{ user.phone }}</td>
                                 <td>{{ user.date_joined }}</td>
                                 <td>{{ user.last_login }}</td>
                                 <td style="display:flex;">

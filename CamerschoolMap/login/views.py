@@ -108,12 +108,18 @@ def connexion(request):
             auth_user = authenticate(username=user.username, password=password)
             if auth_user:
                 login(request, auth_user)
-                messages.success(request, f"Conexion reussir avec success.\n Bienvenue, {auth_user.username} !")
-                return redirect('detail')
+                messages.success(request, f"Connexion réussie avec succès.\nBienvenue, {auth_user.username} !")
 
-        messages.error(request, "Email ou mot de passe incorrect.Merci de ressayer ulterrieurement")
-    
+                # Redirection selon le rôle
+                if auth_user.role == 'Utilisateur':
+                    return redirect('detail')
+                else:
+                    return redirect('dashbord')
+
+        messages.error(request, "Email ou mot de passe incorrect. Merci de réessayer ultérieurement.")
+
     return render(request, 'fontend/autres/connexion.html')
+
 
 
 
@@ -200,47 +206,66 @@ def supprimer_user(request):
 # FONCTION POUR MODIFIER UN UTILISATEUR
 @login_required(login_url='connexion')
 def modifier_user(request, user_id):
+    User = get_user_model()  # Récupérer le modèle utilisateur (CustomUser)
+    
     try:
-        user = get_user_model().objects.get(id=user_id)
-    except get_user_model().DoesNotExist:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
         messages.error(request, "L'utilisateur demandé n'existe pas.")
-        return redirect('users_list')  # Rediriger vers la liste des utilisateurs si l'utilisateur n'existe pas.
+        return redirect('historique')  # Redirige vers la liste des utilisateurs
 
     if request.method == 'POST':
-        nom = request.POST.get('nom')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        nom = request.POST.get('nom', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        role = request.POST.get('role', '').strip()
+        password = request.POST.get('password', '').strip()
         
         errors = []
-        
+
+        # Vérifications des champs obligatoires
+        if not nom or not email or not phone or not role:
+            errors.append("Tous les champs doivent être remplis.")
+
         # Vérification des formats
-        if not re.match(r'^[a-zA-Z0-9_]+$', nom):  # Vérification pour le nom d'utilisateur
-            errors.append("Le nom ne doit contenir que des lettres et des chiffres.")
-        if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):  # Vérification pour l'email
+        if not re.match(r'^[a-zA-Z0-9_]+$', nom):
+            errors.append("Le nom ne doit contenir que des lettres, chiffres et underscore.")
+        if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
             errors.append("Format d'email invalide.")
-        
-        if password:
-            if not re.match(r'^(?=.*[A-Z])(?=.*\d).{8,}$', password):  # Vérification du mot de passe
-                errors.append("Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.")
-        
-        # Vérification unicité de l'email (si l'email a changé)
+        if not re.match(r'^\+237\d{9}$', phone):
+            errors.append("Le numéro de téléphone doit être au format +237XXXXXXXXX.")
+
+        # Vérification unicité de l'email (si changé)
         if email != user.email and User.objects.filter(email=email).exists():
             errors.append("L'email existe déjà.")
 
+        # Vérification unicité du numéro de téléphone (si changé)
+        if phone != user.phone and User.objects.filter(phone=phone).exists():
+            errors.append("Le numéro de téléphone est déjà utilisé.")
+
+        # Vérification du mot de passe si fourni
+        if password:
+            if not re.match(r'^(?=.*[A-Z])(?=.*\d).{8,}$', password):
+                errors.append("Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.")
+
+        # Gestion des erreurs
         if errors:
             for error in errors:
                 messages.error(request, error)
             return render(request, 'backend/autres/modifieruser.html', {'user': user})
 
-        # Mise à jour des données de l'utilisateur
+        # Mise à jour des données
         user.username = nom
         user.email = email
+        user.phone = phone
+        user.role = role
         if password:
-            user.set_password(password)  # Ne pas oublier de hacher le mot de passe
+            user.password = make_password(password)  # Hachage du mot de passe
+
         user.save()
         
-        messages.success(request, "Utilisateur modifié avec succès!")
-        return redirect('historique')  # Redirige vers la liste des utilisateurs
+        messages.success(request, "Utilisateur modifié avec succès !")
+        return redirect('historique')
 
     return render(request, 'backend/autres/modifieruser.html', {'user': user})
 
@@ -315,16 +340,16 @@ def register(request):
 
 # FONCTION POUR AFFICHER LES UTILISATEURS ET GERER LA PAGINATION
 @login_required(login_url='connexion')
-@user_passes_test(is_admin, login_url='echecs')
+# @user_passes_test(is_admin, login_url='echecs')
 def dashboard(request):
-    users_list = CustomUser.objects.exclude(id=request.user.id)
+    users_list = CustomUser.objects.exclude(id=request.user.id).order_by('-id')
     total_utilisateurs = CustomUser.objects.count()
     total_chefs = CustomUser.objects.filter(role='Chef d\'établissement').count()
     total_etablissements = Etablissement.objects.count()
     
     
     # Pagination : 10 établissements par page
-    paginator = Paginator(users_list, 10)
+    paginator = Paginator(users_list, 8)
     page_number = request.GET.get('page')
     etablissements = paginator.get_page(page_number)
     
