@@ -49,9 +49,8 @@
                 <li class="nav-item profile">
                     <div class="profile-desc">
                         <div class="profile-pic">
-                            <div class="count-indicator">
-                                <img class="img-xs rounded-circle " src="{% static 'backend/assets/images/logo.jpg' %}"
-                                    alt="">
+                            <div class="count-indicator rounded-circle bg-gradient-warning  text-danger px-3">
+                                <h1>{{ request.user.username|first|upper }}</h1>
                                 <span class="count bg-success"></span>
                             </div>
                             <div class="profile-name">
@@ -174,7 +173,15 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-settings"></i>
                         </span>
-                        <span class="menu-title">parametres</span>
+                        <span class="menu-title">Parametres</span>
+                    </a>
+                </li>
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{% url 'documentation' %}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-book-lock"></i>
+                        </span>
+                        <span class="menu-title">Documentation</span>
                     </a>
                 </li>
             </ul>
@@ -379,7 +386,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("logoutBtn").addEventListener("click", function () {
                 Swal.fire({
-                    title: "Voulez-vous vraiment vous déconnecter ?",
+                    title: " <span style='color:black;'>Voulez-vous vraiment vous déconnecter ?</span>",
                     text: "Vous devrez vous reconnecter pour accéder à votre compte.",
                     icon: "warning",
                     showCancelButton: true,
@@ -410,9 +417,6 @@
             });
         });
     </script>
-
-
-    <!-- End custom js for this page -->
 </body>
 
 </html>

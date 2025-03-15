@@ -104,7 +104,7 @@
         <form class="shadow-sm rounded-pill">
             <div class="input-group">
                 <input type="text" class="form-control border-0 rounded-pill py-3 px-4"
-                    placeholder="Rechercher un établissement...">
+                    placeholder="Entrer le nom de l'etablissement que vous voullez voir l'avis laisser a ce sujet ..." name="avis-search">
                 <button class="btn btn-primary rounded-pill px-4" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
@@ -186,11 +186,12 @@
             <div class="card card-hover h-100 border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="avatar bg-primary text-white rounded-circle me-3">
-                            {{ avis.nom|first|upper }}
+                        <div class="avatar bg-primary text-white rounded-circle me-4 p-2">
+                            <h1>{{ avis.nom|first|upper }}</h1>
                         </div>
                         <div>
                             <h5 class="mb-0">{{ avis.nom }}</h5>
+                            <small class="mb-0">A propos du/de : {{ avis.type_avis }}</small><br>
                             <small class="text-muted">{{ avis.date }}</small>
                         </div>
                     </div>
@@ -198,15 +199,16 @@
                     <!-- Affichage des étoiles -->
                     <div class="mb-3">
                         {% for i in "12345" %}
-                        <i class="fas fa-star {% if i <= avis.rating|stringformat:" s" %}text-warning{% else
-                            %}text-muted{% endif %}"></i>
+                        <i class="fas fa-star {% if i|add:0 <= avis.rating %}text-warning{% else %}text-muted{% endif %}"
+                            data-value="{{ i }}"></i>
                         {% endfor %}
                     </div>
 
                     <p class="card-text">{{ avis.contenu }}</p>
 
                     <!-- Bouton de suppression -->
-                    <form action="#" method="POST" onsubmit="return confirmDelete(event, this);">
+                    <form action="{% url 'delete_avis' avis.id %}" method="POST"
+                        onsubmit="return confirmDelete(event, this);">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash"></i> Supprimer
@@ -316,20 +318,19 @@
         currentRating = value;
 
         // Met à jour toutes les étoiles
-        document.querySelectorAll('.rating-stars .star').forEach((s, index) => {
+        document.querySelectorAll('.rating-stars .star i').forEach((icon, index) => {
             if (index < value) {
-                s.classList.add('active');
-                s.querySelector('i').style.color = '#ffc107';
+                icon.style.color = '#ffc107';
             } else {
-                s.classList.remove('active');
-                s.querySelector('i').style.color = '#ddd';
+                icon.style.color = '#ddd';
             }
         });
 
-        // Met à jour le label et la valeur cachée
+        // Met à jour le label et l'input caché
         document.getElementById('ratingLabel').textContent = ratingLabels[value];
-        document.getElementById('ratingValue').value = value;
+        document.getElementById('ratingValue').value = value; // Mise à jour du champ caché
     }
+
 
     function showLabel(star) {
         const value = parseInt(star.dataset.value);
@@ -352,6 +353,26 @@
     });
 
 </script>
+<script>
+    function confirmDelete(event, form) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: "Cette action est irréversible !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        return false;
+    }
+</script>
+
 
 
 {% endblock %}

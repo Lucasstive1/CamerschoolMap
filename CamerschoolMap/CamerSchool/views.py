@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Avis_views
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 def index(request):
@@ -45,48 +47,30 @@ def blog(request):
 def contact(request):
     if request.method == 'POST':
         nom = request.POST.get("nom")
-        prenom = request.POST.get("prenom")
+        prenom = request.POST.get("prenom", "")
         email = request.POST.get("email")
-        phone = request.POST.get("phone")
+        phone = request.POST.get("phone", "Non fourni")
         subject = request.POST.get("subject")
         message = request.POST.get("message")
         
         # Sujet de l'email
-        subject_mail = f"Message de {nom} {prenom}"
+        subject_mail = f"Nouveau message de {nom} {prenom} - {subject}"
         
-        # Corps de l'email avec format HTML pour un rendu plus professionnel
+        # Corps de l'email en HTML
         body = f"""
         <html>
         <head>
             <style>
-                body {{
-                    font-family: Arial, sans-serif;
-                    color: #333;
-                }}
-                .email-container {{
-                    background-color: #f4f4f4;
-                    padding: 20px;
-                    border-radius: 8px;
-                    border: 1px solid #ddd;
-                }}
-                h2 {{
-                    color: #333;
-                    font-size: 18px;
-                    font-weight: bold;
-                }}
-                p {{
-                    font-size: 16px;
-                    line-height: 1.5;
-                }}
-                .highlight {{
-                    font-weight: bold;
-                    color: #007BFF;
-                }}
+                body {{ font-family: Arial, sans-serif; color: #333; }}
+                .email-container {{ background-color: #f4f4f4; padding: 20px; border-radius: 8px; }}
+                h2 {{ color: #333; font-size: 18px; font-weight: bold; }}
+                p {{ font-size: 16px; line-height: 1.5; }}
+                .highlight {{ font-weight: bold; color: #007BFF; }}
             </style>
         </head>
         <body>
             <div class="email-container">
-                <h2>Message reçu de {nom} {prenom}</h2>
+                <h2>Un nouveau message a été reçu via le formulaire de contact :</h2>
                 <p><span class="highlight">Nom:</span> {nom}</p>
                 <p><span class="highlight">Prénom:</span> {prenom}</p>
                 <p><span class="highlight">Email:</span> {email}</p>
@@ -98,14 +82,14 @@ def contact(request):
         </html>
         """
 
-        # Envoi de l'email
+        # Envoi de l'email à l'admin (assure-toi que settings.EMAIL_HOST_USER est bien défini)
         send_mail(
-            'Contact',
-            'Merci de nous avoir contacter nous traitons votre demande et nous vous reviendrons bientot',
-            None,
-            [email],   # Destinataire
-            [message], # Message
+            subject_mail,  
+            message,  
+            settings.EMAIL_HOST_USER,  # Utilise l'email défini dans les settings
+            [settings.EMAIL_RECEIVER],  # Change cette ligne pour mettre ton email d'admin
             fail_silently=False,
+            html_message=body  # Permet d'envoyer l'email en HTML
         )
 
         # Redirection vers la page de confirmation
@@ -113,6 +97,13 @@ def contact(request):
 
     return render(request, 'fontend/autres/contact.html')
 
+
+def confirmation(request):
+    nom = request.GET.get('nom', '')  # Récupère le nom depuis l'URL (si envoyé via GET)
+    email = request.GET.get('email', '')  # Récupère l'email
+
+    # On passe les variables au template
+    return render(request, 'fontend/autres/confirmation.html', {'nom': nom, 'email': email})
 
 @login_required(login_url='connexion')
 def avis(request):
@@ -125,7 +116,7 @@ def avis(request):
         avis_list = avis_list.filter(nom__icontains=avis_search) | avis_list.filter(contenu__icontains=avis_search)
 
     # Pagination (30 avis par page)
-    paginator = Paginator(avis_list, 30)
+    paginator = Paginator(avis_list, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -158,14 +149,14 @@ def avis(request):
 
 
 # ============== fonction de suppression d'un avis ==========
-def supprimer_avis(request, avis_id):
-    if request.method == "POST":
-        try:
-            logger.info(f"Tentative de suppression de l'avis avec l'ID : {avis_id}")
-            avis = Avis_views.objects.get(id=avis_id)
-            avis.delete()
-            return JsonResponse({'success': True, 'message': 'Avis supprimé avec succès!'})
-        except Avis_views.DoesNotExist:
-            logger.error(f"Avis avec l'ID {avis_id} non trouvé.")
-            return JsonResponse({'success': False, 'message': "L'avis n'existe pas."})
-    return JsonResponse({'success': False, 'message': 'Requête invalide.'})
+def delete_avis(request, avis_id):
+    avis_obj = get_object_or_404(Avis_views, id=avis_id)
+    if request.method == 'POST':
+        avis_obj.delete()
+        messages.success(request, "Avis supprimé avec succès.")
+    else:
+        messages.error(request, "Méthode invalide pour la suppression.")
+    return redirect('avis')
+
+def documentation(request):
+    return render(request, 'backend/autres/doc.html')

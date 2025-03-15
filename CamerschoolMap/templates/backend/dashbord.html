@@ -80,7 +80,7 @@
                         <div class="row">
                             <div class="col-8 col-sm-12 col-xl-8 my-auto">
                                 <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                    <h2 class="mb-0">2039</h2>
+                                    <h2 class="mb-0">{{ total_etablissements }}</h2>
                                 </div>
                                 <h6 class="text-muted font-weight-normal">etablissements scolaires</h6>
                             </div>
@@ -212,7 +212,7 @@
             const userId = this.getAttribute('data-user-id');
 
             Swal.fire({
-                title: 'Êtes-vous sûr?',
+                title: "<span style='color:black;'>Êtes-vous sûr?</span>",
                 text: "Vous ne pourrez pas revenir en arrière!",
                 icon: 'warning',
                 showCancelButton: true,

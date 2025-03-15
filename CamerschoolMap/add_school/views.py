@@ -150,7 +150,8 @@ def erreur_403(request):
 
 @login_required(login_url='connexion')
 def detail(request):
-    etablissements = Etablissement.objects.all()
+    etablissements = Etablissement.objects.all().order_by('-date_creation')
+    
 
     nom = request.GET.get('nom', '').strip()
     ville = request.GET.get('ville', '').strip()
@@ -174,7 +175,7 @@ def detail(request):
     page_number = request.GET.get('page')
     etablissements = paginator.get_page(page_number)
 
-    return render(request, 'backend/autres/detail.html', {'etablissements': etablissements})
+    return render(request, 'backend/autres/detail.html', {'etablissements': etablissements} )
 
 
 def detail_etablissement(request, etablissement_id):
@@ -184,7 +185,7 @@ def detail_etablissement(request, etablissement_id):
 
 @login_required(login_url='connexion')
 def historique_ecole(request):
-    etablissements_list = Etablissement.objects.all()
+    etablissements_list = Etablissement.objects.all().order_by('-date_creation')
 
     # Définir le nombre d'éléments par page
     paginator = Paginator(etablissements_list, 20)  # 6 établissements par page

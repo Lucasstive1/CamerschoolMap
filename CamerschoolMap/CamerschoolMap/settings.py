@@ -152,7 +152,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'stivelucas037@gmail.com'
 EMAIL_HOST_PASSWORD = 'uigc xfzs fqtm nvkk'
-
+EMAIL_RECEIVER = 'stivelucas037@gmail.com' 
 
 
 from django.contrib.messages import constants as message_constants

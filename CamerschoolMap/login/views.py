@@ -14,6 +14,7 @@ from .models import CustomUser
 from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
+from add_school.views import Etablissement
 
 
 def is_admin(user):
@@ -319,6 +320,8 @@ def dashboard(request):
     users_list = CustomUser.objects.exclude(id=request.user.id)
     total_utilisateurs = CustomUser.objects.count()
     total_chefs = CustomUser.objects.filter(role='Chef d\'établissement').count()
+    total_etablissements = Etablissement.objects.count()
+    
     
     # Pagination : 10 établissements par page
     paginator = Paginator(users_list, 10)
@@ -329,7 +332,8 @@ def dashboard(request):
         'total_utilisateurs': total_utilisateurs,
         'total_chefs': total_chefs,
         'users_list': users_list,
-        'etablissements': etablissements
+        'etablissements': etablissements,
+        'total_etablissements': total_etablissements
     }
     
     return render(request, 'backend/dashbord.html', context)
