@@ -83,9 +83,9 @@ WSGI_APPLICATION = 'CamerschoolMap.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Camerschool',  
-        'USER': 'postgres',     
-        'PASSWORD': 'stive2004@',  
+        'NAME': 'school',  
+        'USER': 'admin',     
+        'PASSWORD': '12345678',  
         'HOST': 'localhost',         
         'PORT': '5432',              
     }
