@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404,redirect
+import json
 
 def is_admin(user):
     return user.groups.filter(name='Administrateur').exists()
@@ -161,13 +162,13 @@ def detail(request):
 
     if nom:
         etablissements = etablissements.filter(nom__icontains=nom)
-    if ville:
+    if ville and not ville=="all":
         etablissements = etablissements.filter(ville__icontains=ville)
-    if departement:
+    if departement and not departement=="all":
         etablissements = etablissements.filter(departement__icontains=departement)
-    if type_etablissement:
+    if type_etablissement and not type_etablissement=="all":
         etablissements = etablissements.filter(type__icontains=type_etablissement)
-    if categorie:
+    if categorie and not categorie=="all":
         etablissements = etablissements.filter(categorie__icontains=categorie)
 
     # Pagination : 10 établissements par page
@@ -176,6 +177,14 @@ def detail(request):
     etablissements = paginator.get_page(page_number)
 
     return render(request, 'backend/autres/detail.html', {'etablissements': etablissements} )
+
+def autocomplete_etablissements(request):
+    query = request.GET.get('term', '')  # jQuery UI utilise 'term' par défaut
+    
+    etablissements = Etablissement.objects.filter(nom__icontains=query).values_list('nom', flat=True).distinct()[:10]
+    
+    suggestions = list(etablissements)
+    return JsonResponse(suggestions, safe=False)
 
 
 def detail_etablissement(request, etablissement_id):

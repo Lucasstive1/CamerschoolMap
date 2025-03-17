@@ -14,7 +14,8 @@ urlpatterns = [
     path('echecs/', views.echecs, name='echecs'),
     path('etablissement/<int:etablissement_id>/', views.detail_etablissement, name='detail_etablissement'),
     path("supprimer-etablissement/<int:etablissement_id>/", views.supprimer_etablissement, name="supprimer_etablissement"),
-    path("modifier-etablissement/<int:etablissement_id>/", views.modifier_etablissement, name="modifier_etablissement"),
+    path("modifier_etablissement/<int:etablissement_id>/", views.modifier_etablissement, name="modifier_etablissement"),
+    path('autocomplete-etablissements/', views.autocomplete_etablissements, name='autocomplete-etablissements'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

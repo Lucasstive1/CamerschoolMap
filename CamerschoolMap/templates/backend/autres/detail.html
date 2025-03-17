@@ -129,54 +129,53 @@
                 <i class="fas fa-filter"></i> Afficher les filtres
             </button>
 
-            <!-- Barre de recherche -->
-            <div class="search-bar mt-3">
-                <input type="text" class="form-control" id="searchBar"
-                    placeholder="Rechercher un établissement par nom..." onkeyup="searchEtablissements()">
-            </div>
-
-            <!-- Filtres -->
-            <div id="filters" class="collapse mt-3">
-                <form method="GET" action="{% url 'detail' %}">
-                    <div class="row">
-                        <!-- Ville et Département -->
-                        <div class="col-md-3">
-                            <input type="text" id="filter-ville" name="ville" class="form-control"
-                                placeholder="Entrez une ville">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" id="filter-departement" name="departement" class="form-control"
-                                placeholder="Entrez un département">
-                        </div>
-                        <!-- Type et Catégorie -->
-                        <div class="col-md-3">
-                            <select id="filter-type" name="type" class="form-select">
-                                <option value="all" {% if request.GET.type == 'all' %}selected{% endif %}>Tous les types
-                                </option>
-                                <option value="primaire" {% if request.GET.type == 'primaire' %}selected{% endif %}>
-                                    Primaire</option>
-                                <option value="secondaire" {% if request.GET.type == 'secondaire' %}selected{% endif %}>
-                                    Secondaire</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select id="filter-category" name="category" class="form-select">
-                                <option value="all" {% if request.GET.category == 'all' %}selected{% endif %}>Toutes les
-                                    catégories</option>
-                                <option value="public" {% if request.GET.category == 'public' %}selected{% endif %}>Public
-                                </option>
-                                <option value="prive" {% if request.GET.category == 'prive' %}selected{% endif %}>Privé
-                                </option>
-                            </select>
-                        </div>
-                        <!-- Bouton pour appliquer les filtres -->
-                        <div class="col-md-12 mt-3">
-                            <button type="submit" class="btn btn-primary">Appliquer les filtres</button>
-                        </div>
+        <!-- Filtres -->
+        <div id="filters" class="collapse mt-3">
+            <form method="GET" action="{% url 'detail' %}">
+                <div class="row">
+                    <!-- Barre de recherche (AJOUTÉ ICI) -->
+                    <div class="col-md-12 mb-3">
+                        <input type="text" class="form-control" id="searchBar" name="nom"
+                            placeholder="Rechercher un établissement par nom..." value="{{ request.GET.nom }}">
                     </div>
-                </form>
-            </div>
+        
+                    <!-- Ville et Département -->
+                    <div class="col-md-3">
+                        <input type="text" id="filter-ville" name="ville" class="form-control"
+                            placeholder="Entrez une ville" value="{{ request.GET.ville }}">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" id="filter-departement" name="departement" class="form-control"
+                            placeholder="Entrez un département" value="{{ request.GET.departement }}">
+                    </div>
+        
+                    <!-- Type et Catégorie -->
+                    <div class="col-md-3">
+                        <select id="filter-type" name="type" class="form-select">
+                            <option value="all" {% if request.GET.type == 'all' %}selected{% endif %}>Tous les types</option>
+                            <option value="primaire" {% if request.GET.type == 'primaire' %}selected{% endif %}>Primaire</option>
+                            <option value="secondaire" {% if request.GET.type == 'secondaire' %}selected{% endif %}>Secondaire</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filter-category" name="category" class="form-select">
+                            <option value="all" {% if request.GET.category == 'all' %}selected{% endif %}>Toutes les catégories</option>
+                            <option value="public" {% if request.GET.category == 'public' %}selected{% endif %}>Public</option>
+                            <option value="prive" {% if request.GET.category == 'prive' %}selected{% endif %}>Privé</option>
+                        </select>
+                    </div>
+        
+                    <!-- Bouton pour appliquer les filtres -->
+                    <div class="col-md-12 mt-3">
+                        <button type="submit" class="btn btn-primary">Appliquer les filtres</button>
+                    </div>
+                </div>
+            </form>
         </div>
+        </div>
+
+
+
 
 
 
@@ -192,9 +191,11 @@
                         <div class="card-header">
                             <h5>{{ etablissement.nom }}</h5>
                         </div>
-                        <img src="{{ etablissement.image_profil.url }}"
-                            class="card-img-top" alt="Image de l'établissement">
-
+                        {% if etablissement.image_profil %}
+                            <img src="{{ etablissement.image_profil.url }}" class="card-img-top" alt="Image de l'établissement">
+                        {% else %}
+                            <img src="{% static 'images/default.jpg' %}" class="card-img-top" alt="Image par défaut">
+                        {% endif %}
                         <div class="card-body card-body1">
                             <p class="card-text">
                                 <strong>Type :</strong> {{ etablissement.type }}<br>
@@ -360,7 +361,9 @@
                 email: document.getElementById("editEmail").value
             };
 
-            fetch(`/modifier-etablissement/${id}/`, {
+            id = parseInt(id)
+
+            fetch(`/login/modifier_etablissement/${id}/`, {
                 method: "POST",
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}",
@@ -404,29 +407,65 @@
                     confirmButtonText: "Oui, supprimer !"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        fetch(`/supprimer-etablissement/${etablissementId}/`, {
-                            method: "POST",
-                            headers: {
-                                "X-CSRFToken": "{{ csrf_token }}",
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({})
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    Swal.fire("Supprimé !", "L'établissement a été supprimé.", "success")
-                                        .then(() => location.reload());
-                                } else {
-                                    Swal.fire("Erreur", data.error, "error");
-                                }
-                            });
+                        fetch(`/login/supprimer-etablissement/${etablissementId}/`, {
+    method: "POST",
+    headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({})
+})
+.then(response => {
+    if (response.redirected) {
+        // Utilisateur non connecté !
+        window.location.href = response.url; // Redirige vers la page login
+        return;
+    }
+    return response.json();
+})
+.then(data => {
+    if (data && data.success) {
+        Swal.fire("Supprimé !", "L'établissement a été supprimé.", "success")
+            .then(() => location.reload());
+    } else if (data) {
+        Swal.fire("Erreur", data.error, "error");
+    }
+})
+.catch(err => console.log(err));
+
                     }
                 });
             });
         });
     });
 </script>
+
+<script>
+    $(function() {
+        $("#searchBar").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "{% url 'autocomplete-etablissements' %}",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function(data) {
+                        response(data); // Remplit les suggestions
+                    }
+                });
+            },
+            minLength: 2, // Commence après 2 caractères
+            select: function(event, ui) {
+                // Quand l'utilisateur clique sur une suggestion
+                $("#searchBar").val(ui.item.value);
+                return false;
+            }
+        });
+    });
+    </script>
+    
+
 
 
 {% endblock %}

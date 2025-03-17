@@ -188,12 +188,15 @@
         ({{ etablissement.departement }})
         {% endif %}
       </p>
-      {% if etablissement.image_profil %}
       <div class="mt-4">
-        <img src="{{ etablissement.image_profil.url }}" alt="Profil de {{ etablissement.nom }}"
-          class="profile-img shadow-lg hover-zoom">
+        {% if etablissement.image_profil %}
+            <img src="{{ etablissement.image_profil.url }}" alt="Profil de {{ etablissement.nom }}"
+                class="profile-img shadow-lg hover-zoom">
+        {% else %}
+            <img src="{% static 'images/default.jpg' %}" alt="Profil par défaut"
+                class="profile-img shadow-lg hover-zoom">
+        {% endif %}
       </div>
-      {% endif %}
     </div>
   </section>
 
@@ -249,7 +252,7 @@
                   <i class="fas fa-align-left text-primary me-2"></i>
                   Description
                 </h3>
-                <p class="lead">{{ etablissement.description|safe }}</p>
+                <p class="lead">{{ etablissement.description }}</p>
               </div>
             </div>
           </div>
