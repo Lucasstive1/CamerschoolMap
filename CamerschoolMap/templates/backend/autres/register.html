@@ -54,7 +54,8 @@
                   <label><i class="mdi mdi-email-variant text-success h4"></i> Email</label>
                   <input type="email" name="email" class="form-control p_input" value="{{ request.POST.email }}" required>
                 </div>
-              
+                
+                {% if request.user.role == "Administrateur" %}
                 <div class="form-group">
                   <label><i class="mdi mdi-ticket text-success h4"></i> Status</label>
                   <select name="role" class="form-control text-white" id="role">
@@ -63,6 +64,7 @@
                     <option value="Administrateur" {% if request.POST.role == "Administrateur" %}selected{% endif %}>Administrateur</option>
                   </select>
                 </div>
+                {% endif %}
               
                 <div class="form-group">
                   <label><i class="mdi mdi-phone text-success h4"></i> Numero de telephone</label>

@@ -122,6 +122,8 @@
                     </a>
                 </li>
                 {% endif %}
+            
+                <!-- Option Accueil visible pour tous -->
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{% url 'index' %}">
                         <span class="menu-icon">
@@ -130,21 +132,21 @@
                         <span class="menu-title">Accueil</span>
                     </a>
                 </li>
+            
                 {% if request.user.role == "Administrateur" %}
+                <!-- Options visibles uniquement pour l'administrateur -->
                 <li class="nav-item menu-items">
-                    <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                        aria-controls="ui-basic">
+                    <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                         <span class="menu-icon">
                             <i class="mdi mdi-account"></i>
                         </span>
-                        <span class="menu-title">Utlisateurs</span>
+                        <span class="menu-title">Utilisateurs</span>
                         <i class="menu-arrow"></i>
                     </a>
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="{% url 'register' %}">ajouter</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{% url 'historique' %}">consulter
-                                    l'historique</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{% url 'register' %}">Ajouter</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{% url 'historique' %}">Consulter l'historique</a></li>
                         </ul>
                     </div>
                 </li>
@@ -153,7 +155,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-school"></i>
                         </span>
-                        <span class="menu-title">Add the schooll</span>
+                        <span class="menu-title">Add the school</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">
@@ -161,7 +163,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-school"></i>
                         </span>
-                        <span class="menu-title">L'historique des ecoles</span>
+                        <span class="menu-title">Historique des écoles</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">
@@ -169,16 +171,16 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-table-large"></i>
                         </span>
-                        <span class="menu-title">gestions des ecoles</span>
+                        <span class="menu-title">Gestion des écoles</span>
                     </a>
                 </li>
-
+            
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{% url 'avis' %}">
                         <span class="menu-icon">
                             <i class="mdi mdi-chart-bar"></i>
                         </span>
-                        <span class="menu-title">gestion des avis</span>
+                        <span class="menu-title">Gestion des avis</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">
@@ -190,14 +192,39 @@
                     </a>
                 </li>
                 {% endif %}
+            
+                {% if request.user.role == "Chef d'établissement" %}
+                <!-- Le Chef d'établissement n'a pas accès aux options suivantes -->
+                {% comment %}
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{% url 'avis' %}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-chart-bar"></i>
+                        </span>
+                        <span class="menu-title">Gestion des avis</span>
+                    </a>
+                </li>
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{% url 'detail' %}">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-table-large"></i>
+                        </span>
+                        <span class="menu-title">Gestion des écoles</span>
+                    </a>
+                </li>
+                {% endcomment %}
+                {% endif %}
+            
+                <!-- Parametres visible pour tous -->
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{% url 'setting' %}">
                         <span class="menu-icon">
                             <i class="mdi mdi-settings"></i>
                         </span>
-                        <span class="menu-title">Parametres</span>
+                        <span class="menu-title">Paramètres</span>
                     </a>
                 </li>
+            
                 {% if request.user.role != "Administrateur" %}
                 <li class="nav-item menu-items">
                     <a class="nav-link" href="{% url 'detail' %}">
@@ -212,7 +239,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-phone-alert"></i>
                         </span>
-                        <span class="menu-title">contactez-nous</span>
+                        <span class="menu-title">Contactez-nous</span>
                     </a>
                 </li>
                 <li class="nav-item menu-items">
@@ -220,7 +247,7 @@
                         <span class="menu-icon">
                             <i class="mdi mdi-book-lock-open"></i>
                         </span>
-                        <span class="menu-title">blog educatif</span>
+                        <span class="menu-title">Blog éducatif</span>
                     </a>
                 </li>
                 {% endif %}
@@ -250,10 +277,10 @@
                         {% if request.user.role == "Administrateur" %}
                         <li class="nav-item dropdown d-none d-lg-block">
                             <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown"
-                                data-toggle="dropdown" aria-expanded="false" href="#">+ Create New users</a>
+                                data-toggle="dropdown" aria-expanded="false" href="#">+ Créer un nouvel utilisateur</a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="createbuttonDropdown">
-                                <h6 class="p-3 mb-0">User</h6>
+                                <h6 class="p-3 mb-0">Utilisateurs</h6>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item preview-item" href="{% url 'register' %}">
                                     <div class="preview-thumbnail">
@@ -262,7 +289,7 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject ellipsis mb-1">Create</p>
+                                        <p class="preview-subject ellipsis mb-1">Créer</p>
                                     </div>
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -273,13 +300,19 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject ellipsis mb-1">consulter l'historique</p>
+                                        <p class="preview-subject ellipsis mb-1">Consulter l'historique</p>
                                     </div>
                                 </a>
-                                <div class="dropdown-divider"></div>
                             </div>
                         </li>
+                        {% elif request.user.role == "Chef d'établissement" %}
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-success create-new-button" href="{% url 'register' %}">
+                                + Ajouter un utilisateur
+                            </a>
+                        </li>
                         {% endif %}
+
                         <li class="nav-item dropdown border-left">
                             <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#"
                                 data-toggle="dropdown" aria-expanded="false">

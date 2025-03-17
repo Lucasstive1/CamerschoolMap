@@ -40,11 +40,17 @@
             <div class="col-sm-4 grid-margin">
                 <div class="card">
                     <div class="card-body text-white">
-                        <h5>Users</h5>
+                        <h5>Utlisateur</h5>
                         <div class="row">
                             <div class="col-8 col-sm-12 col-xl-8 my-auto">
                                 <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                    {% if request.user.role == "Chef d'établissement" %}
+                                    <h5>Mes utilisateurs</h5>
                                     <h2 class="mb-0">{{ total_utilisateurs }}</h2>
+                                    {% else %}
+                                    <h5>Utilisateurs sur le site</h5>
+                                    <h2 class="mb-0">{{ total_utilisateurs }}</h2>
+                                    {% endif %}
                                 </div>
                                 <h6 class="text-muted font-weight-normal">utlisateur sur le site</h6>
                             </div>
@@ -55,6 +61,7 @@
                     </div>
                 </div>
             </div>
+            {% if request.user.role == "Administrateur" %}
             <div class="col-sm-4 grid-margin">
                 <div class="card">
                     <div class="card-body text-white">
@@ -73,6 +80,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             <div class="col-sm-4 grid-margin">
                 <div class="card">
                     <div class="card-body text-white">
@@ -80,7 +88,13 @@
                         <div class="row">
                             <div class="col-8 col-sm-12 col-xl-8 my-auto">
                                 <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                    {% if request.user.role == "Chef d'établissement" %}
+                                    <h5>Mes utilisateurs</h5>
                                     <h2 class="mb-0">{{ total_etablissements }}</h2>
+                                    {% else %}
+                                    <h5>Utilisateurs sur le site</h5>
+                                    <h2 class="mb-0">{{ total_etablissements }}</h2>
+                                    {% endif %}
                                 </div>
                                 <h6 class="text-muted font-weight-normal">etablissements scolaires</h6>
                             </div>
@@ -129,6 +143,7 @@
                                 </thead>
                                 <tbody>
                                     {% for utilisateur in users_list %}
+                                    {% if request.user.role == "Administrateur" or utilisateur.ajoute_par == request.user %}
                                     <tr>
                                         <td>{{ utilisateur.id }}</td>
                                         <td>{{ utilisateur.username }}</td>
@@ -140,10 +155,12 @@
                                             </div>
                                         </td>
                                         <td style="display: flex;">
+                                            {% if request.user.role == "Administrateur" %}
                                             <button class="btn btn-danger btn-delete mx-3"
                                                 data-user-id="{{ utilisateur.id }}">
                                                 <i class="mdi mdi-delete text-white"></i> Supprimer
                                             </button>
+                                            {% endif %}
                                             <a href="{% url 'modifieruser' utilisateur.id %}"
                                                 class="btn text-white btn-outline-primary">
                                                 Modifier
@@ -151,6 +168,7 @@
                                         </td>
 
                                     </tr>
+                                    {% endif %}
                                     {% endfor %}
                                 </tbody>
                             </table>
@@ -174,7 +192,8 @@
                                 {% endfor %}
                                 {% if etablissements.has_next %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ etablissements.next_page_number }}" aria-label="Next">
+                                    <a class="page-link" href="?page={{ etablissements.next_page_number }}"
+                                        aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>

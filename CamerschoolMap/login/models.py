@@ -11,6 +11,9 @@ class CustomUser(AbstractUser):
     role = models.CharField(max_length=200, choices=ROLE_CHOICES, default='Utilisateur')
     phone = models.CharField(max_length=20, unique=True, null=True)
     
+    # Champ pour savoir qui a créé cet utilisateur
+    ajoute_par = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, related_name="utilisateurs_ajoutes")
+    
     def __str__(self):
         return f"{self.username} - {self.role}"
     

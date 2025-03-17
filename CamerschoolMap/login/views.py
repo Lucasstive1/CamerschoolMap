@@ -342,10 +342,19 @@ def register(request):
 @login_required(login_url='connexion')
 # @user_passes_test(is_admin, login_url='echecs')
 def dashboard(request):
-    users_list = CustomUser.objects.exclude(id=request.user.id).order_by('-id')
-    total_utilisateurs = CustomUser.objects.count()
-    total_chefs = CustomUser.objects.filter(role='Chef d\'établissement').count()
-    total_etablissements = Etablissement.objects.count()
+    user = request.user
+    
+    if user.role == "Administrateur":
+        total_utilisateurs = CustomUser.objects.count()
+        total_chefs = CustomUser.objects.filter(role="Chef d'établissement").count()
+        total_etablissements = Etablissement.objects.count()
+        users_list = CustomUser.objects.exclude(id=user.id).order_by('-id')
+    else:
+        total_utilisateurs = user.utilisateurs_ajoutes.count()
+        total_chefs = 0  # Un chef d’établissement ne gère pas d’autres chefs
+        total_etablissements = user.etablissements_ajoutes.count()
+        users_list = user.utilisateurs_ajoutes.all()
+    
     
     
     # Pagination : 10 établissements par page

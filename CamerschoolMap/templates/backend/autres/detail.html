@@ -158,10 +158,10 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <select id="filter-category" name="category" class="form-select">
-                            <option value="all" {% if request.GET.category == 'all' %}selected{% endif %}>Toutes les catégories</option>
-                            <option value="public" {% if request.GET.category == 'public' %}selected{% endif %}>Public</option>
-                            <option value="prive" {% if request.GET.category == 'prive' %}selected{% endif %}>Privé</option>
+                        <select id="filter-categorie" name="categorie" class="form-select">
+                            <option value="all" {% if request.GET.categorie == 'all' %}selected{% endif %}>Toutes les catégories</option>
+                            <option value="public" {% if request.GET.categorie == 'public' %}selected{% endif %}>Public</option>
+                            <option value="prive" {% if request.GET.categorie == 'prive' %}selected{% endif %}>Privé</option>
                         </select>
                     </div>
         
@@ -182,7 +182,7 @@
 
         <!-- Établissements -->
         <div class="container my-4">
-            <h2 class="text-center">Établissements du département de Mifi</h2>
+            <h2 class="text-center">Établissements scolaire classe pas departement et ville</h2>
 
             <div class="row">
                 {% for etablissement in etablissements %}
@@ -201,6 +201,7 @@
                                 <strong>Type :</strong> {{ etablissement.type }}<br>
                                 <strong>Catégorie :</strong> {{ etablissement.categorie }}<br>
                                 <strong>Ville :</strong> {{ etablissement.ville }}<br>
+                                <strong>Departement :</strong> {{ etablissement.departement }}<br>
                                 <strong>Contact :</strong> {{ etablissement.contact }}<br>
                                 <strong>Email :</strong> {{ etablissement.email }}<br>
                             </p>
@@ -228,7 +229,7 @@
                     </div>
                 </div>
                 {% empty %}
-                <p class="text-center">Aucun établissement enregistré pour le département de Mifi.</p>
+                <p class="text-center">Aucun établissement enregistré pour le département de {{ etablissement.ville }}.</p>
                 {% endfor %}
             </div>
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
 class Etablissement(models.Model):
     TYPE_CHOICES = [
@@ -22,6 +23,9 @@ class Etablissement(models.Model):
     email = models.EmailField(blank=True, null=True)
     image_profil = models.ImageField(upload_to='etablissements/profil/', blank=True, null=True)
     date_creation = models.DateTimeField(auto_now_add=True)
+    
+     # Ajoute le champ pour savoir qui a ajouté l'établissement
+    ajoute_par = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name="etablissements_ajoutes")
 
     def __str__(self):
         return self.nom
