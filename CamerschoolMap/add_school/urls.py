@@ -10,6 +10,7 @@ urlpatterns = [
     path('erreur_403/', views.erreur_403, name='erreur_403'),
     path('historique_ecole/', views.historique_ecole, name='historique_ecole'),
     path('detail/', views.detail, name='detail'),
+    path('detail_users/', views.detail_users, name='detail_users'),
     path('sucess_page/', views.succes_page, name='succes_page'),
     path('echecs/', views.echecs, name='echecs'),
     path('etablissement/<int:etablissement_id>/', views.detail_etablissement, name='detail_etablissement'),

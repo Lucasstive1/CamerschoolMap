@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404,redirect
 import json
+import unicodedata
+from django.db.models import Q
 
 def is_admin(user):
     return user.groups.filter(name='Administrateur').exists()
@@ -149,7 +151,7 @@ def echecs(request):
 def erreur_403(request):
     return render(request, 'backend/autres/error-404.html', status=403)
 
-@login_required(login_url='connexion')
+
 def detail(request):
     etablissements = Etablissement.objects.all().order_by('-date_creation')
     
@@ -178,6 +180,57 @@ def detail(request):
 
     return render(request, 'backend/autres/detail.html', {'etablissements': etablissements} )
 
+def remove_accents(input_str):
+    """ Supprime les accents d'une chaîne """
+    return ''.join(c for c in unicodedata.normalize('NFD', input_str) if unicodedata.category(c) != 'Mn')
+
+def detail_users(request):
+    etablissements = Etablissement.objects.all().order_by('-date_creation')
+
+    nom = request.GET.get('nom', '').strip()
+    ville = request.GET.get('ville', '').strip()
+    departement = request.GET.get('departement', '').strip()
+    type_etablissement = request.GET.get('type', '').strip()
+    categorie = request.GET.get('categorie', '').strip()
+
+    # Appliquer le filtrage sans accents
+    if nom:
+        nom_sans_accent = remove_accents(nom.lower())
+        etablissements = etablissements.filter(
+            Q(nom__icontains=nom) | Q(nom__icontains=nom_sans_accent)
+        )
+
+    if ville and ville != "all":
+        ville_sans_accent = remove_accents(ville.lower())
+        etablissements = etablissements.filter(
+            Q(ville__icontains=ville) | Q(ville__icontains=ville_sans_accent)
+        )
+
+    if departement and departement != "all":
+        departement_sans_accent = remove_accents(departement.lower())
+        etablissements = etablissements.filter(
+            Q(departement__icontains=departement) | Q(departement__icontains=departement_sans_accent)
+        )
+
+    if type_etablissement and type_etablissement != "all":
+        type_sans_accent = remove_accents(type_etablissement.lower())
+        etablissements = etablissements.filter(
+            Q(type__icontains=type_etablissement) | Q(type__icontains=type_sans_accent)
+        )
+
+    if categorie and categorie != "all":
+        categorie_sans_accent = remove_accents(categorie.lower())
+        etablissements = etablissements.filter(
+            Q(categorie__icontains=categorie) | Q(categorie__icontains=categorie_sans_accent)
+        )
+
+    # Pagination : 6 établissements par page
+    paginator = Paginator(etablissements, 30)
+    page_number = request.GET.get('page')
+    etablissements = paginator.get_page(page_number)
+
+    return render(request, 'fontend/autres/details2.html', {'etablissements': etablissements})
+
 def autocomplete_etablissements(request):
     query = request.GET.get('term', '')  # jQuery UI utilise 'term' par défaut
     
@@ -186,7 +239,7 @@ def autocomplete_etablissements(request):
     suggestions = list(etablissements)
     return JsonResponse(suggestions, safe=False)
 
-
+@login_required(login_url='connexion')
 def detail_etablissement(request, etablissement_id):
     etablissement = get_object_or_404(Etablissement, id=etablissement_id)
     return render(request, 'fontend/autres/detail.html', {'etablissement': etablissement})
@@ -202,3 +255,5 @@ def historique_ecole(request):
     etablissements = paginator.get_page(page_number)
 
     return render(request, 'backend/autres/historique_ecole.html', {'etablissements': etablissements})
+
+

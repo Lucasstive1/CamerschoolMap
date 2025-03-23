@@ -1,42 +1,85 @@
 {% extends 'fontend/base.html' %}
 {% load static %}
 
-
 {% block content %}
 
-
-
-
 <style>
-@media (max-width: 768px) {
-    h1, h2, h3, h4, h5, h6, p, label, .card-title, .card-text {
-        font-size: 16px !important; /* Taille uniforme */
+    .hover-shadow {
+        transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    .btn {
-        font-size: 14px !important;
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
-    .review-text, .review-author, .review-date {
-        font-size: 14px !important;
+    .testimonial-card {
+        background: white;
+        border-radius: 15px;
+        transition: all 0.3s;
     }
 
-    .container, .container_avis {
-        padding: 10px;
+    .partner-logo {
+        opacity: 0.7;
+        transition: opacity 0.3s;
+        padding: 20px;
     }
-}
 
+    .partner-logo:hover {
+        opacity: 1;
+    }
+    .card img {
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .card-body {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
+    @media (max-width: 768px) {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        label,
+        .card-title,
+        .card-text {
+            font-size: 16px !important;
+        }
+
+        .btn {
+            font-size: 14px !important;
+        }
+
+        .review-text,
+        .review-author,
+        .review-date {
+            font-size: 14px !important;
+        }
+
+        .container,
+        .container_avis {
+            padding: 10px;
+        }
+    }
 </style>
-<!-- First Section with Background Image -->
+
+<!-- Section 1 : Bienvenue (conservée intacte) -->
 <section class="welcome-section d-flex align-items-center justify-content-center py-5">
     <div class="overlay d-flex justify-content-center align-items-center w-100 h-100"
         style="background-color: rgba(0, 0, 0, 0.4);">
-        <div class="container text-center text-white">
-            <h1 class="display-4 font-weight-bold mb-4"> Bienvenue sur
-                <span class="text-success">Camer</span><span class="text-danger">School</span><span
-                    class="text-warning">Map</span>
-            </h1>
+        <div class="container text-center text-white data-aos=" zoom-in"">
+            <h1 class="display-4 font-weight-bold mb-4 animate__animated animate__fadeInDown"> Bienvenue sur <span
+                    class="text-success">Camer</span><span class="text-danger">School</span><span
+                    class="text-warning">Map</span></h1>
             <p class="mb-4 text-white">Votre portail pour découvrir et explorer les établissements scolaires à travers
                 le Cameroun. Que vous soyez à la recherche d'une école pour vos enfants ou intéressé par l'éducation
                 dans la région, vous êtes au bon endroit. Trouvez facilement
@@ -44,373 +87,265 @@
             <div class="d-flex justify-content-center">
                 <a href="{% url 'detail' %}" class="btn btn-success btn-lg mx-2">Rechercher un établissement</a>
                 {% if request.user.is_authenticated %}
-                <a href="{% url 'detail' %}" class="btn btn-primary btn-lg mx-2"><i class="fas fa-dashboard"></i>Tableau de bord</a>
+                <a href="{% url 'detail_users' %}" class="btn btn-primary btn-lg mx-2">Tableau de bord</a>
                 {% endif %}
                 <a href="#" class="btn btn-warning btn-lg mx-2" data-bs-toggle="modal"
-                    data-bs-target="#searchModal1">Visiter une ville</a>
+                    data-bs-target="#searchModal1">Visiter</a>
             </div>
         </div>
-        <!-- Modal de recherche -->
-        <div class="modal fade" id="searchModal1" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header text-white">
-                        <h5 class="modal-title" id="searchModalLabel">Rechercher une ville</h5>
-                        <button type="button" class="btn-close bg-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Champ de recherche -->
-                        <input type="text" id="searchInput" class="form-control"
-                            placeholder="Entrez votre recherche...">
-                        <!-- Liste des villes -->
-                        <div id="cityList" class="mt-3">
-                            <a class="dropdown-item text-black" href="#">Yaoundé</a>
-                            <a class="dropdown-item text-black" href="#">Douala</a>
-                            <a class="dropdown-item text-black" href="{% url 'baf' %}">Bafoussam</a>
-                            <a class="dropdown-item text-black" href="#">Ngaoundéré</a>
-                            <a class="dropdown-item text-black" href="#">Ebolowa</a>
-                            <a class="dropdown-item text-black" href="#">Bamenda</a>
-                            <a class="dropdown-item text-black" href="#">Bertoua</a>
-                            <a class="dropdown-item text-black" href="#">Garoua</a>
-                            <a class="dropdown-item text-black" href="#">Maroua</a>
-                            <a class="dropdown-item text-black" href="#">Edéa</a>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
-                        <button type="button" class="btn btn-success" id="searchButton">Rechercher</button>
+    </div>
+    <!-- Modal de recherche -->
+    <div class="modal fade" id="searchModal1" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-white">
+                    <h5 class="modal-title" id="searchModalLabel">Rechercher une ville</h5>
+                    <button type="button" class="btn-close bg-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Champ de recherche -->
+                    <input type="text" id="searchInput" class="form-control" placeholder="Entrez votre recherche...">
+                    <!-- Liste des villes -->
+                    <div id="cityList" class="mt-3">
+                        <a class="dropdown-item text-black" href="{% url 'camer' %}">Cameroun</a>
+                        <a class="dropdown-item text-black" href="#">Yaoundé</a>
+                        <a class="dropdown-item text-black" href="#">Douala</a>
+                        <a class="dropdown-item text-black" href="{% url 'baf' %}">Bafoussam</a>
+                        <a class="dropdown-item text-black" href="#">Ngaoundéré</a>
+                        <a class="dropdown-item text-black" href="#">Ebolowa</a>
+                        <a class="dropdown-item text-black" href="#">Bamenda</a>
+                        <a class="dropdown-item text-black" href="#">Bertoua</a>
+                        <a class="dropdown-item text-black" href="#">Garoua</a>
+                        <a class="dropdown-item text-black" href="#">Maroua</a>
+                        <a class="dropdown-item text-black" href="#">Edéa</a>
                     </div>
                 </div>
-            </div>
-        </div>
-
-
-
-    </div>
-</section>
-
-<section id="independence-history" class="container py-5">
-    <div class="row">
-        <!-- Title Section -->
-        <div class="col-12 text-center mb-4">
-            <h2 class="display-4 font-weight-bold">L'Histoire de l'Indépendance du Cameroun</h2>
-            <p class="lead">Un voyage vers la souveraineté, marquée par des luttes et des sacrifices, qui ont forgé
-                l'unité du pays.</p>
-        </div>
-    </div>
-
-    <!-- Content Section -->
-    <div class="row">
-        <div class="col-md-6">
-            <h3 class="font-weight-bold">Le Début de la Colonisation</h3>
-            <p>En 1884, le Cameroun devient une colonie allemande avant de passer sous tutelle française et britannique
-                après la Première Guerre mondiale. La résistance à la domination coloniale a été un facteur clé de
-                l’émergence du nationalisme camerounais.</p>
-            <i class="fas fa-globe-africa fa-2x text-primary"></i> <small>Colonisation Allemande et Mandat
-                International</small>
-        </div>
-        <div class="col-md-6">
-            <img src="{% static 'fontend/images/col.jpg' %}" class="img-fluid rounded" alt="Colonisation du Cameroun">
-            <!-- Suggestion d'image : une carte ancienne du Cameroun pendant la colonisation -->
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <img src="{% static 'fontend/images/col2.jpg' %}" class="img-fluid rounded" alt="Lutte pour l'indépendance">
-            <!-- Suggestion d'image : photo historique d'une manifestation ou d'une révolte -->
-        </div>
-        <div class="col-md-6">
-            <h3 class="font-weight-bold">La Lutte pour l'Indépendance</h3>
-            <p>Après la Seconde Guerre mondiale, des mouvements tels que l'UPC, dirigée par Ruben Um Nyobe, ont combattu
-                la domination française pour obtenir l'indépendance totale. Ces luttes ont été marquées par des
-                répressions violentes et des sacrifices
-                énormes.
-            </p>
-            <i class="fas fa-fist-raised fa-2x text-danger"></i> <small>Lutte et Résistance</small>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <h3 class="font-weight-bold">L'Indépendance et Réunification</h3>
-            <p>Le 1er janvier 1960, le Cameroun accède à l'indépendance sous la direction d'Ahmadou Ahidjo. En 1961, le
-                pays se réunit officiellement, après un référendum, pour former une nation unifiée, malgré les tensions
-                entre les zones francophones
-                et anglophones.</p>
-            <i class="fas fa-handshake fa-2x text-success"></i> <small>Indépendance et Réunification</small>
-        </div>
-        <div class="col-md-6">
-            <img src="{% static 'fontend/images/col3.jpg' %}" class="img-fluid rounded" alt="Réunification du Cameroun">
-            <!-- Suggestion d'image : photo des leaders du Cameroun après l'indépendance -->
-        </div>
-    </div>
-</section>
-
-<!-- Section Localisation Géographique du Cameroun -->
-<section class="container py-5">
-    <!-- Titre principal -->
-    <h1 class="text-center mb-4 display-4 font-weight-bold">Géolocalisation et Atouts du Cameroun</h1>
-    <p class="text-left">
-        Le Cameroun, situé au cœur de l'Afrique centrale, bénéficie d’une position stratégique qui lui permet de jouer
-        un rôle important sur le continent. Il partage des frontières avec six pays, ce qui facilite les échanges
-        commerciaux et culturels avec ses
-        voisins. L’accès à l’océan Atlantique permet au Cameroun de développer son commerce maritime et de promouvoir
-        son secteur touristique. De plus, son climat et sa diversité géographique en font un lieu de choix pour le
-        développement de l’agriculture
-        et d'autres secteurs économiques.
-    </p>
-    <div class="row">
-        <!-- Tableau des statistiques du Cameroun -->
-        <div class="col-md-6">
-            <table class="table table-bordered">
-                <thead class="thead-light">
-                    <tr>
-                        <th><i class="fas fa-info-circle"></i> Informations</th>
-                        <th><i class="fas fa-flag"></i> Détails</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><i class="fas fa-ruler"></i> Superficie</td>
-                        <td>475 442 km²</td>
-                    </tr>
-                    <tr>
-                        <td><i class="fas fa-language"></i> Langues parlées</td>
-                        <td>Français, Anglais</td>
-                    </tr>
-                    <tr>
-                        <td><i class="fas fa-money-bill-wave"></i> Monnaie</td>
-                        <td>Franc CFA (XAF)</td>
-                    </tr>
-                    <tr>
-                        <td><i class="fas fa-users"></i> Nombre d'habitants</td>
-                        <td>Environ 27 millions</td>
-                    </tr>
-                    <tr>
-                        <td><i class="fas fa-water"></i> Accès à l'océan</td>
-                        <td>Oui, accès à l'océan Atlantique</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Image illustrant la géolocalisation du Cameroun -->
-        <div class="col-md-6">
-            <img src="{% static 'fontend/images/camer.png' %}" class="img-fluid">
-        </div>
-    </div>
-
-    <!-- Informations sur les pays limitrophes -->
-    <!-- Carte des pays limitrophes du Cameroun -->
-    <h3 class="text-center mt-5 mb-4">Les Pays Limitrophes du Cameroun</h3>
-    <div class="row">
-        <!-- Nigeria -->
-        <div class="col-md-4">
-            <div class="card">
-                <h5 class="card-header text-center text-white bg-success"> République Centrafricaine</h5>
-                <img src="{% static 'fontend/images/rc.jpg' %}" alt="République Centrafricaine" class="card-img-top" />
-                <div class="card-body">
-                    <p class="card-text"> La République Centrafricaine entretient des relations commerciales et
-                        humanitaires avec le Cameroun, notamment en matière de soutien aux réfugiés et de collaboration
-                        dans la lutte contre les groupes armés.</p>
-                    <ul>
-                        <li><i class="fas fa-ruler text-warning"></i> Superficie : 622,984 km²</li>
-                        <li><i class="fas fa-users text-warning"></i> Nombre d'habitants : Environ 5 millions.</li>
-                        <li><i class="fas fa-language text-warning"></i> Langues parlées : Sango, Français.</li>
-                        <li><i class="fas fa-money-bill-wave text-warning"></i> Monnaie : Franc CFA (XAF)</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- République Démocratique du Congo (RDC) -->
-        <div class="col-md-4">
-            <div class="card">
-                <h5 class="card-header text-center bg-success text-white"> République Démocratique du Congo (RDC)
-                </h5>
-                <img src="{% static 'fontend/images/congo.jpg' %}" alt="RDC" class="card-img-top" />
-                <div class="card-body">
-                    <p class="card-text">Les relations entre le Cameroun et la RDC sont marquées par des échanges
-                        commerciaux et des partenariats dans les secteurs miniers et agricoles.</p>
-                    <ul>
-                        <li><i class="fas fa-ruler text-warning"></i> Superficie : 2,345,409 km²</li>
-                        <li><i class="fas fa-users text-warning"></i> Nombre d'habitants : 95 millions</li>
-                        <li><i class="fas fa-language text-warning"></i> Langues parlées : Français, Lingala, Kikongo,
-                            Tshiluba</li>
-                        <li><i class="fas fa-money-bill-wave text-warning"></i> Monnaie : Franc congolais (CDF)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tchad -->
-        <div class="col-md-4">
-            <div class="card">
-                <h5 class="card-header text-center text-white  bg-success"> Guinée Équatoriale</h5>
-                <img src="{% static 'fontend/images/guinea-ecuatorial.jpg' %}" alt="Guinée Équatoriale"
-                    class="card-img-top" />
-                <div class="card-body">
-                    <p class="card-text"> La Guinée Équatoriale et le Cameroun ont une relation principalement
-                        économique, avec des échanges commerciaux et un accord de coopération dans le domaine de la
-                        pêche, de l’énergie et des infrastructures. Les deux pays coopèrent
-                        également dans les organisations régionales comme la CEMAC..</p>
-                    <ul>
-                        <li><i class="fas fa-ruler text-warning"></i> Superficie : 28,051 km²</li>
-                        <li><i class="fas fa-users text-warning"></i> Nombre d'habitants : Environ 1,5 million.</li>
-                        <li><i class="fas fa-language text-warning"></i> Langues parlées : Espagnol, Français,
-                            Portugais.
-                        </li>
-                        <li><i class="fas fa-money-bill-wave text-warning"></i> Monnaie : Franc CFA (XAF)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <h5 class="card-header text-center bg-success text-white"> Gabon</h5>
-                <img src="{% static 'fontend/images/gabon.png' %}" alt="Tchad" class="card-img-top" />
-                <div class="card-body">
-                    <p class="card-text">Le Gabon et le Cameroun partagent une frontière à l'ouest et entretiennent des
-                        relations diplomatiques stables. Les deux pays sont partenaires dans la Communauté Économique et
-                        Monétaire de l'Afrique Centrale (CEMAC) et collaborent
-                        dans les domaines de l'exploitation des ressources naturelles et du commerce..</p>
-                    <ul>
-                        #e96703
-                        <li><i class="fas fa-ruler text-warning"></i> Superficie : 267,668 km²</li>
-                        <li><i class="fas fa-users text-warning"></i> Nombre d'habitants : Environ 2,3 millions.
-                        </li>
-                        <li><i class="fas fa-language text-warning"></i> Langues parlées : Français, avec des langues
-                            locales comme le Fang et le Myene.</li>
-                        <li><i class="fas fa-money-bill-wave text-warning"></i> Monnaie : Franc CFA (XAF)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <h5 class="card-header text-center bg-success text-white"> Tchad</h5>
-                <img src="{% static 'fontend/images/thad.png' %}" alt="Tchad" class="card-img-top" />
-                <div class="card-body">
-                    <p class="card-text">Le Tchad et le Cameroun collaborent dans plusieurs projets régionaux, en
-                        particulier dans les domaines de l'énergie et du développement infra-structurel.</p>
-                    <ul>
-                        <li><i class="fas fa-ruler text-warning"></i> Superficie : 1,284,000 km²</li>
-                        <li><i class="fas fa-users text-warning"></i> Nombre d'habitants : 17 millions</li>
-                        <li><i class="fas fa-language text-warning"></i> Langues parlées : Arabe, Français</li>
-                        <li><i class="fas fa-money-bill-wave text-warning"></i> Monnaie : Franc CFA (XAF)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card my-2">
-                <h5 class="card-header text-center bg-success text-white">Nigeria</h5>
-                <img src="{% static 'fontend/images/nigeria.png' %}" alt="Nigeria" class="card-img-top" />
-                <div class="card-body">
-                    <p class="card-text">Le Cameroun et le Nigeria entretiennent des relations commerciales et
-                        culturelles étroites. Ces deux pays sont également des acteurs majeurs dans la région de la
-                        CEEAC (Communauté Economique des Etats de l'Afrique Centrale).</p>
-                    <ul>
-                        <li><i class="fas fa-ruler text-warning"></i> Superficie : 923,768 km²</li>
-                        <li><i class="fas fa-users text-warning"></i> Nombre d'habitants : 211 millions</li>
-                        <li><i class="fas fa-language text-warning"></i> Langues parlées : Anglais, Hausa, Yoruba, Igbo
-                        </li>
-                        <li><i class="fas fa-money-bill-wave text-warning"></i> Monnaie : Naira (NGN)</li>
-                    </ul>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-success" id="searchButton">Rechercher</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ville -->
-<!-- Regions Section -->
-<section class="regions-section bg-secondary">
+<!-- Section 2 améliorée : Cartes interactives -->
+<section class="py-5">
     <div class="container">
-        <!-- Title -->
-        <h1 class="regions-title">Les 10 Régions du Cameroun</h1>
-        <!-- Description -->
-        <p class="regions-description text-white">
-            Le Cameroun, souvent appelé "Afrique en miniature", est un pays riche en diversité culturelle, géographique
-            et climatique. Chaque région offre une expérience unique, allant des plages paradisiaques aux montagnes
-            majestueuses, des savanes désertiques aux
-            forêts tropicales luxuriantes. Découvrez la richesse de ce pays à travers ses 10 régions.
-        </p>
-        <!-- Regions Grid -->
+        <h2 class="mb-4 text-center">Pourquoi choisir <span class="text-success">CamerSchoolMap</span> ?</h2>
         <div class="row">
-            {% for ville in page_obj %}
-            <div class="col-md-6 col-sm-6 mb-4">
-                <div class="region-card">
-                    <a href="#">
-                        <img src="{% static ville.image %}" alt="{{ ville.name }}" class="img-fluid">
-                        <div class="region-overlay">
-                            <h5>{{ ville.name }}</h5>
-                            <p>cliquer sur <strong class="text-success"> visiter une ville </strong> dans la navbar pour
-                                plus d'information</p>
+            <div class="col-md-4 mb-4" data-aos="flip-left">
+                <div class="card h-100 hover-shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-map-marker-alt fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Localisation intelligente</h5>
+                        <p class="card-text">Trouvez les établissements près de chez vous avec notre technologie de
+                            géolocalisation avancée</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="flip-left">
+                <div class="card h-100 hover-shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-star fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Évaluations et avis</h5>
+                        <p class="card-text">Trouvez les établissements près de chez vous avec notre technologie de
+                            géolocalisation avancée</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="flip-left">
+                <div class="card h-100 hover-shadow">
+                    <div class="card-body text-center">
+                        <i class="fas  fa-chart-line fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Données actualisées</h5>
+                        <p class="card-text">Trouvez les établissements près de chez vous avec notre technologie de
+                            géolocalisation avancée</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Nouvelle Section : Statistiques -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4" data-aos="fade-up">
+                <i class="fas fa-school fa-3x mb-3"></i>
+                <h3>500+ Écoles</h3>
+                <p>Répertoriées à travers le pays</p>
+            </div>
+            <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <i class="fas fa-users fa-3x mb-3"></i>
+                <h3>10 000+ Utilisateurs</h3>
+                <p>Communauté active</p>
+            </div>
+            <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <i class="fas fa-map-marked-alt fa-3x mb-3"></i>
+                <h3>10 Régions</h3>
+                <p>Couvertes par notre service</p>
+            </div>
+            <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-star fa-3x mb-3"></i>
+                <h3>4.8/5</h3>
+                <p>Note moyenne des établissements</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Nouvelle Section : Fonctionnalités premium -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6" data-aos="fade-right">
+                <h2>Comment ça marche ?</h2>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class="fas fa-check-circle text-success mr-2"></i> Recherchez une école par
+                        ville ou département.</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-success mr-2"></i>Comparez les établissements
+                        grâce aux fiches détaillées.</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-success mr-2"></i>Consultez les avis d’anciens
+                        élèves et parents.</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-success mr-2"></i>Contactez l’établissement
+                        directement via la plateforme.</li>
+                </ul>
+            </div>
+            <div class="col-md-6" data-aos="fade-left">
+                <h2>Fonctionnalités exclusives</h2>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class="fas fa-check-circle text-success mr-2"></i>Alertes personnalisées</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-success mr-2"></i>Comparateur en temps réel</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-success mr-2"></i>Rapports détaillés</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section témoignages améliorée -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="mb-5 text-center">Ils nous font confiance</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4" data-aos="zoom-in">
+                <div class="testimonial-card p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="user-avatar.png" alt="Avatar" class="rounded-circle mr-3" width="60">
+                        <div>
+                            <h5>Parent satisfait</h5>
+                            <div class="star-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
                         </div>
-                    </a>
+                    </div>
+                    <p class="mb-0">Une super plateforme qui m'a aidé à trouver la meilleure école pour mon enfant !</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="zoom-in">
+                <div class="testimonial-card p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="user-avatar.png" alt="Avatar" class="rounded-circle mr-3" width="60">
+                        <div>
+                            <h5>Etudiant/ Eléve</h5>
+                            <div class="star-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mb-0">"Grâce à CamerSchoolMap, j'ai pu comparer plusieurs établissements et faire un choix
+                        éclairé."</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="zoom-in">
+                <div class="testimonial-card p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="user-avatar.png" alt="Avatar" class="rounded-circle mr-3" width="60">
+                        <div>
+                            <h5>Chefs d'etablissements</h5>
+                            <div class="star-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mb-0">"Un outil indispensable pour les familles ! Très facile à utiliser."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-white">
+    <div class="container">
+        <h2 class="mb-5 text-center"><i class="fas fa-images mx-2 text-success"></i>Galerie d’images des établissements
+            scolaires</h2>
+        <div class="row align-items-center">
+            {% for etablissement in etablissements %}
+            <div class="col col-md-4 mb-4 partner-logo" data-aos="zoom-in">
+                <div class="card">
+                    {% if etablissement.image_profil %}
+                    <img src="{{ etablissement.image_profil.url }}" alt="Partenaire" class="img-fluid">
+                    {% else %}
+                    <img src="{% static 'images/default.jpg' %}" class="img-fluid" alt="Image par défaut">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5>{{ etablissement.nom }}</h5>
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        <div class="col-12 mt-4">
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Précédent">
-                            &#8592; Précédent
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">&#8592; Précédent</span>
-                    </li>
-                    {% endif %}
-
-                    {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                    <li class="page-item active">
-                        <span class="page-link">{{ num }}</span>
-                    </li>
-                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
-                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-
-                        {% if page_obj.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Suivant">
-                                Suivant &#8594;
-                            </a>
-                        </li>
-                        {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link">Suivant &#8594;</span>
-                        </li>
-                        {% endif %}
-                </ul>
-            </nav>
-        </div>
-
-    </div>
-    </div>
-    </div>
-
+        
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% for page_num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 </section>
 
-
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    AOS.init({
+        duration: 1000,
+        once: true
+    });
+</script>
 <script>
     $(document).ready(function () {
         // Fonction pour filtrer les villes
@@ -444,7 +379,4 @@
         });
     });
 </script>
-
-
-
 {% endblock %}

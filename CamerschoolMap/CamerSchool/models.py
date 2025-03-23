@@ -1,4 +1,5 @@
 from django.db import models
+from add_school.models import Etablissement
 
 class Avis_views(models.Model):
     TYPE_CHOICES = [
@@ -12,6 +13,7 @@ class Avis_views(models.Model):
     email = models.EmailField()
     contenu = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    etablissement = models.ForeignKey(Etablissement, null=True, blank=True, on_delete=models.SET_NULL)
     
     def __str__(self):
         return f"{self.nom} - {self.type_avis}"

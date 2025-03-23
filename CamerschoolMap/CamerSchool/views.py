@@ -7,36 +7,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from django.conf import settings
+from add_school.models import Etablissement
 
 # Create your views here.
 def index(request):
-    
-    if User is authenticate:
-        return   messages.success(request, 'bienvenue sur camerschool')
-  
-    villes = [
-        {"name": "Ouest", "image": "fontend/images/bafoussam-ville.jpg.webp"},
-        {"name": "Adamawa", "image": "fontend/images/adamawa.jpg"},
-        {"name": "Nord-Ouest", "image": "fontend/images/Bamenda.jpg"},
-        {"name": "Centre", "image": "fontend/images/Yaounde.jpg"},
-        {"name": "Littoral", "image": "fontend/images/douala.jpg"},
-        {"name": "Sud-cameroun", "image": "fontend/images/ebolowa.jpg"},
-        {"name": "Extrême-Nord", "image": "fontend/images/Maroua-Art.png"},
-        {"name": "Nord-cameroun", "image": "fontend/images/GAROUA.jpg"},
-        {"name": "sud-ouest", "image": "fontend/images/GAROUA.jpg"},
-        {"name": "Est-cameroun", "image": "fontend/images/GAROUA.jpg"},
-        
-    ]
-    
-
-    # Pagination
-    paginator = Paginator(villes, 2)  
-    page_number = request.GET.get('page')  
+    etablissements = Etablissement.objects.all().order_by('-date_creation')
+    # Pagination (30 avis par page)
+    paginator = Paginator(etablissements, 6)
+    page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
-
-    # Passe les données de l'utilisateur au template
-    return render(request, 'fontend/index.html', {  'page_obj': page_obj})
+    return render(request, 'fontend/index.html', {'etablissements': etablissements, 'page_obj': page_obj})
 
 
 def blog(request):
@@ -107,8 +87,14 @@ def confirmation(request):
 
 @login_required(login_url='connexion')
 def avis(request):
-    # Récupération et tri des avis par date décroissante
-    avis_list = Avis_views.objects.all().order_by('-date')
+    # Vérifier si un avis concerne un établissement spécifique
+    etab_id = request.GET.get('etablissement_id')
+    etab_nom = request.GET.get('etablissement_nom')
+    
+    if etab_id:
+        avis_list = Avis_views.objects.filter(etablissement__id=etab_id).order_by('-date')
+    else:
+        avis_list = Avis_views.objects.all().order_by('-date')
 
     # Gestion de la barre de recherche (le champ input devra avoir name="avis-search")
     avis_search = request.GET.get('avis-search')
@@ -127,6 +113,8 @@ def avis(request):
         email = request.POST.get('email')
         rating = request.POST.get('rating')
         contenu = request.POST.get('contenu')
+        etablissement_id = request.POST.get('etablissement_id')
+
 
         try:
             # Création d'un nouvel avis
@@ -135,11 +123,13 @@ def avis(request):
                 rating=rating,
                 nom=nom,
                 email=email,
-                contenu=contenu
+                contenu=contenu,
+                etablissement=Etablissement.objects.get(id=etablissement_id) if etablissement_id else None
             )
             messages.success(request, "Avis enregistré avec succès.")
         except Exception as e:
             messages.error(request, f"Erreur lors de l'enregistrement de l'avis : {str(e)}")
+            
 
         return redirect('avis')  # redirige pour éviter le re-post du formulaire
 
@@ -160,3 +150,27 @@ def delete_avis(request, avis_id):
 
 def documentation(request):
     return render(request, 'backend/autres/doc.html')
+
+
+def camer(request):
+    
+    villes = [
+        {"name": "Ouest", "image": "fontend/images/bafoussam-ville.jpg.webp"},
+        {"name": "Adamawa", "image": "fontend/images/adamawa.jpg"},
+        {"name": "Nord-Ouest", "image": "fontend/images/Bamenda.jpg"},
+        {"name": "Centre", "image": "fontend/images/Yaounde.jpg"},
+        {"name": "Littoral", "image": "fontend/images/douala.jpg"},
+        {"name": "Sud-cameroun", "image": "fontend/images/ebolowa.jpg"},
+        {"name": "Extrême-Nord", "image": "fontend/images/Maroua-Art.png"},
+        {"name": "Nord-cameroun", "image": "fontend/images/GAROUA.jpg"},
+        {"name": "sud-ouest", "image": "fontend/images/GAROUA.jpg"},
+        {"name": "Est-cameroun", "image": "fontend/images/GAROUA.jpg"},
+        
+    ]
+    
+    
+     # Pagination
+    paginator = Paginator(villes, 2)  
+    page_number = request.GET.get('page')  
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'fontend/villes/camer.html', {  'page_obj': page_obj})

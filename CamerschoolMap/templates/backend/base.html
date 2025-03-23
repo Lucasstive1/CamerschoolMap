@@ -250,6 +250,20 @@
                         <span class="menu-title">Blog éducatif</span>
                     </a>
                 </li>
+                {% if request.user.is_authenticated %}
+                <!-- <a class="btn btn-login nav-link" href="#" id="logoutBtn">
+                    <i class="fas fa-user"></i> Déconnexion
+                </a> -->
+                {% else %}
+                <li class="nav-item menu-items">
+                    <a class="nav-link" href="{% url 'inscription' %}"> 
+                        <span class="menu-icon">
+                            <i class="mdi mdi-account-alert"></i>
+                        </span>
+                        <span class="menu-title">Inscription</span>
+                    </a>
+                </li>
+                {% endif %}
                 {% endif %}
             </ul>
         </nav>

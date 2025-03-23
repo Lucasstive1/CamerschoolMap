@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-6$vj$gket_1w)r)vfp$__2+^sg^xb%540vpgw@#m^^40y3hifp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.192', '127.0.0.1']
 
 
 # Application definition
@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'CamerschoolMap.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Camerschool',  
-        'USER': 'postgres',     
-        'PASSWORD': 'stive2004@',  
+        'NAME': os.getenv('BD_NAME'),  
+        'USER': os.getenv('BD_USER'),     
+        'PASSWORD': os.getenv('BD_PASSWORD'),  
         'HOST': 'localhost',         
         'PORT': '5432',              
     }
@@ -118,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 
@@ -151,12 +151,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # confirguration de l'email
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'camerschoolmap@gmail.com'
-EMAIL_HOST_PASSWORD = 'cpjr vxzr kjrb zhcv'
-EMAIL_RECEIVER = 'camerschoolmap@gmail.com' 
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_RECEIVER = os.getenv('EMAIL_RECEIVER') 
 
 
 from django.contrib.messages import constants as message_constants

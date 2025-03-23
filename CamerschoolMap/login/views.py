@@ -340,7 +340,7 @@ def register(request):
 
 # FONCTION POUR AFFICHER LES UTILISATEURS ET GERER LA PAGINATION
 @login_required(login_url='connexion')
-# @user_passes_test(is_admin, login_url='echecs')
+# @user_passes_test(is_admin and is_chef, login_url='echecs')
 def dashboard(request):
     user = request.user
     

@@ -263,8 +263,8 @@
     </div>
 </div>
 </div>
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade modal-lg" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">Modifier l'établissement</h5>
@@ -307,6 +307,10 @@
                         <label for="editEmail" class="form-label">Email</label>
                         <input type="email" class="form-control" id="editEmail">
                     </div>
+                    <div class="mb-3 bg-white">
+                        <label for="editDescription" class="form-label">Description</label>
+                        <textarea id="editDescription" name="description" class="bg-white"></textarea>
+                    </div>
                     <button type="submit" class="btn btn-primary">Sauvegarder</button>
                 </form>
             </div>
@@ -314,6 +318,30 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+      $('#editDescription').summernote({
+        placeholder: "Décrivez votre établissement en détail...",
+        tabsize: 10,
+        height: 300,
+        toolbar: [
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['font', ['strikethrough', 'superscript', 'subscript']],
+          ['fontsize', ['fontsize']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          ['insert', ['picture', 'link', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']],
+          ['misc', ['undo', 'redo']],
+          ['style', ['style']],
+          ['format', ['p', 'blockquote', 'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']],
+          ['listStyle', ['ordered', 'unordered']],
+          ['customFormat', ['alphaUpper', 'alphaLower', 'romanUpper', 'romanLower']]
+        ]
+      });
+    });
+  </script>
 <!-- Script pour la recherche dynamique -->
 <script>
     function searchEtablissements() {
@@ -344,6 +372,7 @@
                 document.getElementById("editAdresse").value = this.dataset.adresse;
                 document.getElementById("editContact").value = this.dataset.contact;
                 document.getElementById("editEmail").value = this.dataset.email;
+                document.getElementById("editDescription").value = this.dataset.description;
             });
         });
 
@@ -359,7 +388,8 @@
                 categorie: document.getElementById("editCategorie").value,
                 adresse: document.getElementById("editAdresse").value,
                 contact: document.getElementById("editContact").value,
-                email: document.getElementById("editEmail").value
+                email: document.getElementById("editEmail").value,
+                description: document.getElementById("editDescription").value
             };
 
             id = parseInt(id)
