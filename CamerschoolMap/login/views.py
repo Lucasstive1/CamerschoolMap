@@ -376,22 +376,57 @@ def dashboard(request):
 @login_required(login_url='connexion')
 def setting(request):
     user = request.user
-
+    
     if request.method == 'POST':
-        # Mise à jour des informations de l'utilisateur
-        user.first_name = request.POST.get('fullName', user.first_name)
-        user.phone = request.POST.get('phoneNumber', user.phone)
-        user.email = request.POST.get('email', user.email)
-        user.bio = request.POST.get('bio', user.bio)
-
-        # Vérifier si un nouveau mot de passe est entré et mettre à jour
-        password = request.POST.get('password')
-        if password:
-            user.set_password(password)
-
-        # Sauvegarde de l'utilisateur
+        # Récupération des données
+        nom = request.POST.get('fullName')
+        phone = request.POST.get('phoneNumber')
+        bio = request.POST.get('bio')
+        facebook = request.POST.get('facebook')
+        twitter = request.POST.get('twitter')
+        linkedin = request.POST.get('linkedin')
+        instagram = request.POST.get('instagram')
+        profession = request.POST.get('profession')
+        new_password = request.POST.get('password')
+        
+        errors = []
+        
+        # Validation du téléphone
+        if not re.match(r'^\+237\d{9}$', phone):
+            errors.append("Le numéro de téléphone doit être au format +237XXXXXXXXX.")
+        
+        if CustomUser.objects.filter(phone=phone).exclude(id=user.id).exists():
+            errors.append("Ce numéro est déjà utilisé.")
+        
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return redirect('setting')
+        
+        # Mise à jour des champs
+        user.username = nom
+        user.phone = phone
+        user.biography = bio
+        user.facebook_link = facebook
+        user.twitter_link = twitter
+        user.linkedin_link = linkedin
+        user.instagram_link = instagram
+        user.profession = profession
+        
+        # Gestion du mot de passe
+        if new_password:
+            if not re.match(r'^(?=.*[A-Z])(?=.*\d).{8,}$', new_password):
+                messages.error(request, "Le mot de passe doit contenir 8 caractères, une majuscule et un chiffre.")
+                return redirect('setting')
+            user.set_password(new_password)
+        
+        # Gestion de l'image
+        if 'uploadPhoto' in request.FILES:
+            user.image = request.FILES['uploadPhoto']
+        
         user.save()
-        messages.success(request, "Vos paramètres ont été mis à jour avec succès!")
+        messages.success(request, "Paramètres mis à jour avec succès!")
+        return redirect('setting')
 
         return redirect('settings')  # Rediriger vers la même page après mise à jour
     return render(request, 'backend/autres/settings.html', {'user': user})

@@ -125,25 +125,25 @@
                 </div>
 
                 <!-- Formulaire des Paramètres -->
-                <form class="settings-container mt-4">
+                <form class="settings-container mt-4" method="POST" action="{% url 'setting' %}">
+                    {% csrf_token %}
                     <!-- Section Informations Personnelles -->
                     <div class="mb-4">
                         <h5 class="section-title">Informations Personnelles</h5>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="fullName" class="form-label">Nom complet</label>
-                                <input type="text" id="fullName" class="form-control" 
-                                       placeholder="Votre nom" value="Nom Utilisateur">
+                                <input type="text" id="fullName" name="fullName" class="form-control" 
+                       value="{{ user.username }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="phoneNumber" class="form-label">Téléphone</label>
-                                <input type="tel" id="phoneNumber" class="form-control" 
-                                       placeholder="Votre numéro" value="+237 676 123 456">
+                                <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control" 
+                       value="{{ user.phone }}">
                             </div>
                             <div class="col-12">
                                 <label for="bio" class="form-label">Biographie</label>
-                                <textarea class="form-control" id="bio" rows="3" 
-                                          placeholder="Décrivez-vous en quelques mots..."></textarea>
+                                <textarea class="form-control" id="bio" name="bio" rows="3">{{ user.biography }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -186,23 +186,23 @@
                         <div class="row g-3">
                             <div class="col-md-6 social-input-group">
                                 <i class="fab fa-facebook"></i>
-                                <input type="url" class="form-control ps-5" 
-                                       placeholder="Lien Facebook">
+                                <input type="url" class="form-control ps-5" name="facebook"
+                       value="{{ user.facebook_link }}">
                             </div>
                             <div class="col-md-6 social-input-group">
                                 <i class="fab fa-twitter"></i>
-                                <input type="url" class="form-control ps-5" 
-                                       placeholder="Lien Twitter">
+                                <input type="url" class="form-control ps-5" name="facebook"
+                       value="{{ user.twitter_link }}">
                             </div>
                             <div class="col-md-6 social-input-group">
                                 <i class="fab fa-linkedin"></i>
-                                <input type="url" class="form-control ps-5" 
-                                       placeholder="Lien LinkedIn">
+                                <input type="url" class="form-control ps-5" name="facebook"
+                       value="{{ user.linkedin_link }}">
                             </div>
                             <div class="col-md-6 social-input-group">
                                 <i class="fab fa-instagram"></i>
-                                <input type="url" class="form-control ps-5" 
-                                       placeholder="Lien Instagram">
+                                <input type="url" class="form-control ps-5" name="facebook"
+                                value="{{ user.instagram_link }}">
                             </div>
                         </div>
                     </div>
@@ -220,10 +220,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Statut professionnelle</label>
-                                <select class="form-select">
-                                    <option>Parent</option>
-                                    <option>chef d'etablissement</option>
-                                    <option>etudiant/eleve</option>
+                                <select class="form-select" name="profession">
+                                    {% for value, label in user.PROFESSION_CHOICES %}
+                                        <option value="{{ value }}" {% if user.profession == value %}selected{% endif %}>
+                                            {{ label }}
+                                        </option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>

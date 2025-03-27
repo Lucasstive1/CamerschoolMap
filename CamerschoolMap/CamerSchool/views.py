@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from django.conf import settings
 from add_school.models import Etablissement
+from CamerschoolMap.decorators import login_required_message
 
 # Create your views here.
 def index(request):
@@ -23,7 +24,7 @@ def blog(request):
     return render(request, 'fontend/autres/blog.html')
 
 
-@login_required(login_url='connexion')
+@login_required_message
 def contact(request):
     if request.method == 'POST':
         nom = request.POST.get("nom")

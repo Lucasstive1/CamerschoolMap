@@ -8,118 +8,107 @@
     <link rel="shortcut icon" href="{% static 'fontend/images/img1-removebg-preview.png' %}">
     <title>CamerSchoolMap</title>
     <!-- Bootstrap CSS -->
-    <link href="{% static 'fontend/css/all.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fontend/css/bootstrap.min.css' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="{% static 'fontend/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fontend/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'fontend/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'fontend/css/style_connexion.css' %}">
+    <link rel="stylesheet" href="{% static 'fontend/css/style1.css' %}">
     <link rel="stylesheet" href="{% static 'fontend/css/tiny-slider.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <style>
     .navbar {
         background-color: #191616;
-        padding: 10px 0;
+
+    }
+    .navbar-brand {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1000; /* Garde le logo au-dessus du menu */
     }
 
-    .navbar-brand img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
+    .navbar-toggler {
+        position: relative;
+        z-index: 1001; /* Garde le bouton au-dessus du logo */
+        margin-right: 15px;
+    }
+    .highlight {
+        background-color: yellow;
     }
 
-    .navbar-nav {
-        display: flex;
-        align-items: center;
-        justify-content: end;
-        width: 100%;
-    }
 
-    .navbar-nav .nav-item {
-        margin: 0 10px;
-    }
-
-    .navbar-nav .nav-link,
-    .btn-login {
-        color: white !important;
-        transition: all 0.3s ease-in-out;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .navbar-nav .nav-link:hover,
-    .btn-login:hover {
-        color: orange !important;
-        text-decoration: underline;
-        text-decoration-thickness: 3px;
-    }
-
-    .btn-login {
-        background-color: transparent;
-        border: 1px solid white;
-        padding: 5px 15px;
-        border-radius: 20px;
-    }
-
-    .dropdown-menu {
-        background-color: #ed671f;
-    }
-
-    .dropdown-item {
-        color: white;
-    }
-
-    .dropdown-item:hover {
-        background-color: orange;
-        color: black;
-    }
-
-    .search-container {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        color: white;
-    }
-
-    .search-icon {
-        font-size: 20px;
-        margin-right: 5px;
-    }
-
-    .modal-header {
-        background-color: #191616;
-    }
-
-    /* LOGO À GAUCHE POUR ÉCRANS ≤ 978px */
-    @media screen and (max-width: 978px) {
-        .container {
-            width: 100%;
-            position: relative;
+     /* Ajoutez ces règles CSS à la fin de votre balise style */
+     @media (max-width: 992px) {
+        .navbar-nav {
+            padding: 20px 0;
+            background-color: #191616; /* Conserve la couleur de fond */
         }
-
+        
+        .nav-item {
+            margin: 5px 0 !important;
+            text-align: center;
+        }
+        
+        .btn-login {
+            border: none;
+            padding: 0;
+            margin: 10px auto;
+            display: block;
+            width: fit-content;
+        }
+        
+        .dropdown-menu {
+            text-align: center;
+            background-color: #ed671f; /* Conserve la couleur du dropdown */
+        }
+        
+        .search-container span {
+            display: none;
+        }
+        
         .navbar-brand {
-            position: absolute;
-            left: 0;
-            padding-left: 10px;
+            top: 15px; /* Position fixe depuis le haut */
+            transform: none; /* Supprime le centrage vertical */
+        }
+        
+        .navbar-collapse {
+            margin-top: 100px; /* Espace pour le logo */
         }
 
-        .imgs-fluid {
-            position: fixed;
-            top: 5px;
+    }
 
+    @media (max-width: 768px) {
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .navbar-toggler {
+            margin-right: 15px;
+        }
+        .navbar-brand {
+            top: 10px;
+            left: 10px;
+        }
+        
+        .navbar-brand img {
+            width: 40px !important;
+            height: 40px !important;
         }
     }
 </style>
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top py-3">
-        <div class="container d-flex align-items-center justify-content-end">
+    <nav class="navbar navbar-expand-lg fixed-top ">
+        <div class="container-fluid py-2 d-flex align-items-center justify-content-end">
             <a class="navbar-brand" href="{% url 'index' %}">
-                <img src="{% static 'fontend/images/logo.jpg' %}" alt="Logo" class="imgs-fluid img-fluid">
+                <img src="{% static 'fontend/images/logo.jpg' %}" alt="Logo" class="img-fluid imgs-fluid">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler fieldBox bg-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
@@ -131,6 +120,10 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'avis' %}"><i class="fas fa-comments"></i>
                             Commentaires</a>
                     </li>
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'detail' %}"><i class="fas fa-dashboard"></i></a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="langueDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -145,7 +138,7 @@
                             Contactez-nous</a>
                     <li class="nav-item">
                         {% if request.user.is_authenticated %}
-                        <a class="btn btn-login" href="#" id="logoutBtn">
+                        <a class="btn btn-login nav-link" href="#" id="logoutBtn">
                             <i class="fas fa-user"></i> Déconnexion
                         </a>
                         {% else %}
@@ -154,45 +147,41 @@
                         </a>
                         {% endif %}
                     </li>
+
                     <li class="nav-item search-container" data-bs-toggle="modal" data-bs-target="#searchModal">
                         <i class="fas fa-search search-icon"></i> Recherche
                     </li>
                 </ul>
             </div>
         </div>
-
-        
     </nav>
     <!-- Modal de recherche -->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header text-white">
-                    <h5 class="modal-title " id="searchModalLabel">Rechercher</h5>
+                    <h5 class="modal-title" id="searchModalLabel">Rechercher</h5>
                     <button type="button" class="btn-close bg-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control" placeholder="Entrez votre recherche...">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Entrez votre recherche...">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-danger">Rechercher</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-success" id="searchButton">Rechercher</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- end navbar -->
     {% block content %}
-
-
-
-
+    
     {% endblock %}
 
 
-    <footer class="footer  justify-content-center text-white  text-center bg-secondary fixed-bottom">
-        <div class=" my-3">
+    <footer class="footer justify-content-center text-white text-center bg-secondary fixed-bottom" style="margin-top: 40px;">
+        <div class="my-3">
             <p>CamerSchoolMap 2025 || tout droit reserver</p>
         </div>
     </footer>

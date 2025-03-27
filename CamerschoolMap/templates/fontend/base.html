@@ -27,17 +27,81 @@
         background-color: #191616;
 
     }
+    .navbar-brand {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1000; /* Garde le logo au-dessus du menu */
+    }
 
+    .navbar-toggler {
+        position: relative;
+        z-index: 1001; /* Garde le bouton au-dessus du logo */
+        margin-right: 15px;
+    }
     .highlight {
         background-color: yellow;
     }
 
 
-    @media screen and (max-width: 978px) {
-        .imgs-fluid {
-            position: fixed;
-            top: 5px;
+     /* Ajoutez ces règles CSS à la fin de votre balise style */
+     @media (max-width: 992px) {
+        .navbar-nav {
+            padding: 20px 0;
+            background-color: #191616; /* Conserve la couleur de fond */
+        }
+        
+        .nav-item {
+            margin: 5px 0 !important;
+            text-align: center;
+        }
+        
+        .btn-login {
+            border: none;
+            padding: 0;
+            margin: 10px auto;
+            display: block;
+            width: fit-content;
+        }
+        
+        .dropdown-menu {
+            text-align: center;
+            background-color: #ed671f; /* Conserve la couleur du dropdown */
+        }
+        
+        .search-container span {
+            display: none;
+        }
+        
+        .navbar-brand {
+            top: 15px; /* Position fixe depuis le haut */
+            transform: none; /* Supprime le centrage vertical */
+        }
+        
+        .navbar-collapse {
+            margin-top: 100px; /* Espace pour le logo */
+        }
 
+    }
+
+    @media (max-width: 768px) {
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .navbar-toggler {
+            margin-right: 15px;
+        }
+        .navbar-brand {
+            top: 10px;
+            left: 10px;
+        }
+        
+        .navbar-brand img {
+            width: 40px !important;
+            height: 40px !important;
         }
     }
 </style>
@@ -61,10 +125,6 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'avis' %}"><i class="fas fa-comments"></i>
                             Commentaires</a>
                     </li>
-                    {% if request.user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'detail' %}"><i class="fas fa-dashboard"></i></a>
-                    </li>
-                    {% endif %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="langueDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
