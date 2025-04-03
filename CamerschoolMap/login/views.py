@@ -90,35 +90,34 @@ def inscription(request):
 
 
 
-@csrf_exempt
+
 # Fonction de connexion
+@csrf_exempt
 def connexion(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        # Vérification des champs vides
         if not email or not password:
             messages.error(request, "Veuillez remplir tous les champs.")
             return redirect('connexion')
 
-        # Récupération de l'utilisateur avec cet email
         user = User.objects.filter(email=email).first()
         if user:
             auth_user = authenticate(username=user.username, password=password)
             if auth_user:
                 login(request, auth_user)
-                messages.success(request, f"Connexion réussie avec succès.\nBienvenue, {auth_user.username} !")
+                messages.success(request, f"Connexion réussie. Bienvenue, {auth_user.username} !")
+                
+                next_url = request.GET.get('next') or ('dashbord' if auth_user.role != 'Utilisateur' else 'detail_users')
+                return redirect(next_url)
 
-                # Redirection selon le rôle
-                if auth_user.role == 'Utilisateur':
-                    return redirect('detail')
-                else:
-                    return redirect('dashbord')
+        messages.error(request, "Email ou mot de passe incorrect.")
 
-        messages.error(request, "Email ou mot de passe incorrect. Merci de réessayer ultérieurement.")
-
-    return render(request, 'fontend/autres/connexion.html')
+    # Afficher les messages dans le template
+    return render(request, 'fontend/autres/connexion.html', {
+        'messages': messages.get_messages(request)
+    })
 
 
 
@@ -160,7 +159,7 @@ def deconnexion(request):
 def historique(request):
     users = User.objects.all().order_by('-id')
     # Pagination
-    paginator = Paginator(users, 50)
+    paginator = Paginator(users, 10)
     page_number = request.GET.get('page')
     users = paginator.get_page(page_number)
     
@@ -339,8 +338,8 @@ def register(request):
     return render(request, 'backend/autres/register.html')
 
 # FONCTION POUR AFFICHER LES UTILISATEURS ET GERER LA PAGINATION
+
 @login_required(login_url='connexion')
-# @user_passes_test(is_admin and is_chef, login_url='echecs')
 def dashboard(request):
     user = request.user
     
@@ -351,26 +350,24 @@ def dashboard(request):
         users_list = CustomUser.objects.exclude(id=user.id).order_by('-id')
     else:
         total_utilisateurs = user.utilisateurs_ajoutes.count()
-        total_chefs = 0  # Un chef d’établissement ne gère pas d’autres chefs
+        total_chefs = 0  
         total_etablissements = user.etablissements_ajoutes.count()
         users_list = user.utilisateurs_ajoutes.all()
     
-    
-    
-    # Pagination : 10 établissements par page
+    # Pagination : 8 utilisateurs par page
     paginator = Paginator(users_list, 8)
     page_number = request.GET.get('page')
-    etablissements = paginator.get_page(page_number)
+    users_page = paginator.get_page(page_number)
     
     context = {
         'total_utilisateurs': total_utilisateurs,
         'total_chefs': total_chefs,
-        'users_list': users_list,
-        'etablissements': etablissements,
+        'users_page': users_page,  # Utilisation de 'users_page' au lieu de 'etablissements'
         'total_etablissements': total_etablissements
     }
     
     return render(request, 'backend/dashbord.html', context)
+
 
 
 @login_required(login_url='connexion')

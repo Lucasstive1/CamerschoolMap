@@ -19,44 +19,50 @@
 </head>
 <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f8f9fa;
-      color: #333;
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
     }
+
     .navbar {
         background-color: #191616;
 
     }
+
     .navbar-brand {
         position: absolute;
         left: 20px;
         top: 50%;
         transform: translateY(-50%);
-        z-index: 1000; /* Garde le logo au-dessus du menu */
+        z-index: 1000;
+        /* Garde le logo au-dessus du menu */
     }
 
     .navbar-toggler {
         position: relative;
-        z-index: 1001; /* Garde le bouton au-dessus du logo */
+        z-index: 1001;
+        /* Garde le bouton au-dessus du logo */
         margin-right: 15px;
     }
+
     .highlight {
         background-color: yellow;
     }
 
 
-     /* Ajoutez ces règles CSS à la fin de votre balise style */
-     @media (max-width: 992px) {
+    /* Ajoutez ces règles CSS à la fin de votre balise style */
+    @media (max-width: 992px) {
         .navbar-nav {
             padding: 20px 0;
-            background-color: #191616; /* Conserve la couleur de fond */
+            background-color: #191616;
+            /* Conserve la couleur de fond */
         }
-        
+
         .nav-item {
             margin: 5px 0 !important;
             text-align: center;
         }
-        
+
         .btn-login {
             border: none;
             padding: 0;
@@ -64,23 +70,27 @@
             display: block;
             width: fit-content;
         }
-        
+
         .dropdown-menu {
             text-align: center;
-            background-color: #ed671f; /* Conserve la couleur du dropdown */
+            background-color: #ed671f;
+            /* Conserve la couleur du dropdown */
         }
-        
+
         .search-container span {
             display: none;
         }
-        
+
         .navbar-brand {
-            top: 15px; /* Position fixe depuis le haut */
-            transform: none; /* Supprime le centrage vertical */
+            top: 15px;
+            /* Position fixe depuis le haut */
+            transform: none;
+            /* Supprime le centrage vertical */
         }
-        
+
         .navbar-collapse {
-            margin-top: 100px; /* Espace pour le logo */
+            margin-top: 100px;
+            /* Espace pour le logo */
         }
 
     }
@@ -90,15 +100,16 @@
             width: 40px;
             height: 40px;
         }
-        
+
         .navbar-toggler {
             margin-right: 15px;
         }
+
         .navbar-brand {
             top: 10px;
             left: 10px;
         }
-        
+
         .navbar-brand img {
             width: 40px !important;
             height: 40px !important;
@@ -113,7 +124,8 @@
             <a class="navbar-brand" href="{% url 'index' %}">
                 <img src="{% static 'fontend/images/logo.jpg' %}" alt="Logo" class="img-fluid imgs-fluid">
             </a>
-            <button class="navbar-toggler fieldBox bg-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler fieldBox bg-success" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
@@ -158,19 +170,43 @@
     </nav>
     <!-- Modal de recherche -->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header text-white">
-                    <h5 class="modal-title" id="searchModalLabel">Rechercher</h5>
-                    <button type="button" class="btn-close bg-white" data-bs-dismiss="modal"
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="searchModalLabel">Rechercher sur CamerSchoolMap</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="searchInput" class="form-control" placeholder="Entrez votre recherche...">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-success" id="searchButton">Rechercher</button>
+                    <div class="input-group mb-3">
+                        <input type="text" id="searchInput" class="form-control form-control-lg"
+                            placeholder="Rechercher un établissement, une ville..." autocomplete="off">
+                        <button class="btn btn-primary" type="button" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+
+                    <!-- Résultats de recherche -->
+                    <div id="searchResults" class="mt-3" style="display: none;">
+                        <div class="list-group" id="resultsContainer">
+                            <!-- Les résultats seront injectés ici par JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Aucun résultat -->
+                    <div id="noResults" class="text-center py-4" style="display: none;">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Aucun résultat trouvé</h5>
+                        <p class="text-muted">Essayez avec d'autres termes de recherche</p>
+                    </div>
+
+                    <!-- Chargement -->
+                    <div id="searchLoading" class="text-center py-4" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Recherche en cours...</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -344,7 +380,116 @@
             });
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Configuration
+            const minSearchLength = 2;
+            const debounceDelay = 300;
+            let searchTimeout;
+
+            // Éléments DOM
+            const $searchInput = $('#searchInput');
+            const $searchButton = $('#searchButton');
+            const $searchResults = $('#searchResults');
+            const $resultsContainer = $('#resultsContainer');
+            const $noResults = $('#noResults');
+            const $searchLoading = $('#searchLoading');
+            const $searchModal = $('#searchModal');
+
+            // Fonction de recherche
+            function performSearch() {
+                const query = $searchInput.val().trim();
+
+                if (query.length < minSearchLength) {
+                    $searchResults.hide();
+                    $noResults.hide();
+                    return;
+                }
+
+                // Afficher le loader
+                $searchLoading.show();
+                $searchResults.hide();
+                $noResults.hide();
+
+                // Simuler un délai de requête (remplacez par votre appel AJAX réel)
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function () {
+                    // ICI: Remplacer par votre appel AJAX réel
+                    // Exemple avec des données simulées:
+                    const mockResults = [
+                        { id: 1, name: "Lycée Général Leclerc", type: "Lycée", ville: "Yaoundé" },
+                        { id: 2, name: "Collège Vogt", type: "Collège", ville: "Yaoundé" },
+                        { id: 3, name: "Université de Yaoundé I", type: "Université", ville: "Yaoundé" }
+                    ];
+
+                    // Filtrer les résultats simulés basés sur la requête
+                    const filteredResults = mockResults.filter(item =>
+                        item.name.toLowerCase().includes(query.toLowerCase()) ||
+                        item.ville.toLowerCase().includes(query.toLowerCase())
+                    );
+
+                    displayResults(filteredResults);
+                }, 800); // Délai simulé pour le chargement
+            }
+
+            // Affichage des résultats
+            function displayResults(results) {
+                $searchLoading.hide();
+
+                if (results.length === 0) {
+                    $noResults.show();
+                    $searchResults.hide();
+                    return;
+                }
+
+                $resultsContainer.empty();
+
+                results.forEach(result => {
+                    $resultsContainer.append(`
+                <a href="/etablissement/${result.id}" class="list-group-item list-group-item-action search-result-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">${result.name}</h5>
+                        <small class="text-muted">${result.type}</small>
+                    </div>
+                    <p class="mb-1">${result.ville}</p>
+                </a>
+            `);
+                });
+
+                $searchResults.show();
+                $noResults.hide();
+            }
+
+            // Événements
+            $searchInput.on('input', function () {
+                performSearch();
+            });
+
+            $searchButton.on('click', function () {
+                performSearch();
+            });
+
+            $searchInput.on('keypress', function (e) {
+                if (e.which === 13) { // Touche Entrée
+                    performSearch();
+                }
+            });
+
+            // Réinitialiser la recherche quand le modal se ferme
+            $searchModal.on('hidden.bs.modal', function () {
+                $searchInput.val('');
+                $searchResults.hide();
+                $noResults.hide();
+                $searchLoading.hide();
+            });
+
+            // Focus sur l'input quand le modal s'ouvre
+            $searchModal.on('shown.bs.modal', function () {
+                $searchInput.focus();
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function () {

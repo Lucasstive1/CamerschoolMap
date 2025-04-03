@@ -186,7 +186,7 @@
                 <div class="input_group">
                     <input type="password" name="password" id="password" required placeholder=" ">
                     <label>Mot de passe</label>
-                    <i class="fas fa-eye users toggle-password"></i>
+                    <i class="fas fa-eye users toggle-password" id="togglePassword"></i>
                     <small class="text-white">Au moins 8 caractères, une majuscule et un chiffre</small>
                 </div>
 
@@ -215,35 +215,36 @@
     </div>
 </section>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Password toggle
-    document.querySelectorAll('.toggle-password').forEach(icon => {
-        icon.addEventListener('click', () => {
-            const passwordField = document.getElementById('password');
-            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordField.setAttribute('type', type);
-            icon.classList.toggle('fa-eye-slash');
-        });
-    });
+    document.getElementById("togglePassword").addEventListener("click", function () {
+        let passwordField = document.getElementById("password");
+        let icon = this;
 
-    // Messages handling
-    {% if messages %}
-    document.addEventListener('DOMContentLoaded', () => {
-        {% for message in messages %}
-        Toastify({
-            text: "{{ message }}",
-            duration: 5000,
-            gravity: "top",
-            position: "right",
-            style: {
-                background: "linear-gradient(135deg, #3498db, #2ecc71)",
-                borderRadius: "8px",
-                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
-            }
-        }).showToast();
-        {% endfor %}
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            passwordField.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
     });
-    {% endif %}
+</script>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    text: "{{ message }}",
+                    icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+                    confirmButtonColor: "#3498db",
+                    timer: 5000
+                });
+            {% endfor %}
+        {% endif %}
+    });
 </script>
 
 {% endblock %}

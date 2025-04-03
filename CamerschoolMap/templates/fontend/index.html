@@ -28,11 +28,13 @@
     .partner-logo:hover {
         opacity: 1;
     }
+
     .card img {
         height: 200px;
         object-fit: cover;
         border-radius: 8px;
     }
+
     .card-body {
         background-color: #fff;
         padding: 20px;
@@ -233,7 +235,7 @@
             <div class="col-md-4 mb-4" data-aos="zoom-in">
                 <div class="testimonial-card p-4">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="user-avatar.png" alt="Avatar" class="rounded-circle mr-3" width="60">
+                        <img src="{% static 'fontend/images/user-avatar' %}" alt="Avatar" class="rounded-circle mr-3" width="60">
                         <div>
                             <h5>Parent satisfait</h5>
                             <div class="star-rating">
@@ -251,7 +253,7 @@
             <div class="col-md-4 mb-4" data-aos="zoom-in">
                 <div class="testimonial-card p-4">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="user-avatar.png" alt="Avatar" class="rounded-circle mr-3" width="60">
+                        <img src="{% static 'fontend/images/user-avatar' %}" alt="Avatar" class="rounded-circle mr-3" width="60">
                         <div>
                             <h5>Etudiant/ Eléve</h5>
                             <div class="star-rating">
@@ -270,7 +272,7 @@
             <div class="col-md-4 mb-4" data-aos="zoom-in">
                 <div class="testimonial-card p-4">
                     <div class="d-flex align-items-center mb-3">
-                        <img src="user-avatar.png" alt="Avatar" class="rounded-circle mr-3" width="60">
+                        <img src="{% static 'fontend/images/user-avatar' %}" alt="Avatar" class="rounded-circle mr-3" width="60">
                         <div>
                             <h5>Chefs d'etablissements</h5>
                             <div class="star-rating">
@@ -291,50 +293,99 @@
 
 <section class="py-5 bg-white">
     <div class="container">
-        <h2 class="mb-5 text-center"><i class="fas fa-images mx-2 text-success"></i>Galerie d’images des établissements
-            scolaires</h2>
-        <div class="row align-items-center">
-            {% for etablissement in etablissements %}
-            <div class="col col-md-4 mb-4 partner-logo" data-aos="zoom-in">
-                <div class="card">
-                    {% if etablissement.image_profil %}
-                    <img src="{{ etablissement.image_profil.url }}" alt="Partenaire" class="img-fluid">
-                    {% else %}
-                    <img src="{% static 'images/default.jpg' %}" class="img-fluid" alt="Image par défaut">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5>{{ etablissement.nom }}</h5>
-                    </div>
+        <h2 class="mb-5 text-center"><i class="fas fa-school mx-2 text-primary"></i>Galerie des Établissements Scolaires
+        </h2>
+        <!-- Galerie -->
+        <div class="row g-3">
+            {% for etablissement in page_obj %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <a href="{% url 'detail_users' %}?nom={{ etablissement.nom|urlencode }}"
+                        class="text-decoration-none text-dark">
+                        <!-- Image container - fixed height -->
+                        <div class="position-relative" style="height: 150px; overflow: hidden;">
+                            {% if etablissement.image_profil %}
+                            <img src="{{ etablissement.image_profil.url }}"
+                                class="img-fluid w-100 h-100 object-fit-cover" alt="{{ etablissement.nom }}"
+                                loading="lazy">
+                            {% else %}
+                            <img src="{% static 'images/default-school.jpg' %}"
+                                class="img-fluid w-100 h-100 object-fit-cover" alt="Établissement scolaire"
+                                loading="lazy">
+                            {% endif %}
+                        </div>
+
+                        <!-- Card body with better spacing -->
+                        <div class="card-body p-3">
+                            <!-- Establishment name - responsive font size -->
+                            <h5 class="card-title fs-6 fs-sm-5 mb-1 text-truncate" title="{{ etablissement.nom }}">
+                                {{ etablissement.nom }}
+                            </h5>
+
+                            <!-- Location info - stacked on mobile -->
+                            <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-1">
+                                <span class="text-muted small">
+                                    <i class="fas fa-map-marker-alt text-danger me-1"></i>
+                                    <span class="d-inline d-sm-none">{{ etablissement.ville }}</span>
+                                    <span class="d-none d-sm-inline">{{ etablissement.ville }}, {{ etablissement.departement }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle me-2"></i>Aucun établissement trouvé.
                 </div>
             </div>
             {% endfor %}
         </div>
-        
-        <!-- Pagination -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
+
+        <!-- Pagination améliorée -->
+        {% if page_obj.paginator.num_pages > 1 %}
+        <nav aria-label="Pagination" class="mt-5">
+            <ul class="pagination justify-content-center flex-wrap">
                 {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
-                        aria-label="Previous">
+                    <a class="page-link" href="?page=1" aria-label="Première">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Précédent">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 {% endif %}
-                {% for page_num in page_obj.paginator.page_range %}
-                <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
-                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ num }}</span>
                 </li>
-                {% endfor %}
-                {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-                {% endif %}
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Suivant">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Dernière">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
             </ul>
         </nav>
+        {% endif %}
     </div>
 </section>
 

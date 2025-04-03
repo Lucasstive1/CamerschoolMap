@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404,redirect
 import json
 import unicodedata
 from django.db.models import Q
+from django.contrib.auth import get_user_model
 
 def is_admin(user):
     return user.groups.filter(name='Administrateur').exists()
@@ -186,6 +187,9 @@ def remove_accents(input_str):
 
 def detail_users(request):
     etablissements = Etablissement.objects.all().order_by('-date_creation')
+    
+    total_etablissements = Etablissement.objects.count()
+    total_utilisateurs = get_user_model().objects.count()
 
     nom = request.GET.get('nom', '').strip()
     ville = request.GET.get('ville', '').strip()
@@ -229,7 +233,8 @@ def detail_users(request):
     page_number = request.GET.get('page')
     etablissements = paginator.get_page(page_number)
 
-    return render(request, 'fontend/autres/details2.html', {'etablissements': etablissements})
+    return render(request, 'fontend/autres/details2.html', {'etablissements': etablissements,  'total_etablissements': total_etablissements,
+        'total_utilisateurs': total_utilisateurs})
 
 def autocomplete_etablissements(request):
     query = request.GET.get('term', '')  # jQuery UI utilise 'term' par défaut
@@ -250,7 +255,7 @@ def historique_ecole(request):
     etablissements_list = Etablissement.objects.all().order_by('-date_creation')
 
     # Définir le nombre d'éléments par page
-    paginator = Paginator(etablissements_list, 20)  # 6 établissements par page
+    paginator = Paginator(etablissements_list, 30)  # 6 établissements par page
     page_number = request.GET.get('page')
     etablissements = paginator.get_page(page_number)
 

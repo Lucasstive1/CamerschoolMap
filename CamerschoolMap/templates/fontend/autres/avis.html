@@ -5,30 +5,29 @@
 {% block content %}
 
 <style>
-    .rating-stars .star {
-        cursor: pointer;
-        transition: transform 0.2s ease;
+    .rating-stars {
+        --active-color: #ffc107;
+        --inactive-color: #ddd;
     }
 
-    .rating-stars .star:hover {
-        transform: scale(1.2);
+    .rating-stars .star {
+        cursor: pointer;
+        font-size: 2rem;
+        color: var(--inactive-color);
+        transition: all 0.3s ease;
+    }
+
+    .rating-stars .star:hover,
+    .rating-stars .star.hovered,
+    .rating-stars .star.active {
+        color: var(--active-color);
+        transform: scale(1.1);
     }
 
     #ratingLabel {
         min-height: 24px;
         transition: opacity 0.3s ease;
-    }
 
-    .rating-stars .star {
-        font-size: 2rem;
-        color: #ddd;
-        transition: all 0.3s ease;
-    }
-
-    .rating-stars .star:hover,
-    .rating-stars .star.active {
-        color: #ffc107;
-        transform: scale(1.1);
     }
 
     .card-hover {
@@ -127,8 +126,8 @@
                     <label class="form-label fs-5">Notez votre expérience</label>
                     <div class="rating-stars d-flex justify-content-center gap-2">
                         {% for i in "12345" %}
-                        <div class="star" data-value="{{i}}" onmouseover="showLabel(this)" onmouseout="hideLabel()"
-                            onclick="setRating(this)">
+                        <div class="star" data-value="{{i}}" onmouseover="highlightStars(this)"
+                            onmouseout="resetStars()" onclick="setRating(this)">
                             <i class="fas fa-star"></i>
                         </div>
                         {% endfor %}
@@ -323,40 +322,49 @@
     };
 
     let currentRating = 0;
+    let hoveredRating = 0;
+
+    function highlightStars(star) {
+        if (currentRating > 0) return;
+
+        const value = parseInt(star.dataset.value);
+        hoveredRating = value;
+
+        document.querySelectorAll('.rating-stars .star').forEach((s, index) => {
+            const starValue = parseInt(s.dataset.value);
+            s.classList.toggle('hovered', starValue <= value);
+        });
+
+        document.getElementById('ratingLabel').textContent = ratingLabels[value];
+    }
+
+    function resetStars() {
+        if (currentRating > 0) return;
+
+        document.querySelectorAll('.rating-stars .star').forEach(s => {
+            s.classList.remove('hovered');
+        });
+        document.getElementById('ratingLabel').textContent = '';
+    }
 
     function setRating(star) {
         const value = parseInt(star.dataset.value);
         currentRating = value;
+        hoveredRating = 0;
 
-        // Met à jour toutes les étoiles
-        document.querySelectorAll('.rating-stars .star i').forEach((icon, index) => {
-            if (index < value) {
-                icon.style.color = '#ffc107';
-            } else {
-                icon.style.color = '#ddd';
-            }
+        // Mettre à jour les classes
+        document.querySelectorAll('.rating-stars .star').forEach((s, index) => {
+            const starValue = parseInt(s.dataset.value);
+            s.classList.toggle('active', starValue <= value);
+            s.classList.remove('hovered');
         });
 
-        // Met à jour le label et l'input caché
+        // Mettre à jour le label et l'input caché
         document.getElementById('ratingLabel').textContent = ratingLabels[value];
-        document.getElementById('ratingValue').value = value; // Mise à jour du champ caché
+        document.getElementById('ratingValue').value = value;
     }
 
-
-    function showLabel(star) {
-        const value = parseInt(star.dataset.value);
-        if (!currentRating) {
-            document.getElementById('ratingLabel').textContent = ratingLabels[value];
-        }
-    }
-
-    function hideLabel() {
-        if (!currentRating) {
-            document.getElementById('ratingLabel').textContent = '';
-        }
-    }
-
-    // Initialisation au chargement
+    // Initialisation
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.rating-stars .star').forEach(star => {
             star.querySelector('i').style.color = '#ddd';

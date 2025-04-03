@@ -92,7 +92,7 @@
                                     <h5>Mes utilisateurs</h5>
                                     <h2 class="mb-0">{{ total_etablissements }}</h2>
                                     {% else %}
-                                    <h5>Utilisateurs sur le site</h5>
+                                   
                                     <h2 class="mb-0">{{ total_etablissements }}</h2>
                                     {% endif %}
                                 </div>
@@ -142,7 +142,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for utilisateur in users_list %}
+                                    {% for utilisateur in users_page %}
                                     {% if request.user.role == "Administrateur" or utilisateur.ajoute_par == request.user %}
                                     <tr>
                                         <td>{{ utilisateur.id }}</td>
@@ -177,23 +177,23 @@
                         <!-- Pagination -->
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
-                                {% if etablissements.has_previous %}
+                                {% if users_page.has_previous %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ etablissements.previous_page_number }}"
-                                        aria-label="Previous">
+                                    <a class="page-link" href="?page={{ users_page.previous_page_number }}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
                                 {% endif %}
-                                {% for page_num in etablissements.paginator.page_range %}
-                                <li class="page-item {% if etablissements.number == page_num %}active{% endif %}">
+                                
+                                {% for page_num in users_page.paginator.page_range %}
+                                <li class="page-item {% if users_page.number == page_num %}active{% endif %}">
                                     <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
                                 </li>
                                 {% endfor %}
-                                {% if etablissements.has_next %}
+                                
+                                {% if users_page.has_next %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ etablissements.next_page_number }}"
-                                        aria-label="Next">
+                                    <a class="page-link" href="?page={{ users_page.next_page_number }}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>

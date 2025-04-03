@@ -14,7 +14,7 @@ from CamerschoolMap.decorators import login_required_message
 def index(request):
     etablissements = Etablissement.objects.all().order_by('-date_creation')
     # Pagination (30 avis par page)
-    paginator = Paginator(etablissements, 6)
+    paginator = Paginator(etablissements, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'fontend/index.html', {'etablissements': etablissements, 'page_obj': page_obj})
@@ -26,6 +26,10 @@ def blog(request):
 
 @login_required_message
 def contact(request):
+    if not request.user.is_authenticated:
+        messages.info(request, "Vous devez être connecté pour accéder à cette page.")
+        return redirect('connexion')
+    
     if request.method == 'POST':
         nom = request.POST.get("nom")
         prenom = request.POST.get("prenom", "")
@@ -86,8 +90,11 @@ def confirmation(request):
     # On passe les variables au template
     return render(request, 'fontend/autres/confirmation.html', {'nom': nom, 'email': email})
 
-@login_required(login_url='connexion')
+@login_required_message
 def avis(request):
+    if not request.user.is_authenticated:
+        messages.info(request, "Vous devez être connecté pour accéder à cette page.")
+        return redirect('connexion')
     # Vérifier si un avis concerne un établissement spécifique
     etab_id = request.GET.get('etablissement_id')
     etab_nom = request.GET.get('etablissement_nom')

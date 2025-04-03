@@ -140,7 +140,7 @@
         }
 
         .social_icons a {
-            font-size: 1.5rem;
+            font-size: 5rem;
             color: #3498db;
             transition: transform 0.2s ease;
         }
@@ -210,7 +210,7 @@
                 <div class="input_group">
                     <input type="password" name="password" id="password" required placeholder=" ">
                     <label>Mot de passe</label>
-                    <i class="fas fa-eye users toggle-password"></i>
+                    <i class="fas fa-eye users" id="togglePassword"></i>
                 </div>
 
                 <div class="remenber">
@@ -229,11 +229,14 @@
 
                 <div class="social_platform">
                     <p class="text-white">Connexion via les réseaux sociaux :</p>
-                    <div class="social_icons">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-google"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <div class="social_icons" style="display: flex;
+                    justify-content: center;
+                    gap: 1.5rem;
+                    margin-top: 1.5rem;">
+                        <a href="#"><i class="fab fa-facebook h3"></i></a>
+                        <a href="#"><i class="fab fa-google h3"></i></a>
+                        <a href="#"><i class="fab fa-github h3"></i></a>
+                        <a href="#"><i class="fab fa-linkedin h3"></i></a>
                     </div>
                 </div>
             </form>
@@ -241,40 +244,34 @@
     </div>
 </section>
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Code JavaScript corrigé
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.toggle-password').forEach(icon => {
-            icon.addEventListener('click', (e) => {
-                const inputGroup = e.target.closest('.input_group');
-                const passwordField = inputGroup.querySelector('input');
-                const isPassword = passwordField.type === 'password';
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
 
-                passwordField.type = isPassword ? 'text' : 'password';
-                icon.classList.toggle('fa-eye-slash', !isPassword);
-                icon.classList.toggle('fa-eye', isPassword);
+        if (togglePassword && password) { // Vérification que les éléments existent
+            togglePassword.addEventListener('click', function () {
+                const type = password.type === 'password' ? 'text' : 'password';
+                password.type = type;
+                this.classList.toggle('fa-eye-slash');
             });
-        });
+        }
     });
-
-    // Messages handling
-    {% if messages %}
     document.addEventListener('DOMContentLoaded', () => {
+        {% if messages %}
         {% for message in messages %}
-        Toastify({
+        Swal.fire({
             text: "{{ message }}",
-            duration: 5000,
-            gravity: "top",
-            position: "right",
-            style: {
-                background: "linear-gradient(135deg, #3498db, #2ecc71)",
-                borderRadius: "8px",
-                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
-            }
-        }).showToast();
+            icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+            confirmButtonColor: "#3498db",
+            timer: 5000
+        });
         {% endfor %}
+        {% endif %}
     });
-    {% endif %}
 </script>
 
 {% endblock %}
